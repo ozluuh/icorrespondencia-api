@@ -36,7 +36,7 @@ public class TownhouseService {
     }
 
     public void destroy(Long id) {
-        repository.deleteById(id);
+        repository.delete(show(id));
     }
 
     public void update(Townhouse townhouse) {

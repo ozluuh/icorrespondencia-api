@@ -34,8 +34,8 @@ public class TownhouseController {
         return service.show(id);
     }
 
-    @DeleteMapping(path ="/{id}")
-    public ResponseEntity<Object> destroy(@PathVariable Long id){
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> destroy(@PathVariable Long id) {
         service.destroy(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
