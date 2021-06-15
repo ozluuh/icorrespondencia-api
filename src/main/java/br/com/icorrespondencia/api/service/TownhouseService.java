@@ -28,4 +28,8 @@ public class TownhouseService {
         return townhouses.stream().filter(item -> item.getId().equals(id)).findFirst();
     }
 
+    public void destroy(Long id) {
+        townhouses = townhouses.stream().filter(item -> !item.getId().equals(id)).collect(Collectors.toList());
+    }
+
 }
