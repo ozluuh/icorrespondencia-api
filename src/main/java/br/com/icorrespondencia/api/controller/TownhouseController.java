@@ -1,6 +1,5 @@
 package br.com.icorrespondencia.api.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class TownhouseController {
 
     @GetMapping
     public List<Townhouse> index() {
-        return service.index().orElse(new ArrayList<>());
+        return service.index();
     }
 
     @GetMapping(path = "/{id}")

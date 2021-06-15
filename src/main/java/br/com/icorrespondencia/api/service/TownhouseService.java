@@ -8,7 +8,10 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
+import br.com.icorrespondencia.api.repository.TownhouseRepository;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class TownhouseService {
 
@@ -20,8 +23,10 @@ public class TownhouseService {
             new Townhouse(10L, "Condomínio Johnson"), new Townhouse(11L, "Condomínio Hills"))
             .collect(Collectors.toList());
 
-    public Optional<List<Townhouse>> index() {
-        return Optional.of(townhouses);
+    private final TownhouseRepository repository;
+
+    public List<Townhouse> index() {
+        return repository.findAll();
     }
 
     public Optional<Townhouse> show(Long id) {
