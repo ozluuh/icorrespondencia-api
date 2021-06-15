@@ -32,4 +32,9 @@ public class TownhouseService {
         townhouses = townhouses.stream().filter(item -> !item.getId().equals(id)).collect(Collectors.toList());
     }
 
+    public void update(Townhouse townhouse) {
+        destroy(townhouse.getId());
+        townhouses.add(townhouse);
+    }
+
 }

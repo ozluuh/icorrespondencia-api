@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,5 +41,17 @@ public class TownhouseController {
     public ResponseEntity<Object> destroy(@PathVariable Long id){
         service.destroy(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(path ="/{id}")
+    public ResponseEntity<Townhouse> update(@RequestBody Townhouse townhouse, @PathVariable Long id){
+        Townhouse entity = show(id);
+
+        if(entity != null) {
+            townhouse.setId(id);
+            service.update(townhouse);
+        }
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
