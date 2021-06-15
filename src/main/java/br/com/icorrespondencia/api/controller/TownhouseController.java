@@ -40,20 +40,14 @@ public class TownhouseController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path ="/{id}")
-    public ResponseEntity<Townhouse> update(@RequestBody Townhouse townhouse, @PathVariable Long id){
-        Townhouse entity = show(id);
-
-        if(entity != null) {
-            townhouse.setId(id);
-            service.update(townhouse);
-        }
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    @PutMapping
+    public ResponseEntity<Void> replace(@RequestBody Townhouse townhouse) {
+        service.saveOrUpdate(townhouse);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<Townhouse> store(@RequestBody Townhouse townhouse){
-        return ResponseEntity.ok(service.store(townhouse));
+    public ResponseEntity<Townhouse> store(@RequestBody Townhouse townhouse) {
+        return ResponseEntity.ok(service.saveOrUpdate(townhouse));
     }
 }
