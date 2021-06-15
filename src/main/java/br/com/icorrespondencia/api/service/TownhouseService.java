@@ -1,11 +1,12 @@
 package br.com.icorrespondencia.api.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
@@ -29,12 +30,13 @@ public class TownhouseService {
         return repository.findAll();
     }
 
-    public Optional<Townhouse> show(Long id) {
-        return townhouses.stream().filter(item -> item.getId().equals(id)).findFirst();
+    public Townhouse show(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Townhouse not found"));
     }
 
     public void destroy(Long id) {
-        townhouses = townhouses.stream().filter(item -> !item.getId().equals(id)).collect(Collectors.toList());
+        repository.deleteById(id);
     }
 
     public void update(Townhouse townhouse) {

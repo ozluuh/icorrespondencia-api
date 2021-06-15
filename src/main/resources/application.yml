@@ -1,6 +1,8 @@
 server:
   servlet:
     context-path: /api
+  error:
+    include-stacktrace: on-trace-param
 
 spring:
   datasource:

@@ -1,7 +1,6 @@
 package br.com.icorrespondencia.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +31,7 @@ public class TownhouseController {
 
     @GetMapping(path = "/{id}")
     public Townhouse show(@PathVariable Long id) {
-        Optional<Townhouse> show = service.show(id);
-
-        return show.get();
+        return service.show(id);
     }
 
     @DeleteMapping(path ="/{id}")
