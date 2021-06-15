@@ -37,4 +37,12 @@ public class TownhouseService {
         townhouses.add(townhouse);
     }
 
+    public Townhouse store(Townhouse townhouse) {
+        int lastId = townhouses.size();
+        townhouse.setId((long) ++lastId);
+        townhouses.add(townhouse);
+
+        return townhouse;
+    }
+
 }
