@@ -2,8 +2,10 @@ package br.com.icorrespondencia.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +23,12 @@ public class TownhouseController {
     @GetMapping
     public List<Townhouse> index() {
         return service.index().orElse(new ArrayList<>());
+    }
+
+    @GetMapping(path = "/{id}")
+    public Townhouse show(@PathVariable Long id) {
+        Optional<Townhouse> show = service.show(id);
+
+        return show.get();
     }
 }

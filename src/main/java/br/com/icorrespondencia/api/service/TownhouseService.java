@@ -24,4 +24,8 @@ public class TownhouseService {
         return Optional.of(townhouses);
     }
 
+    public Optional<Townhouse> show(Long id) {
+        return townhouses.stream().filter(item -> item.getId().equals(id)).findFirst();
+    }
+
 }
