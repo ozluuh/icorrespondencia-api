@@ -12,6 +12,7 @@ public abstract class TownhouseMapper {
 
     public static final TownhouseMapper INSTANCE = Mappers.getMapper(TownhouseMapper.class);
 
+    @Mapping(target = "active", ignore = true)
     public abstract Townhouse toTownhouse(TownhouseDTO townhouseDTO);
 
     @Mapping(dateFormat = "yyyy-MM-dd HH:mm:ss", target = "createdAt")
