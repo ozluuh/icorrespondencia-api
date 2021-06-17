@@ -1,7 +1,7 @@
 package br.com.icorrespondencia.api.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -25,11 +25,9 @@ public class TownhouseService {
     }
 
     public TownhouseDTO showTownhouseOrThrowBadRequestException(Long id) {
-        Optional<Townhouse> townhouse = findInstanceInDatabase(id);
-        if (!townhouse.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Townhouse not found");
-        }
-        return TownhouseMapper.INSTANCE.toTownhouseDTO(townhouse.get());
+        Townhouse townhouse = repository.getOne(id);
+        verifyIfExists(townhouse);
+        return TownhouseMapper.INSTANCE.toTownhouseDTO(townhouse);
     }
 
     public void destroyTownhouseOrThrowBadRequestException(Long id) {
@@ -52,12 +50,9 @@ public class TownhouseService {
         return repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
     }
 
-    private Optional<Townhouse> findInstanceInDatabase(Long id) {
-        return repository.findById(id);
-    }
-
-    private void verifyIfExists(Townhouse townhouse){
-        if(Objects.isNull(townhouse)){
+    private void verifyIfExists(Townhouse townhouse) {
+        if (Objects.isNull(townhouse)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Townhouse not found");
         }
+    }
 }
