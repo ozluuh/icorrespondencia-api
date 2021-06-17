@@ -17,5 +17,6 @@ public abstract class TownhouseMapper {
     public abstract Townhouse toTownhouse(TownhouseDTO townhouseDTO);
 
     @Mapping(dateFormat = "yyyy-MM-dd HH:mm:ss", target = "createdAt")
+    @Mapping(dateFormat = "yyyy-MM-dd HH:mm:ss", target = "excludedAt")
     public abstract TownhouseDTO toTownhouseDTO(Townhouse townhouse);
 }

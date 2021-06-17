@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
+import br.com.icorrespondencia.api.exception.BadRequestException;
+import br.com.icorrespondencia.api.exception.UnprocessableEntityException;
 import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,8 @@ public class TownhouseService {
     private final TownhouseRepository repository;
 
     public List<TownhouseDTO> index() {
-        return repository.findAllByExcludedIsNull().stream().map(TownhouseMapper.INSTANCE::toTownhouseDTO).collect(Collectors.toList());
+        return repository.findAllByExcludedIsNull().stream().map(TownhouseMapper.INSTANCE::toTownhouseDTO)
+                .collect(Collectors.toList());
     }
 
     public TownhouseDTO showTownhouseOrThrowBadRequestException(Long id) {
@@ -37,9 +38,7 @@ public class TownhouseService {
     }
 
     public TownhouseDTO save(TownhouseDTO townhouse) {
-        if (townhouse.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Id field not be informed");
-        }
+        verifyCorrectPayload(townhouse);
         Townhouse savedTownhouse = repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
         return TownhouseMapper.INSTANCE.toTownhouseDTO(savedTownhouse);
     }
@@ -51,7 +50,13 @@ public class TownhouseService {
 
     private void verifyIfExists(Townhouse townhouse) {
         if (Objects.isNull(townhouse)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Townhouse not found");
+            throw new BadRequestException("Townhouse not found");
+        }
+    }
+
+    private void verifyCorrectPayload(TownhouseDTO townhouse) {
+        if (Objects.nonNull(townhouse.getId())) {
+            throw new UnprocessableEntityException("Id field not be informed");
         }
     }
 }
