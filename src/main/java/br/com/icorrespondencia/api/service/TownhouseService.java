@@ -22,11 +22,11 @@ public class TownhouseService {
     private final TownhouseRepository repository;
 
     public List<TownhouseDTO> index() {
-        return repository.findAll().stream().map(TownhouseMapper.INSTANCE::toTownhouseDTO).collect(Collectors.toList());
+        return repository.findAllByExcludedIsNull().stream().map(TownhouseMapper.INSTANCE::toTownhouseDTO).collect(Collectors.toList());
     }
 
     public TownhouseDTO showTownhouseOrThrowBadRequestException(Long id) {
-        Townhouse townhouse = repository.getOne(id);
+        Townhouse townhouse = repository.getOneByIdAndExcludedAtIsNull(id);
         verifyIfExists(townhouse);
         return TownhouseMapper.INSTANCE.toTownhouseDTO(townhouse);
     }
