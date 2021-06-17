@@ -30,7 +30,7 @@ public class Townhouse {
     @Column(name = "ds_razao_social", nullable = false)
     private String name;
 
-    @Column(name = "nr_cnpj", columnDefinition = "CHAR(18) NOT NULL")
+    @Column(name = "nr_cnpj", unique = true, columnDefinition = "CHAR(18) NOT NULL")
     private String nin;
 
     @Column(name = "ds_site", length = 100)

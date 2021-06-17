@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
+import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
 import lombok.RequiredArgsConstructor;
 
@@ -25,29 +26,29 @@ public class TownhouseController {
     private final TownhouseService service;
 
     @GetMapping
-    public List<Townhouse> index() {
+    public List<TownhouseDTO> index() {
         return service.index();
     }
 
     @GetMapping(path = "/{id}")
-    public Townhouse show(@PathVariable Long id) {
-        return service.show(id);
+    public TownhouseDTO show(@PathVariable Long id) {
+        return service.showTownhouseOrThrowBadRequestException(id);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
-        service.destroy(id);
+        service.destroyTownhouseOrThrowBadRequestException(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Townhouse townhouse) {
-        service.saveOrUpdate(townhouse);
+    public ResponseEntity<Void> replace(@RequestBody TownhouseDTO townhouse) {
+        service.updateTownhouseOrThrowBadRequestException(townhouse);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<Townhouse> store(@RequestBody Townhouse townhouse) {
-        return ResponseEntity.ok(service.saveOrUpdate(townhouse));
+    public ResponseEntity<Townhouse> store(@RequestBody TownhouseDTO townhouse) {
+        return ResponseEntity.ok(service.save(townhouse));
     }
 }
