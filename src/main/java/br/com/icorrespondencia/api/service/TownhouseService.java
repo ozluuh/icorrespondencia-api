@@ -31,11 +31,8 @@ public class TownhouseService {
     }
 
     public void destroyTownhouseOrThrowBadRequestException(Long id) {
-        Optional<Townhouse> savedTownhouse = findInstanceInDatabase(id);
-        if (!savedTownhouse.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Townhouse not found");
-        }
-        repository.delete(savedTownhouse.get());
+        Townhouse townhouse = TownhouseMapper.INSTANCE.toTownhouse(showTownhouseOrThrowBadRequestException(id));
+        repository.delete(townhouse);
     }
 
     public Townhouse save(TownhouseDTO townhouse) {
