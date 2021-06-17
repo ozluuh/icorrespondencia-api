@@ -35,11 +35,11 @@ public class TownhouseService {
         repository.delete(townhouse);
     }
 
-    public Townhouse save(TownhouseDTO townhouse) {
+    public TownhouseDTO save(TownhouseDTO townhouse) {
         if (townhouse.getId() != null) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Id field not be informed");
         }
-        return repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
+        return TownhouseMapper.INSTANCE.toTownhouseDTO(repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse)));
     }
 
     public Townhouse updateTownhouseOrThrowBadRequestException(TownhouseDTO townhouse) {

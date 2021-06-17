@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +47,7 @@ public class TownhouseController {
     }
 
     @PostMapping
-    public ResponseEntity<Townhouse> store(@RequestBody TownhouseDTO townhouse) {
+    public ResponseEntity<TownhouseDTO> store(@RequestBody TownhouseDTO townhouse) {
         return ResponseEntity.ok(service.save(townhouse));
     }
 }
