@@ -1,5 +1,6 @@
 package br.com.icorrespondencia.api.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class TownhouseService {
 
     public void destroyTownhouseOrThrowBadRequestException(Long id) {
         Townhouse townhouse = TownhouseMapper.INSTANCE.toTownhouse(showTownhouseOrThrowBadRequestException(id));
-        repository.delete(townhouse);
+        repository.setExcludedAndInactiveFor(LocalDateTime.now(), false, townhouse);
     }
 
     public TownhouseDTO save(TownhouseDTO townhouse) {
