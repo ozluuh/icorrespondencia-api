@@ -1,7 +1,5 @@
 package br.com.icorrespondencia.api.exception;
 
-import java.time.LocalDateTime;
-
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -9,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ExceptionDetails {
     protected String title;
-    protected int status;
     protected String details;
-    protected LocalDateTime timestamp;
+    protected int status;
+    protected String timestamp;
 }

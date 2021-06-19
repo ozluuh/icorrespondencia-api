@@ -23,7 +23,10 @@ public class TownhouseService {
     private final TownhouseRepository repository;
 
     public List<TownhouseDTO> index() {
-        return repository.findAllByExcludedIsNull().stream().map(TownhouseMapper.INSTANCE::toTownhouseDTO)
+        return repository
+                .findAllByExcludedIsNull()
+                .stream()
+                .map(TownhouseMapper.INSTANCE::toTownhouseDTO)
                 .collect(Collectors.toList());
     }
 
