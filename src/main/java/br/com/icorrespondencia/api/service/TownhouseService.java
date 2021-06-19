@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
@@ -37,6 +38,7 @@ public class TownhouseService {
         repository.setExcludedAndInactiveFor(LocalDateTime.now(), false, townhouse);
     }
 
+    @Transactional
     public TownhouseDTO save(TownhouseDTO townhouse) {
         verifyCorrectPayload(townhouse);
         Townhouse savedTownhouse = repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));

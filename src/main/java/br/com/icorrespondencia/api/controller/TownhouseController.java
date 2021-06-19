@@ -2,6 +2,8 @@ package br.com.icorrespondencia.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,7 +49,7 @@ public class TownhouseController {
     }
 
     @PostMapping
-    public ResponseEntity<TownhouseDTO> store(@RequestBody TownhouseDTO townhouse) {
-        return ResponseEntity.ok(service.save(townhouse));
+    public ResponseEntity<TownhouseDTO> store(@RequestBody @Valid TownhouseDTO townhouse) {
+        return new ResponseEntity<>(service.save(townhouse), HttpStatus.CREATED);
     }
 }
