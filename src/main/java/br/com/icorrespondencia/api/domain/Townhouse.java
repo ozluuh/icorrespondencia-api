@@ -10,13 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 @Table(name = "T_ICR_CONDOMINIO")
 @SequenceGenerator(name = "townhouse", allocationSize = 1, sequenceName = "SQ_ICR_CONDOMINIO")
@@ -39,12 +42,14 @@ public class Townhouse {
     @Column(name = "ds_email", length = 80)
     private String email;
 
+    @Builder.Default
     @Column(name = "dt_cadastro", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private final LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "dt_exclusao")
     private LocalDateTime excludedAt;
 
+    @Builder.Default
     @Column(name = "st_ativo", nullable = false)
     private boolean active = true;
 }

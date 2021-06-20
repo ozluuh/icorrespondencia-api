@@ -38,7 +38,11 @@ public class TownhouseService {
 
     public void destroyTownhouseOrThrowBadRequestException(Long id) {
         Townhouse townhouse = TownhouseMapper.INSTANCE.toTownhouse(showTownhouseOrThrowBadRequestException(id));
-        repository.setExcludedAndInactiveFor(LocalDateTime.now(), false, townhouse);
+
+        townhouse.setActive(false);
+        townhouse.setExcludedAt(LocalDateTime.now());
+
+        repository.save(townhouse);
     }
 
     @Transactional

@@ -4,11 +4,12 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class TownhouseDTO {
 
@@ -27,9 +28,9 @@ public class TownhouseDTO {
 
     private String createdAt;
 
-    @JsonIgnore
+    // @JsonIgnore
     private LocalDateTime excludedAt;
 
-    @JsonIgnore
+    // @JsonIgnore
     private boolean active;
 }
