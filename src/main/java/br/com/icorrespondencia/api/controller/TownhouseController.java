@@ -27,13 +27,13 @@ public class TownhouseController {
     private final TownhouseService service;
 
     @GetMapping
-    public List<TownhouseDTO> index() {
-        return service.index();
+    public ResponseEntity<List<TownhouseDTO>> index() {
+        return ResponseEntity.ok(service.index());
     }
 
     @GetMapping(path = "/{id}")
-    public TownhouseDTO show(@PathVariable Long id) {
-        return service.showTownhouseOrThrowBadRequestException(id);
+    public ResponseEntity<TownhouseDTO> show(@PathVariable Long id) {
+        return ResponseEntity.ok(service.showTownhouseOrThrowBadRequestException(id));
     }
 
     @DeleteMapping(path = "/{id}")
@@ -43,7 +43,7 @@ public class TownhouseController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody TownhouseDTO townhouse) {
+    public ResponseEntity<Void> replace(@RequestBody @Valid TownhouseDTO townhouse) {
         service.updateTownhouseOrThrowBadRequestException(townhouse);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
