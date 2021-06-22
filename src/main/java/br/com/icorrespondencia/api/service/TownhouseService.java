@@ -52,9 +52,9 @@ public class TownhouseService {
         return TownhouseMapper.INSTANCE.toTownhouseDTO(savedTownhouse);
     }
 
-    public Townhouse updateTownhouseOrThrowBadRequestException(TownhouseDTO townhouse) {
+    public void updateTownhouseOrThrowBadRequestException(TownhouseDTO townhouse) {
         showTownhouseOrThrowBadRequestException(townhouse.getId());
-        return repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
+        repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
     }
 
     private void verifyIfExists(Townhouse townhouse) {
