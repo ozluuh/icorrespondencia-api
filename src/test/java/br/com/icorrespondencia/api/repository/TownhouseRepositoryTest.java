@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
+import br.com.icorrespondencia.api.util.TownhouseCreator;
 
 @DataJpaTest
 @DisplayName("Townhouse repository tests")
@@ -19,17 +20,6 @@ class TownhouseRepositoryTest {
 
     @Autowired
     TownhouseRepository dao;
-
-    private Townhouse createTownhouse() {
-        return Townhouse
-                    .builder()
-                    .id(1L)
-                    .name("Gandalf Town")
-                    .nin("27.419.373/0001-58")
-                    .site("www.towngandalf.com")
-                    .email("gandalf@fakemail.com")
-                .build();
-    }
 
     @BeforeEach
     void setUp() {
@@ -45,7 +35,7 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("it should find all townhouses by excludedAt is null")
     void testFindAllByExcludedIsNull() {
-        Townhouse townhouse = dao.save(createTownhouse());
+        Townhouse townhouse = dao.save(TownhouseCreator.townhouseToBeStored());
 
         List<Townhouse> townhouses = dao.findAllByExcludedIsNull();
 
@@ -60,7 +50,7 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("it should get one townhouse instance by Id and excludedAt is null")
     void testGetOneByIdAndExcludedAtIsNull() {
-        Townhouse townhouse = dao.save(createTownhouse());
+        Townhouse townhouse = dao.save(TownhouseCreator.townhouseToBeStored());
         Townhouse townhouseFound = dao.getOneByIdAndExcludedAtIsNull(townhouse.getId());
 
         assertThat(townhouseFound)
@@ -73,7 +63,7 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("it should set townhouse excluded and inactive by id")
     void testSetExcludedAndInactiveForTownhouse() {
-        Townhouse townhouse = dao.save(createTownhouse());
+        Townhouse townhouse = dao.save(TownhouseCreator.townhouseToBeStored());
 
         LocalDateTime excludedAt = LocalDateTime.now();
         townhouse.setExcludedAt(excludedAt);
