@@ -24,43 +24,38 @@ public class TownhouseService {
 
     public List<TownhouseDTO> index() {
         return repository
-                .findAllByExcludedIsNull()
+                .findAllByExcludedAtIsNull()
                 .stream()
                 .map(TownhouseMapper.INSTANCE::toTownhouseDTO)
                 .collect(Collectors.toList());
     }
 
     public TownhouseDTO showTownhouseOrThrowBadRequestException(Long id) {
-        Townhouse townhouse = repository.getOneByIdAndExcludedAtIsNull(id);
-        verifyIfExists(townhouse);
-        return TownhouseMapper.INSTANCE.toTownhouseDTO(townhouse);
+        return repository
+                .findById(id)
+                .map(TownhouseMapper.INSTANCE::toTownhouseDTO)
+                .orElseThrow(() -> new BadRequestException("Townhouse not found"));
     }
 
     public void destroyTownhouseOrThrowBadRequestException(Long id) {
-        Townhouse townhouse = TownhouseMapper.INSTANCE.toTownhouse(showTownhouseOrThrowBadRequestException(id));
+        showTownhouseOrThrowBadRequestException(id);
 
-        townhouse.setActive(false);
-        townhouse.setExcludedAt(LocalDateTime.now());
-
-        repository.save(townhouse);
+        repository.excludeAndDeactivateFor(LocalDateTime.now(), false, id);
     }
 
     @Transactional
     public TownhouseDTO save(TownhouseDTO townhouse) {
         verifyCorrectPayload(townhouse);
+
         Townhouse savedTownhouse = repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
+
         return TownhouseMapper.INSTANCE.toTownhouseDTO(savedTownhouse);
     }
 
     public void updateTownhouseOrThrowBadRequestException(TownhouseDTO townhouse) {
         showTownhouseOrThrowBadRequestException(townhouse.getId());
-        repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
-    }
 
-    private void verifyIfExists(Townhouse townhouse) {
-        if (Objects.isNull(townhouse)) {
-            throw new BadRequestException("Townhouse not found");
-        }
+        repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
     }
 
     private void verifyCorrectPayload(TownhouseDTO townhouse) {

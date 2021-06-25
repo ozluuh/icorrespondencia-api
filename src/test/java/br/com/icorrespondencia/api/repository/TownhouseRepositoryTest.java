@@ -19,39 +19,40 @@ import br.com.icorrespondencia.api.util.TownhouseCreator;
 class TownhouseRepositoryTest {
 
     @Autowired
-    TownhouseRepository dao;
+    TownhouseRepository repository;
 
     @BeforeEach
-    void setUp() {
-        dao.deleteAll();
+    void setup() {
+        repository.deleteAll();
     }
 
     @Test
     @DisplayName("it should verify if all dependencies are satisfied")
     void testSatisfiedDependencies(){
-        assertThat(dao).isNotNull();
+        assertThat(repository).isNotNull();
     }
 
     @Test
     @DisplayName("it should find all townhouses by excludedAt is null")
     void testFindAllByExcludedIsNull() {
-        Townhouse townhouse = dao.save(TownhouseCreator.townhouseToBeStored());
+        Townhouse townhouse = repository.save(TownhouseCreator.townhouseToBeStored());
 
-        List<Townhouse> townhouses = dao.findAllByExcludedIsNull();
+        List<Townhouse> townhouses = repository.findAllByExcludedAtIsNull();
 
         assertThat(townhouses)
             .contains(townhouse)
             .element(0)
-            .hasFieldOrPropertyWithValue("excludedAt", null)
-            .hasFieldOrPropertyWithValue("id", townhouse.getId())
-            .hasFieldOrPropertyWithValue("nin", townhouse.getNin());
+                .hasFieldOrPropertyWithValue("excludedAt", null)
+                .hasFieldOrPropertyWithValue("id", townhouse.getId())
+                .hasFieldOrPropertyWithValue("nin", townhouse.getNin());
     }
 
     @Test
     @DisplayName("it should get one townhouse instance by Id and excludedAt is null")
     void testGetOneByIdAndExcludedAtIsNull() {
-        Townhouse townhouse = dao.save(TownhouseCreator.townhouseToBeStored());
-        Townhouse townhouseFound = dao.getOneByIdAndExcludedAtIsNull(townhouse.getId());
+        Townhouse townhouse = repository.save(TownhouseCreator.townhouseToBeStored());
+
+        Townhouse townhouseFound = repository.getOneByIdAndExcludedAtIsNull(townhouse.getId());
 
         assertThat(townhouseFound)
             .isNotNull()
@@ -61,30 +62,20 @@ class TownhouseRepositoryTest {
     }
 
     @Test
-    @DisplayName("it should set townhouse excluded and inactive by id")
-    void testSetExcludedAndInactiveForTownhouse() {
-        Townhouse townhouse = dao.save(TownhouseCreator.townhouseToBeStored());
+    @DisplayName("it should exclude and deactivate townhouse by id")
+    void testExcludedAndDeactiveFor() {
+        Townhouse townhouse = repository.save(TownhouseCreator.townhouseToBeStored());
 
         LocalDateTime excludedAt = LocalDateTime.now();
-        townhouse.setExcludedAt(excludedAt);
-        townhouse.setActive(false);
 
-        dao.save(townhouse);
+        repository.excludeAndDeactivateFor(excludedAt, false, townhouse.getId());
 
-        Townhouse townhouseResult = dao.getOne(townhouse.getId());
+        Townhouse townhouseResult = repository.findById(townhouse.getId()).get();
 
         assertThat(townhouseResult)
             .hasFieldOrPropertyWithValue("excludedAt", excludedAt)
             .hasFieldOrPropertyWithValue("active", false)
             .hasFieldOrPropertyWithValue("id", townhouse.getId())
             .hasFieldOrPropertyWithValue("nin", townhouse.getNin());
-    }
-
-    @Test
-    @DisplayName("it should returns empty list")
-    void testEmptyRepository(){
-        List<Townhouse> townhouses = dao.findAll();
-
-        assertThat(townhouses).isEmpty();
     }
 }

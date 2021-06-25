@@ -39,12 +39,14 @@ public class TownhouseController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         service.destroyTownhouseOrThrowBadRequestException(id);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
     public ResponseEntity<Void> replace(@RequestBody @Valid TownhouseDTO townhouse) {
         service.updateTownhouseOrThrowBadRequestException(townhouse);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
