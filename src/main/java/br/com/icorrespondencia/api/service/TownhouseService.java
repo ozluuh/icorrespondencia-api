@@ -44,7 +44,7 @@ public class TownhouseService {
     }
 
     @Transactional
-    public TownhouseDTO save(TownhouseDTO townhouse) {
+    public TownhouseDTO storeTownhouseOrThrowUnprocessableEntityException(TownhouseDTO townhouse) {
         verifyCorrectPayload(townhouse);
 
         Townhouse savedTownhouse = repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));

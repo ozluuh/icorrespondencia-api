@@ -52,6 +52,8 @@ public class TownhouseController {
 
     @PostMapping
     public ResponseEntity<TownhouseDTO> store(@RequestBody @Valid TownhouseDTO townhouse) {
-        return new ResponseEntity<>(service.save(townhouse), HttpStatus.CREATED);
+        TownhouseDTO storedTownhouse = service.storeTownhouseOrThrowUnprocessableEntityException(townhouse);
+
+        return new ResponseEntity<>(storedTownhouse, HttpStatus.CREATED);
     }
 }

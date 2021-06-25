@@ -2,6 +2,8 @@ package br.com.icorrespondencia.api.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 import java.util.List;
 
@@ -10,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
 import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
+
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("Townhouse controller tests")
@@ -33,27 +35,24 @@ class TownhouseControllerTest {
 
     @BeforeEach
     void setUp() {
-        List<TownhouseDTO> townhouses = List.of(TownhouseDTOCreator.townhouseDTOValid());
+        TownhouseDTO townhouseDTOValid = TownhouseDTOCreator.townhouseDTOValid();
 
-        BDDMockito
-            .when(serviceMock.index())
-            .thenReturn(townhouses);
+        given(serviceMock.index())
+            .willReturn(List.of(townhouseDTOValid));
 
-        BDDMockito
-            .when(serviceMock.showTownhouseOrThrowBadRequestException(ArgumentMatchers.anyLong()))
-            .thenReturn(TownhouseDTOCreator.townhouseDTOValid());
+        given(serviceMock.showTownhouseOrThrowBadRequestException(ArgumentMatchers.anyLong()))
+            .willReturn(TownhouseDTOCreator.townhouseDTOValid());
 
-        BDDMockito
-            .when(serviceMock.save(ArgumentMatchers.any(TownhouseDTO.class)))
-            .thenReturn(TownhouseDTOCreator.townhouseDTOValid());
+        given(serviceMock.storeTownhouseOrThrowUnprocessableEntityException(ArgumentMatchers.any(TownhouseDTO.class)))
+            .willReturn(TownhouseDTOCreator.townhouseDTOValid());
 
-        BDDMockito
-            .doNothing()
-            .when(serviceMock).updateTownhouseOrThrowBadRequestException(ArgumentMatchers.any(TownhouseDTO.class));
+        doNothing()
+            .when(serviceMock)
+                .updateTownhouseOrThrowBadRequestException(ArgumentMatchers.any(TownhouseDTO.class));
 
-        BDDMockito
-            .doNothing()
-            .when(serviceMock).destroyTownhouseOrThrowBadRequestException(ArgumentMatchers.anyLong());
+        doNothing()
+            .when(serviceMock)
+                .destroyTownhouseOrThrowBadRequestException(ArgumentMatchers.anyLong());
     }
 
     @Test
