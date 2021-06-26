@@ -7,7 +7,7 @@ import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 public class TownhouseDTOCreator {
 
     private static final TownhouseDTO townhouseMapper(Townhouse townhouse) {
-        return TownhouseMapper.INSTANCE.toTownhouseDTO(townhouse);
+        return TownhouseMapper.INSTANCE.toDTO(townhouse);
     }
 
     public static final TownhouseDTO townhouseDTOValid() {

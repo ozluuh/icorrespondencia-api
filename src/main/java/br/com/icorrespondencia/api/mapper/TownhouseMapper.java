@@ -8,15 +8,17 @@ import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 
 @Mapper(componentModel = "spring")
-public abstract class TownhouseMapper {
+public interface TownhouseMapper {
 
-    public static final TownhouseMapper INSTANCE = Mappers.getMapper(TownhouseMapper.class);
+    TownhouseMapper INSTANCE = Mappers.getMapper(TownhouseMapper.class);
+
+    @Mapping(target = "createdAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL(townhouse.getCreatedAt()) )")
+    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL(townhouse.getExcludedAt()) )")
+    @Mapping(target = "cnpj", source = "nin")
+    TownhouseDTO toDTO(Townhouse townhouse);
 
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    public abstract Townhouse toTownhouse(TownhouseDTO townhouseDTO);
-
-    @Mapping(dateFormat = "yyyy-MM-dd HH:mm:ss", target = "createdAt")
-    @Mapping(dateFormat = "yyyy-MM-dd HH:mm:ss", target = "excludedAt")
-    public abstract TownhouseDTO toTownhouseDTO(Townhouse townhouse);
+    @Mapping(target = "nin", source = "cnpj")
+    Townhouse toDomain(TownhouseDTO townhouseDTO);
 }

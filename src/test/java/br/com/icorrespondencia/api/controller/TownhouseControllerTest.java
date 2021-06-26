@@ -152,8 +152,8 @@ class TownhouseControllerTest {
             .isInstanceOf(TownhouseDTO.class)
             .hasFieldOrProperty("id")
                 .isNotNull()
-            .extracting(TownhouseDTO::getNin)
-                .isEqualTo(townhouseToBeStored.getNin());
+            .extracting(TownhouseDTO::getCnpj)
+                .isEqualTo(townhouseToBeStored.getCnpj());
     }
 
     @Test

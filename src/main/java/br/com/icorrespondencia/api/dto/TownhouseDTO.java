@@ -1,26 +1,29 @@
 package br.com.icorrespondencia.api.dto;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TownhouseDTO {
 
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotEmpty(message = "Field name must be filled")
     private String name;
 
-    @JsonProperty("cnpj")
     @NotEmpty(message="Field cnpj must be filled")
-    private String nin;
+    @EqualsAndHashCode.Include
+    private String cnpj;
 
     private String email;
 
@@ -28,9 +31,7 @@ public class TownhouseDTO {
 
     private String createdAt;
 
-    // @JsonIgnore
-    private LocalDateTime excludedAt;
+    private String excludedAt;
 
-    // @JsonIgnore
     private boolean active;
 }
