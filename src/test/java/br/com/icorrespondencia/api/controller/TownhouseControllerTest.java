@@ -23,7 +23,7 @@ import br.com.icorrespondencia.api.service.TownhouseService;
 import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
 
 @ExtendWith(SpringExtension.class)
-@DisplayName("Townhouse controller tests")
+@DisplayName("Controller: Townhouse tests")
 class TownhouseControllerTest {
 
     @InjectMocks
@@ -33,7 +33,7 @@ class TownhouseControllerTest {
     TownhouseService serviceMock;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         TownhouseDTO townhouseDTOValid = TownhouseDTOCreator.townhouseDTOValid();
 
         given(serviceMock.index())
@@ -55,83 +55,112 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("it should verify all dependencies are satisfied")
-    void testSatisfiedDependencies() {
+    @DisplayName("inject should verify if all dependencies are satisfied")
+    void inject_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
         assertThat(controller).isNotNull();
+
         assertThat(serviceMock).isNotNull();
     }
 
     @Test
-    @DisplayName("it should return status 204 when successful")
-    void testDestroy() {
+    @DisplayName("destroy should not raise any exception when successful")
+    void destroy_ShouldNotRaiseAnyException_WhenSuccessful() {
         assertThatCode(() -> controller.destroy(1L))
             .doesNotThrowAnyException();
+    }
 
-        ResponseEntity<Void> destroyEndpointResponse = controller.destroy(1L);
+    @Test
+    @DisplayName("destroy should response NO_CONTENT status code when successful")
+    void destroy_ShouldResponseNoContentStatusCode_WhenSuccessful() {
+        ResponseEntity<Void> responseObtained = controller.destroy(1L);
 
-        assertThat(destroyEndpointResponse)
-            .isNotNull();
-
-        assertThat(destroyEndpointResponse.getStatusCode())
+        assertThat(responseObtained.getStatusCode())
             .isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
-    @DisplayName("it should returns a list of valid TownhouseDTO when successful")
-    void testIndex() {
+    @DisplayName("index should returns a list of TownhouseDTO when successful")
+    void index_ShouldReturnListOfTownhouseDTO_WhenSuccessful() {
         TownhouseDTO townhouseValid = TownhouseDTOCreator.townhouseDTOValid();
-        List<TownhouseDTO> indexEndpointResponse = controller.index().getBody();
 
-        assertThat(indexEndpointResponse)
+        List<TownhouseDTO> responseObtained = controller.index().getBody();
+
+        assertThat(responseObtained)
             .isNotNull()
             .isInstanceOf(List.class)
             .hasSize(1)
-            .contains(townhouseValid)
-            .element(0)
-            .hasFieldOrPropertyWithValue("id", townhouseValid.getId());
+            .contains(townhouseValid);
     }
 
     @Test
-    @DisplayName("it should return status 204 when successful replaced")
-    void testReplace() {
+    @DisplayName("index should response OK status code when successful")
+    void index_ShouldResponseOkStatusCode_WhenSuccessful() {
+        ResponseEntity<List<TownhouseDTO>> responseObtained = controller.index();
 
+        assertThat(responseObtained.getStatusCode())
+            .isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("update should not raise any exception when successful")
+    void update_ShouldNotRaiseAnyException_WhenSuccessful() {
         assertThatCode(() -> controller.update(TownhouseDTOCreator.townhouseDTOUpdated()))
             .doesNotThrowAnyException();
+    }
 
-        TownhouseDTO townhouseToBeUpdated = TownhouseDTOCreator.townhouseDTOUpdated();
-        ResponseEntity<Void> replaceEndpointResponse = controller.update(townhouseToBeUpdated);
+    @Test
+    @DisplayName("update should response NO_CONTENT status code when successful")
+    void update_ShouldResponseNoContentStatusCode_WhenSuccessful() {
+        ResponseEntity<Void> responseObtained = controller.update(TownhouseDTOCreator.townhouseDTOUpdated());
 
-        assertThat(replaceEndpointResponse)
-            .isNotNull();
-
-        assertThat(replaceEndpointResponse.getStatusCode())
+        assertThat(responseObtained.getStatusCode())
             .isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
-    @DisplayName("it should return a valid TownhouseDTO when successful displayed")
-    void testShow() {
+    @DisplayName("show should return TownhouseDTO when successful")
+    void show_ShouldReturnTownhouseDTO_WhenSuccessful() {
         Long expectedId = TownhouseDTOCreator.townhouseDTOValid().getId();
-        TownhouseDTO showEndpointResponse = controller.show(1L).getBody();
 
-        assertThat(showEndpointResponse)
+        TownhouseDTO responseObtained = controller.show(1L).getBody();
+
+        assertThat(responseObtained)
             .isNotNull()
             .isInstanceOf(TownhouseDTO.class)
-            .hasFieldOrPropertyWithValue("id", expectedId);
-
+            .extracting(TownhouseDTO::getId)
+                .isEqualTo(expectedId);
     }
 
     @Test
-    @DisplayName("it should return a valid TownhouseDTO when successful stored")
-    void testStore() {
-        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOToBeStored();
-        TownhouseDTO storeEndpointResponse = controller.store(townhouseToBeStored).getBody();
+    @DisplayName("show should response OK status code when successful")
+    void show_ShouldResponseOkStatusCode_WhenSuccessful() {
+        ResponseEntity<TownhouseDTO> responseObtained = controller.show(1L);
 
-        assertThat(storeEndpointResponse)
+        assertThat(responseObtained.getStatusCode())
+            .isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("store should return TownhouseDTO with Id non null when successful")
+    void store_ShouldReturnTownhouseDTOWithIdNonNull_WhenSuccessful() {
+        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOToBeStored();
+
+        TownhouseDTO responseObtained = controller.store(townhouseToBeStored).getBody();
+
+        assertThat(responseObtained)
             .isNotNull()
             .isInstanceOf(TownhouseDTO.class)
             .hasFieldOrProperty("id").isNotNull()
-            .hasFieldOrPropertyWithValue("name", townhouseToBeStored.getName())
-            .hasFieldOrPropertyWithValue("nin", townhouseToBeStored.getNin());
+            .extracting(TownhouseDTO::getNin)
+                .isEqualTo(townhouseToBeStored.getNin());
+    }
+
+    @Test
+    @DisplayName("store should response CREATED status code when successful")
+    void store_ShouldResponseCreatedStatusCode_WhenSuccessful() {
+        ResponseEntity<TownhouseDTO> responseObtained = controller.store(TownhouseDTOCreator.townhouseDTOToBeStored());
+
+        assertThat(responseObtained.getStatusCode())
+            .isEqualTo(HttpStatus.CREATED);
     }
 }
