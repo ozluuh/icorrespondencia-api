@@ -18,10 +18,10 @@ public class TownhouseDTO {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotEmpty(message = "Field name must be filled")
+    @NotEmpty(message = "Field must be filled")
     private String name;
 
-    @NotEmpty(message="Field cnpj must be filled")
+    @NotEmpty(message = "Field must be filled")
     @EqualsAndHashCode.Include
     private String cnpj;
 

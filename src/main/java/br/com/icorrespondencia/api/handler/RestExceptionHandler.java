@@ -8,7 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import br.com.icorrespondencia.api.exception.BadRequestException;
 import br.com.icorrespondencia.api.exception.ExceptionDetails;
+import br.com.icorrespondencia.api.exception.FieldValidationDetails;
 import br.com.icorrespondencia.api.exception.ValidationExceptionDetails;
 import br.com.icorrespondencia.api.util.DateUtil;
 import br.com.icorrespondencia.api.util.DetailsExceptionUtil;
@@ -35,19 +35,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        List<String> messages = ex
+        List<FieldValidationDetails> messages = ex
                 .getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(FieldError::getDefaultMessage)
+                .map(field -> FieldValidationDetails
+                        .builder()
+                        .field(field.getField())
+                        .message(field.getDefaultMessage())
+                        .build())
                 .collect(Collectors.toList());
 
-        return handleExceptionInternal(ex, messages, headers, status);
+        return handleExceptionInternal(ex, messages, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
-            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         ExceptionDetails details = ExceptionDetails
             .builder()
@@ -61,7 +65,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     protected ResponseEntity<Object> handleExceptionInternal(
-            Exception ex, List<String> messages, HttpHeaders headers, HttpStatus status) {
+        Exception ex, List<FieldValidationDetails> messages, HttpHeaders headers, HttpStatus status) {
 
         ValidationExceptionDetails details = ValidationExceptionDetails
             .builder()
