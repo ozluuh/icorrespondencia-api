@@ -9,6 +9,8 @@ public class DateUtil {
     }
 
     public static String formatDateTimeToSQL(LocalDateTime date) {
+        if (date == null) return null;
+
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
     }
 }
