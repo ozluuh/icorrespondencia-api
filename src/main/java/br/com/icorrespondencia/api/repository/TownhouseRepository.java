@@ -1,11 +1,11 @@
 package br.com.icorrespondencia.api.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +20,6 @@ public interface TownhouseRepository extends CrudRepository<Townhouse, Long> {
 
     @Modifying(clearAutomatically = true)
     @Transactional
-    @Query("update Townhouse t set t.excludedAt = ?1, t.active = ?2 where t.id = ?3")
-    void excludeAndDeactivateFor(LocalDateTime excludedAt, boolean active, Long id);
+    @Query("update Townhouse t set t.excludedAt = CURRENT_TIMESTAMP, t.active = false where t.id = :id")
+    void excludeAndDeactivateById(@Param("id") Long id);
 }

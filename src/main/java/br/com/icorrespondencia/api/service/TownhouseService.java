@@ -1,6 +1,5 @@
 package br.com.icorrespondencia.api.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class TownhouseService {
     public void destroyTownhouseOrThrowBadRequestException(Long id) {
         showTownhouseOrThrowBadRequestException(id);
 
-        repository.excludeAndDeactivateFor(LocalDateTime.now(), false, id);
+        repository.excludeAndDeactivateById(id);
     }
 
     @Transactional
