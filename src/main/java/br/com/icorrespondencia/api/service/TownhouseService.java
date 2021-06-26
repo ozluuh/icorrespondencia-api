@@ -31,7 +31,7 @@ public class TownhouseService {
 
     public TownhouseDTO showTownhouseOrThrowBadRequestException(Long id) {
         return repository
-                .findById(id)
+                .getOneByIdAndExcludedAtIsNull(id)
                 .map(TownhouseMapper.INSTANCE::toTownhouseDTO)
                 .orElseThrow(() -> new BadRequestException("Townhouse not found"));
     }

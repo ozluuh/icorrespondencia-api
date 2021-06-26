@@ -1,6 +1,7 @@
 package br.com.icorrespondencia.api.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ public interface TownhouseRepository extends CrudRepository<Townhouse, Long> {
 
     List<Townhouse> findAllByExcludedAtIsNull();
 
-    Townhouse getOneByIdAndExcludedAtIsNull(Long id);
+    Optional<Townhouse> getOneByIdAndExcludedAtIsNull(Long id);
 
     @Modifying(clearAutomatically = true)
     @Transactional
