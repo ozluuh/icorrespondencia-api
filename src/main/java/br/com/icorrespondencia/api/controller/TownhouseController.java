@@ -33,26 +33,26 @@ public class TownhouseController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<TownhouseDTO> show(@PathVariable Long id) {
-        return ResponseEntity.ok(service.showTownhouseOrThrowBadRequestException(id));
+        return ResponseEntity.ok(service.showOrThrowBadRequestException(id));
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
-        service.destroyTownhouseOrThrowBadRequestException(id);
+        service.destroyOrThrowBadRequestException(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Valid TownhouseDTO townhouse) {
-        service.updateTownhouseOrThrowBadRequestException(townhouse);
+        service.updateOrThrowBadRequestException(townhouse);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
     public ResponseEntity<TownhouseDTO> store(@RequestBody @Valid TownhouseDTO townhouse) {
-        TownhouseDTO storedTownhouse = service.storeTownhouseOrThrowUnprocessableEntityException(townhouse);
+        TownhouseDTO storedTownhouse = service.storeOrThrowUnprocessableEntityException(townhouse);
 
         return new ResponseEntity<>(storedTownhouse, HttpStatus.CREATED);
     }

@@ -42,7 +42,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.toList());
 
-        return handleExceptionInternal(ex, messages, headers, status, request);
+        return handleExceptionInternal(ex, messages, headers, status);
     }
 
     @Override

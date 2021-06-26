@@ -29,21 +29,21 @@ public class TownhouseService {
                 .collect(Collectors.toList());
     }
 
-    public TownhouseDTO showTownhouseOrThrowBadRequestException(Long id) {
+    public TownhouseDTO showOrThrowBadRequestException(Long id) {
         return repository
                 .getOneByIdAndExcludedAtIsNull(id)
                 .map(TownhouseMapper.INSTANCE::toTownhouseDTO)
                 .orElseThrow(() -> new BadRequestException("Townhouse not found"));
     }
 
-    public void destroyTownhouseOrThrowBadRequestException(Long id) {
-        showTownhouseOrThrowBadRequestException(id);
+    public void destroyOrThrowBadRequestException(Long id) {
+        showOrThrowBadRequestException(id);
 
         repository.excludeAndDeactivateById(id);
     }
 
     @Transactional
-    public TownhouseDTO storeTownhouseOrThrowUnprocessableEntityException(TownhouseDTO townhouse) {
+    public TownhouseDTO storeOrThrowUnprocessableEntityException(TownhouseDTO townhouse) {
         verifyCorrectPayload(townhouse);
 
         Townhouse savedTownhouse = repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
@@ -51,8 +51,8 @@ public class TownhouseService {
         return TownhouseMapper.INSTANCE.toTownhouseDTO(savedTownhouse);
     }
 
-    public void updateTownhouseOrThrowBadRequestException(TownhouseDTO townhouse) {
-        showTownhouseOrThrowBadRequestException(townhouse.getId());
+    public void updateOrThrowBadRequestException(TownhouseDTO townhouse) {
+        showOrThrowBadRequestException(townhouse.getId());
 
         repository.save(TownhouseMapper.INSTANCE.toTownhouse(townhouse));
     }

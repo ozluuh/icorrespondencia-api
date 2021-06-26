@@ -39,19 +39,19 @@ class TownhouseControllerTest {
         given(serviceMock.index())
             .willReturn(List.of(townhouseDTOValid));
 
-        given(serviceMock.showTownhouseOrThrowBadRequestException(ArgumentMatchers.anyLong()))
-            .willReturn(TownhouseDTOCreator.townhouseDTOValid());
+        given(serviceMock.showOrThrowBadRequestException(ArgumentMatchers.anyLong()))
+            .willReturn(townhouseDTOValid);
 
-        given(serviceMock.storeTownhouseOrThrowUnprocessableEntityException(ArgumentMatchers.any(TownhouseDTO.class)))
-            .willReturn(TownhouseDTOCreator.townhouseDTOValid());
-
-        doNothing()
-            .when(serviceMock)
-                .updateTownhouseOrThrowBadRequestException(ArgumentMatchers.any(TownhouseDTO.class));
+        given(serviceMock.storeOrThrowUnprocessableEntityException(ArgumentMatchers.any(TownhouseDTO.class)))
+            .willReturn(townhouseDTOValid);
 
         doNothing()
             .when(serviceMock)
-                .destroyTownhouseOrThrowBadRequestException(ArgumentMatchers.anyLong());
+                .updateOrThrowBadRequestException(ArgumentMatchers.any(TownhouseDTO.class));
+
+        doNothing()
+            .when(serviceMock)
+                .destroyOrThrowBadRequestException(ArgumentMatchers.anyLong());
     }
 
     @Test
@@ -63,8 +63,8 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("destroy should not raise any exception when successful")
-    void destroy_ShouldNotRaiseAnyException_WhenSuccessful() {
+    @DisplayName("destroy should not throw any exception when successful")
+    void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
         assertThatCode(() -> controller.destroy(1L))
             .doesNotThrowAnyException();
     }
@@ -79,8 +79,8 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("index should returns a list of TownhouseDTO when successful")
-    void index_ShouldReturnListOfTownhouseDTO_WhenSuccessful() {
+    @DisplayName("index should returns TownhouseDTO list when successful")
+    void index_ShouldReturnsListOfTownhouseDTO_WhenSuccessful() {
         TownhouseDTO townhouseValid = TownhouseDTOCreator.townhouseDTOValid();
 
         List<TownhouseDTO> responseObtained = controller.index().getBody();
@@ -102,8 +102,8 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("update should not raise any exception when successful")
-    void update_ShouldNotRaiseAnyException_WhenSuccessful() {
+    @DisplayName("update should not throw any exception when successful")
+    void update_ShouldNotThrowAnyException_WhenSuccessful() {
         assertThatCode(() -> controller.update(TownhouseDTOCreator.townhouseDTOUpdated()))
             .doesNotThrowAnyException();
     }
@@ -118,8 +118,8 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("show should return TownhouseDTO when successful")
-    void show_ShouldReturnTownhouseDTO_WhenSuccessful() {
+    @DisplayName("show should returns TownhouseDTO when successful")
+    void show_ShouldReturnsTownhouseDTO_WhenSuccessful() {
         Long expectedId = TownhouseDTOCreator.townhouseDTOValid().getId();
 
         TownhouseDTO responseObtained = controller.show(1L).getBody();
@@ -141,8 +141,8 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("store should return TownhouseDTO with Id non null when successful")
-    void store_ShouldReturnTownhouseDTOWithIdNonNull_WhenSuccessful() {
+    @DisplayName("store should returns TownhouseDTO with Id non null when successful")
+    void store_ShouldReturnsTownhouseDTOWithIdNonNull_WhenSuccessful() {
         TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOToBeStored();
 
         TownhouseDTO responseObtained = controller.store(townhouseToBeStored).getBody();
@@ -150,7 +150,8 @@ class TownhouseControllerTest {
         assertThat(responseObtained)
             .isNotNull()
             .isInstanceOf(TownhouseDTO.class)
-            .hasFieldOrProperty("id").isNotNull()
+            .hasFieldOrProperty("id")
+                .isNotNull()
             .extracting(TownhouseDTO::getNin)
                 .isEqualTo(townhouseToBeStored.getNin());
     }
