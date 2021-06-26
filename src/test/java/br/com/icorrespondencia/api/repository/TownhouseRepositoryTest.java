@@ -2,7 +2,6 @@ package br.com.icorrespondencia.api.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,7 @@ import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.util.TownhouseCreator;
 
 @DataJpaTest
-@DisplayName("Townhouse repository tests")
+@DisplayName("Repository: Townhouse tests")
 class TownhouseRepositoryTest {
 
     @Autowired
@@ -27,55 +26,66 @@ class TownhouseRepositoryTest {
     }
 
     @Test
-    @DisplayName("it should verify if all dependencies are satisfied")
-    void testSatisfiedDependencies(){
+    @DisplayName("inject should verify if all dependencies are satisfied")
+    void inject_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
         assertThat(repository).isNotNull();
     }
 
     @Test
-    @DisplayName("it should find all townhouses by excludedAt is null")
-    void testFindAllByExcludedIsNull() {
-        Townhouse townhouse = repository.save(TownhouseCreator.townhouseToBeStored());
+    @DisplayName("findAllByExcludedAtIsNull should returns townhouses list when successful")
+    void findAllByExcludedAtIsNull_ShouldReturnsListOfTownhouse_WhenSuccessful() {
+        Townhouse townhouseExpected = repository.save(TownhouseCreator.townhouseToBeStored());
 
-        List<Townhouse> townhouses = repository.findAllByExcludedAtIsNull();
+        List<Townhouse> townhousesObtained = repository.findAllByExcludedAtIsNull();
 
-        assertThat(townhouses)
-            .contains(townhouse)
+        assertThat(townhousesObtained)
+            .isInstanceOf(List.class)
+            .isNotEmpty()
             .element(0)
-                .hasFieldOrPropertyWithValue("excludedAt", null)
-                .hasFieldOrPropertyWithValue("id", townhouse.getId())
-                .hasFieldOrPropertyWithValue("nin", townhouse.getNin());
+                .isInstanceOf(Townhouse.class)
+                .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getNin)
+                    .containsExactly(null, townhouseExpected.getId(), townhouseExpected.getNin());
     }
 
     @Test
-    @DisplayName("it should get one townhouse instance by Id and excludedAt is null")
-    void testGetOneByIdAndExcludedAtIsNull() {
-        Townhouse townhouse = repository.save(TownhouseCreator.townhouseToBeStored());
+    @DisplayName("findAllByExcludedAtIsNull should returns empty list when successful")
+    void findAllByExcludedAtIsNull_ShouldReturnsEmptyList_WhenSuccessful() {
+        List<Townhouse> townhousesObtained = repository.findAllByExcludedAtIsNull();
 
-        Townhouse townhouseFound = repository.getOneByIdAndExcludedAtIsNull(townhouse.getId());
+        assertThat(townhousesObtained)
+            .isInstanceOf(List.class)
+            .isEmpty();
+    }
 
-        assertThat(townhouseFound)
+    @Test
+    @DisplayName("getOneByIdAndExcludedAtIsNull should returns townhouse when successful")
+    void getOneByIdAndExcludedAtIsNull_ShouldReturnsTownhouse_WhenSuccessful() {
+        Townhouse townhouseExpected = repository.save(TownhouseCreator.townhouseToBeStored());
+
+        Townhouse townhouseObtained = repository.getOneByIdAndExcludedAtIsNull(townhouseExpected.getId()).get();
+
+        assertThat(townhouseObtained)
             .isNotNull()
-            .hasFieldOrPropertyWithValue("excludedAt", null)
-            .hasFieldOrPropertyWithValue("id", townhouse.getId())
-            .hasFieldOrPropertyWithValue("nin", townhouse.getNin());
+            .isInstanceOf(Townhouse.class)
+            .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getNin)
+                .containsExactly(null, townhouseExpected.getId(), townhouseExpected.getNin());
     }
 
     @Test
-    @DisplayName("it should exclude and deactivate townhouse by id")
-    void testExcludedAndDeactiveFor() {
-        Townhouse townhouse = repository.save(TownhouseCreator.townhouseToBeStored());
+    @DisplayName("excludeAndDeactivateById should assign excludeAt date and deactivate townhouse when successful")
+    void excludeAndDeactivateById_ShouldAssignExcludeAtDateAndDeactivateTownhouse_WhenSuccessful() {
+        Townhouse townhouseExpected = repository.save(TownhouseCreator.townhouseToBeStored());
 
-        LocalDateTime excludedAt = LocalDateTime.now();
+        repository.excludeAndDeactivateById(townhouseExpected.getId());
 
-        repository.excludeAndDeactivateFor(excludedAt, false, townhouse.getId());
+        Townhouse townhouseObtained = repository.findById(townhouseExpected.getId()).get();
 
-        Townhouse townhouseResult = repository.findById(townhouse.getId()).get();
-
-        assertThat(townhouseResult)
-            .hasFieldOrPropertyWithValue("excludedAt", excludedAt)
-            .hasFieldOrPropertyWithValue("active", false)
-            .hasFieldOrPropertyWithValue("id", townhouse.getId())
-            .hasFieldOrPropertyWithValue("nin", townhouse.getNin());
+        assertThat(townhouseObtained)
+            .isNotNull()
+            .isInstanceOf(Townhouse.class)
+            .hasFieldOrProperty("excludedAt")
+                .isNotNull()
+            .extracting(Townhouse::getId, Townhouse::getNin)
+                .containsExactly(townhouseExpected.getId(), townhouseExpected.getNin());
     }
 }
