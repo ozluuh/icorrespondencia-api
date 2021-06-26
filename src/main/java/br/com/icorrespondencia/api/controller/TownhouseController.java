@@ -44,7 +44,7 @@ public class TownhouseController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody @Valid TownhouseDTO townhouse) {
+    public ResponseEntity<Void> update(@RequestBody @Valid TownhouseDTO townhouse) {
         service.updateTownhouseOrThrowBadRequestException(townhouse);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

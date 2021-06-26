@@ -22,7 +22,6 @@ import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
 import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
 
-
 @ExtendWith(SpringExtension.class)
 @DisplayName("Townhouse controller tests")
 class TownhouseControllerTest {
@@ -96,11 +95,11 @@ class TownhouseControllerTest {
     @DisplayName("it should return status 204 when successful replaced")
     void testReplace() {
 
-        assertThatCode(() -> controller.replace(TownhouseDTOCreator.townhouseDTOUpdated()))
+        assertThatCode(() -> controller.update(TownhouseDTOCreator.townhouseDTOUpdated()))
             .doesNotThrowAnyException();
 
         TownhouseDTO townhouseToBeUpdated = TownhouseDTOCreator.townhouseDTOUpdated();
-        ResponseEntity<Void> replaceEndpointResponse = controller.replace(townhouseToBeUpdated);
+        ResponseEntity<Void> replaceEndpointResponse = controller.update(townhouseToBeUpdated);
 
         assertThat(replaceEndpointResponse)
             .isNotNull();
