@@ -2,6 +2,7 @@ package br.com.icorrespondencia.api.handler;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
@@ -28,7 +29,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBadRequest(
         BadRequestException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        return handleExceptionInternal(ex, ex.getMessage(), headers, HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, null, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
@@ -46,25 +47,27 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .build())
                 .collect(Collectors.toList());
 
-        return handleExceptionInternal(ex, messages, headers, HttpStatus.UNPROCESSABLE_ENTITY);
+        return handleValidationExceptionInternal(ex, messages, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
         Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
+        Object cause = Optional.ofNullable(body).orElse(ex.getMessage());
+
         ExceptionDetails details = ExceptionDetails
             .builder()
             .status(status.value())
             .title(DetailsExceptionUtil.formatTitle(ex.getClass().getSimpleName()))
-            .details((String) body)
+            .details((String) cause)
             .timestamp(DateUtil.formatDateTimeToSQL(LocalDateTime.now()))
             .build();
 
-            return new ResponseEntity<>(details, headers, status);
+        return new ResponseEntity<>(details, headers, status);
     }
 
-    protected ResponseEntity<Object> handleExceptionInternal(
+    protected ResponseEntity<Object> handleValidationExceptionInternal(
         Exception ex, List<FieldValidationDetails> messages, HttpHeaders headers, HttpStatus status) {
 
         ValidationExceptionDetails details = ValidationExceptionDetails
@@ -76,6 +79,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             .messages(messages)
             .build();
 
-            return new ResponseEntity<>(details, headers, status);
+        return new ResponseEntity<>(details, headers, status);
     }
 }
