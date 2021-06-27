@@ -19,9 +19,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
-import br.com.icorrespondencia.api.exception.BadRequestException;
-import br.com.icorrespondencia.api.exception.UnprocessableEntityException;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
+import br.com.icorrespondencia.api.service.exception.InvalidPayloadException;
+import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import br.com.icorrespondencia.api.util.TownhouseCreator;
 import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
 
@@ -50,9 +50,9 @@ class TownhouseServiceTest {
     }
 
     @Test
-    @DisplayName("destroyOrThrowBadRequestException should not throw any exception when successful")
-    void destroyOrThrowBadRequestException_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> service.destroyOrThrowBadRequestException(1L))
+    @DisplayName("destroy should not throw any exception when successful")
+    void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
+        assertThatCode(() -> service.destroy(1L))
             .doesNotThrowAnyException();
     }
 
@@ -72,12 +72,11 @@ class TownhouseServiceTest {
     }
 
     @Test
-    @DisplayName("storeOrThrowUnprocessableEntityException should returns TownhouseDTO when successful")
-    void storeOrThrowUnprocessableEntityException_ShouldReturnsTownhouseDTO_WhenSuccessful() {
+    @DisplayName("store should returns TownhouseDTO when successful")
+    void store_ShouldReturnsTownhouseDTO_WhenSuccessful() {
         TownhouseDTO townhouseExpected = TownhouseDTOCreator.townhouseDTOValid();
 
-        TownhouseDTO townhouseObtained = service
-            .storeOrThrowUnprocessableEntityException(TownhouseDTOCreator.townhouseDTOToBeStored());
+        TownhouseDTO townhouseObtained = service.store(TownhouseDTOCreator.townhouseDTOToBeStored());
 
         assertThat(townhouseObtained)
             .isInstanceOf(TownhouseDTO.class)
@@ -85,11 +84,11 @@ class TownhouseServiceTest {
     }
 
     @Test
-    @DisplayName("showOrThrowBadRequestException should returns TownhouseDTO when successful")
-    void showOrThrowBadRequestException_ShouldReturnsTownhouseDTO_WhenSuccessful() {
+    @DisplayName("show should returns TownhouseDTO when successful")
+    void show_ShouldReturnsTownhouseDTO_WhenSuccessful() {
         TownhouseDTO townhouseExpected = TownhouseDTOCreator.townhouseDTOValid();
 
-        TownhouseDTO townhouseObtained = service.showOrThrowBadRequestException(1L);
+        TownhouseDTO townhouseObtained = service.show(1L);
 
         assertThat(townhouseObtained)
             .isNotNull()
@@ -98,30 +97,30 @@ class TownhouseServiceTest {
     }
 
     @Test
-    @DisplayName("updateOrThrowBadRequestException should not throw any exception when successful")
-    void updateOrThrowBadRequestException_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> service.updateOrThrowBadRequestException(TownhouseDTOCreator.townhouseDTOUpdated()))
+    @DisplayName("update should not throw any exception when successful")
+    void update_ShouldNotThrowAnyException_WhenSuccessful() {
+        assertThatCode(() -> service.update(TownhouseDTOCreator.townhouseDTOUpdated()))
             .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("showOrThrowBadRequestException should throw BadRequestException when townhouse not found")
-    void showOrThrowBadRequestException_ShouldThrowBadRequestException_WhenTownhouseNotFound() {
+    @DisplayName("show should throw ResourceNotFoundException when id not found")
+    void show_ShouldThrowResourceNotFoundException_WhenIdNotFound() {
         given(repositoryMock.getOneByIdAndExcludedAtIsNull(ArgumentMatchers.anyLong()))
             .willReturn(Optional.empty());
 
-        assertThatExceptionOfType(BadRequestException.class)
-            .isThrownBy(() -> service.showOrThrowBadRequestException(1L))
-            .withMessageContaining("Townhouse not found");
+        assertThatExceptionOfType(ResourceNotFoundException.class)
+            .isThrownBy(() -> service.show(1L))
+            .withMessageContaining("Resource not found");
     }
 
     @Test
-    @DisplayName("storeOrThrowUnprocessableEntityException should throw UnprocessableEntityException when incorrect payload")
-    void storeOrThrowUnprocessableEntityException_ShouldThrowUnprocessableEntityException_WhenIncorrectPayload() {
-        TownhouseDTO townhouseToBeSaved = TownhouseDTOCreator.townhouseDTOValid();
+    @DisplayName("store should throw InvalidPayloadException when payload has id filled")
+    void store_ShouldThrowInvalidPayloadException_WhenPayloadHasIdFilled() {
+        TownhouseDTO townhouseWithIdFilled = TownhouseDTOCreator.townhouseDTOValid();
 
-        assertThatExceptionOfType(UnprocessableEntityException.class)
-            .isThrownBy(() -> service.storeOrThrowUnprocessableEntityException(townhouseToBeSaved))
-            .withMessageContaining("Id field not be informed");
+        assertThatExceptionOfType(InvalidPayloadException.class)
+            .isThrownBy(() -> service.store(townhouseWithIdFilled))
+            .withMessageContaining("id field should not be informed");
     }
 }

@@ -5,22 +5,22 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
-import br.com.icorrespondencia.api.exception.BadRequestException;
-import br.com.icorrespondencia.api.exception.UnprocessableEntityException;
 import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
+import br.com.icorrespondencia.api.service.exception.InvalidPayloadException;
+import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class TownhouseService {
+public class TownhouseService implements Business<TownhouseDTO, Long> {
 
     private final TownhouseRepository repository;
 
+    @Override
     public List<TownhouseDTO> index() {
         return repository
                 .findAllByExcludedAtIsNull()
@@ -29,37 +29,38 @@ public class TownhouseService {
                 .collect(Collectors.toList());
     }
 
-    public TownhouseDTO showOrThrowBadRequestException(Long id) {
+    @Override
+    public TownhouseDTO show(Long id) {
         return repository
                 .getOneByIdAndExcludedAtIsNull(id)
                 .map(TownhouseMapper.INSTANCE::toDTO)
-                .orElseThrow(() -> new BadRequestException("Townhouse not found"));
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public void destroyOrThrowBadRequestException(Long id) {
-        showOrThrowBadRequestException(id);
+    @Override
+    public void destroy(Long id) {
+        show(id);
 
         repository.excludeAndDeactivateById(id);
     }
 
-    @Transactional
-    public TownhouseDTO storeOrThrowUnprocessableEntityException(TownhouseDTO townhouse) {
-        verifyCorrectPayload(townhouse);
+    @Override
+    public TownhouseDTO store(TownhouseDTO entity) {
+        verifyCorrectPayload(entity);
 
-        Townhouse savedTownhouse = repository.save(TownhouseMapper.INSTANCE.toDomain(townhouse));
+        Townhouse storedTownhouse = repository.save(TownhouseMapper.INSTANCE.toDomain(entity));
 
-        return TownhouseMapper.INSTANCE.toDTO(savedTownhouse);
+        return TownhouseMapper.INSTANCE.toDTO(storedTownhouse);
     }
 
-    public void updateOrThrowBadRequestException(TownhouseDTO townhouse) {
-        showOrThrowBadRequestException(townhouse.getId());
+    @Override
+    public void update(TownhouseDTO entity) {
+        show(entity.getId());
 
-        repository.save(TownhouseMapper.INSTANCE.toDomain(townhouse));
+        repository.save(TownhouseMapper.INSTANCE.toDomain(entity));
     }
 
-    private void verifyCorrectPayload(TownhouseDTO townhouse) {
-        if (Objects.nonNull(townhouse.getId())) {
-            throw new UnprocessableEntityException("Id field not be informed");
-        }
+    private void verifyCorrectPayload(TownhouseDTO entity) {
+        if(Objects.nonNull(entity.getId())) throw new InvalidPayloadException("id field should not be informed");
     }
 }

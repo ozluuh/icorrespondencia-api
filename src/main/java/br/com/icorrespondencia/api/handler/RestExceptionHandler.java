@@ -15,21 +15,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.icorrespondencia.api.exception.BadRequestException;
 import br.com.icorrespondencia.api.exception.ExceptionDetails;
 import br.com.icorrespondencia.api.exception.FieldValidationDetails;
 import br.com.icorrespondencia.api.exception.ValidationExceptionDetails;
+import br.com.icorrespondencia.api.service.exception.InvalidPayloadException;
+import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import br.com.icorrespondencia.api.util.DateUtil;
 import br.com.icorrespondencia.api.util.DetailsExceptionUtil;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(BadRequestException.class)
-    protected ResponseEntity<Object> handleBadRequest(
-        BadRequestException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
+        return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
-        return handleExceptionInternal(ex, null, headers, HttpStatus.BAD_REQUEST, request);
+    @ExceptionHandler(InvalidPayloadException.class)
+    protected ResponseEntity<Object> handleInvalidPayload(InvalidPayloadException ex, WebRequest request) {
+        return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
     @Override

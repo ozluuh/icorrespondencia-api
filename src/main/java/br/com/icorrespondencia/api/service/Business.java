@@ -11,7 +11,7 @@ public interface Business<E, K> {
     }
 
     default E store(E entity) {
-        return entity;
+        return null;
     }
 
     default void destroy(K id) {

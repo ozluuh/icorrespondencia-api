@@ -39,19 +39,19 @@ class TownhouseControllerTest {
         given(serviceMock.index())
             .willReturn(List.of(townhouseDTOValid));
 
-        given(serviceMock.showOrThrowBadRequestException(ArgumentMatchers.anyLong()))
+        given(serviceMock.show(ArgumentMatchers.anyLong()))
             .willReturn(townhouseDTOValid);
 
-        given(serviceMock.storeOrThrowUnprocessableEntityException(ArgumentMatchers.any(TownhouseDTO.class)))
+        given(serviceMock.store(ArgumentMatchers.any(TownhouseDTO.class)))
             .willReturn(townhouseDTOValid);
 
         doNothing()
             .when(serviceMock)
-                .updateOrThrowBadRequestException(ArgumentMatchers.any(TownhouseDTO.class));
+                .update(ArgumentMatchers.any(TownhouseDTO.class));
 
         doNothing()
             .when(serviceMock)
-                .destroyOrThrowBadRequestException(ArgumentMatchers.anyLong());
+                .destroy(ArgumentMatchers.anyLong());
     }
 
     @Test
