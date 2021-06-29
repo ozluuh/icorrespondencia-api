@@ -37,14 +37,12 @@ public class TownhouseService implements Business<TownhouseDTO, Long> {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    @Override
     public void destroy(Long id) {
         show(id);
 
         repository.excludeAndDeactivateById(id);
     }
 
-    @Override
     public TownhouseDTO store(TownhouseDTO entity) {
         verifyCorrectPayload(entity);
 
@@ -53,7 +51,6 @@ public class TownhouseService implements Business<TownhouseDTO, Long> {
         return TownhouseMapper.INSTANCE.toDTO(storedTownhouse);
     }
 
-    @Override
     public void update(TownhouseDTO entity) {
         show(entity.getId());
 
