@@ -1,167 +1,173 @@
 package br.com.icorrespondencia.api.controller;
 
+import static br.com.icorrespondencia.api.util.IntegrationUtil.asJsonString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
+import br.com.icorrespondencia.api.service.exception.InvalidPayloadException;
+import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
 
 @ExtendWith(SpringExtension.class)
+@WebMvcTest(TownhouseController.class)
 @DisplayName("Controller: Townhouse tests")
 class TownhouseControllerTest {
 
-    @InjectMocks
-    TownhouseController controller;
+    @MockBean
+    TownhouseService townhouseServiceMock;
 
-    @Mock
-    TownhouseService serviceMock;
+    @Autowired
+    MockMvc mvc;
 
-    @BeforeEach
-    void setup() {
-        TownhouseDTO townhouseDTOValid = TownhouseDTOCreator.townhouseDTOValid();
+    final String BASE_ENDPOINT = "/townhouses";
 
-        given(serviceMock.index())
-            .willReturn(List.of(townhouseDTOValid));
+    @Test
+    @DisplayName("context loads should verify satisfied dependencies when successful")
+    void contextLoads_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
+        assertThat(townhouseServiceMock).isNotNull();
 
-        given(serviceMock.show(ArgumentMatchers.anyLong()))
-            .willReturn(townhouseDTOValid);
-
-        given(serviceMock.store(ArgumentMatchers.any(TownhouseDTO.class)))
-            .willReturn(townhouseDTOValid);
-
-        doNothing()
-            .when(serviceMock)
-                .update(ArgumentMatchers.any(TownhouseDTO.class));
-
-        doNothing()
-            .when(serviceMock)
-                .destroy(ArgumentMatchers.anyLong());
+        assertThat(mvc).isNotNull();
     }
 
     @Test
-    @DisplayName("inject should verify if all dependencies are satisfied")
-    void inject_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
-        assertThat(controller).isNotNull();
+    @DisplayName("store should response with status 201 when successful")
+    void store_ShouldResponse201_WhenSuccessful() throws Exception {
+        TownhouseDTO townhouseObtained = TownhouseDTOCreator.townhouseDTOValid();
 
-        assertThat(serviceMock).isNotNull();
-    }
-
-    @Test
-    @DisplayName("destroy should not throw any exception when successful")
-    void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> controller.destroy(1L))
-            .doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("destroy should response NO_CONTENT status code when successful")
-    void destroy_ShouldResponseNoContentStatusCode_WhenSuccessful() {
-        ResponseEntity<Void> responseObtained = controller.destroy(1L);
-
-        assertThat(responseObtained.getStatusCode())
-            .isEqualTo(HttpStatus.NO_CONTENT);
-    }
-
-    @Test
-    @DisplayName("index should returns TownhouseDTO list when successful")
-    void index_ShouldReturnsListOfTownhouseDTO_WhenSuccessful() {
-        TownhouseDTO townhouseValid = TownhouseDTOCreator.townhouseDTOValid();
-
-        List<TownhouseDTO> responseObtained = controller.index().getBody();
-
-        assertThat(responseObtained)
-            .isNotNull()
-            .isInstanceOf(List.class)
-            .hasSize(1)
-            .contains(townhouseValid);
-    }
-
-    @Test
-    @DisplayName("index should response OK status code when successful")
-    void index_ShouldResponseOkStatusCode_WhenSuccessful() {
-        ResponseEntity<List<TownhouseDTO>> responseObtained = controller.index();
-
-        assertThat(responseObtained.getStatusCode())
-            .isEqualTo(HttpStatus.OK);
-    }
-
-    @Test
-    @DisplayName("update should not throw any exception when successful")
-    void update_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> controller.update(TownhouseDTOCreator.townhouseDTOUpdated()))
-            .doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("update should response NO_CONTENT status code when successful")
-    void update_ShouldResponseNoContentStatusCode_WhenSuccessful() {
-        ResponseEntity<Void> responseObtained = controller.update(TownhouseDTOCreator.townhouseDTOUpdated());
-
-        assertThat(responseObtained.getStatusCode())
-            .isEqualTo(HttpStatus.NO_CONTENT);
-    }
-
-    @Test
-    @DisplayName("show should returns TownhouseDTO when successful")
-    void show_ShouldReturnsTownhouseDTO_WhenSuccessful() {
-        Long expectedId = TownhouseDTOCreator.townhouseDTOValid().getId();
-
-        TownhouseDTO responseObtained = controller.show(1L).getBody();
-
-        assertThat(responseObtained)
-            .isNotNull()
-            .isInstanceOf(TownhouseDTO.class)
-            .extracting(TownhouseDTO::getId)
-                .isEqualTo(expectedId);
-    }
-
-    @Test
-    @DisplayName("show should response OK status code when successful")
-    void show_ShouldResponseOkStatusCode_WhenSuccessful() {
-        ResponseEntity<TownhouseDTO> responseObtained = controller.show(1L);
-
-        assertThat(responseObtained.getStatusCode())
-            .isEqualTo(HttpStatus.OK);
-    }
-
-    @Test
-    @DisplayName("store should returns TownhouseDTO with Id non null when successful")
-    void store_ShouldReturnsTownhouseDTOWithIdNonNull_WhenSuccessful() {
         TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOToBeStored();
 
-        TownhouseDTO responseObtained = controller.store(townhouseToBeStored).getBody();
+        when(townhouseServiceMock.store(townhouseToBeStored)).thenReturn(townhouseObtained);
 
-        assertThat(responseObtained)
-            .isNotNull()
-            .isInstanceOf(TownhouseDTO.class)
-            .hasFieldOrProperty("id")
-                .isNotNull()
-            .extracting(TownhouseDTO::getCnpj)
-                .isEqualTo(townhouseToBeStored.getCnpj());
+        mvc.perform(
+            post(BASE_ENDPOINT)
+                .characterEncoding("UTF-8")
+                .content(asJsonString(townhouseToBeStored))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.cnpj").value(townhouseToBeStored.getCnpj()));
     }
 
     @Test
-    @DisplayName("store should response CREATED status code when successful")
-    void store_ShouldResponseCreatedStatusCode_WhenSuccessful() {
-        ResponseEntity<TownhouseDTO> responseObtained = controller.store(TownhouseDTOCreator.townhouseDTOToBeStored());
+    @DisplayName("update should response with status 204 when successful")
+    void update_ShouldResponse204_WhenSuccessful() throws Exception {
+        TownhouseDTO townhouseToBeUpdated = TownhouseDTOCreator.townhouseDTOUpdated();
 
-        assertThat(responseObtained.getStatusCode())
-            .isEqualTo(HttpStatus.CREATED);
+        doNothing().when(townhouseServiceMock).update(townhouseToBeUpdated);
+
+        mvc.perform(
+            put(BASE_ENDPOINT)
+                .characterEncoding("UTF-8")
+                .content(asJsonString(townhouseToBeUpdated))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("destroy should response with status 204 when successful")
+    void destroy_ShouldResponse204_WhenSuccessful() throws Exception {
+        doNothing().when(townhouseServiceMock).destroy(1L);
+
+        mvc.perform(
+            delete(BASE_ENDPOINT + "/{id}", 1L)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("index should response with status 200 when successful")
+    void index_ShouldResponse200_WhenSuccessful() throws Exception {
+        TownhouseDTO townhouseObtained = TownhouseDTOCreator.townhouseDTOValid();
+
+        when(townhouseServiceMock.index()).thenReturn(List.of(townhouseObtained));
+
+        mvc.perform(
+            get(BASE_ENDPOINT)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.[0].cnpj").value(townhouseObtained.getCnpj()));
+    }
+
+    @Test
+    @DisplayName("show should response with status 200 when successful")
+    void show_ShouldResponse200_WhenSuccessful() throws Exception {
+        TownhouseDTO townhouseResult = TownhouseDTOCreator.townhouseDTOValid();
+
+        when(townhouseServiceMock.show(1L)).thenReturn(townhouseResult);
+
+        mvc.perform(
+            get(BASE_ENDPOINT + "/{id}", 1L)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1L))
+        .andExpect(jsonPath("$.cnpj").value(townhouseResult.getCnpj()));
+    }
+
+    @Test
+    @DisplayName("store should response with status 422 when payload id not null")
+    void store_ShouldResponse422_WhenPayloadIdNotNull() throws Exception {
+        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOValid();
+
+        when(townhouseServiceMock.store(townhouseToBeStored)).thenThrow(InvalidPayloadException.class);
+
+        mvc.perform(
+            post(BASE_ENDPOINT)
+                .content(asJsonString(townhouseToBeStored))
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isUnprocessableEntity())
+        .andDo(print());
+    }
+
+    @Test
+    @DisplayName("show should response with status 400 when entity not found")
+    void show_ShouldResponse400_WhenEntityNotFound() throws Exception {
+        when(townhouseServiceMock.show(1L)).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(
+            get(BASE_ENDPOINT + "/{id}", 1L)
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isBadRequest())
+        .andDo(print());
     }
 }
