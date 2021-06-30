@@ -78,7 +78,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             .builder()
             .status(status.value())
             .title(DetailsExceptionUtil.formatTitle(ex.getClass().getSimpleName()))
-            .details("Validation failed, check messages bellow")
+            .details("Payload constraint, check messages below")
             .timestamp(DateUtil.formatDateTimeToSQL(LocalDateTime.now()))
             .messages(messages)
             .build();
