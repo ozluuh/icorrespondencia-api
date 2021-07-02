@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
-import br.com.icorrespondencia.api.service.exception.InvalidPayloadException;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
 
@@ -139,11 +138,9 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("store should response with status 422 when payload id not null")
-    void store_ShouldResponse422_WhenPayloadIdNotNull() throws Exception {
-        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOValid();
-
-        when(townhouseServiceMock.store(townhouseToBeStored)).thenThrow(InvalidPayloadException.class);
+    @DisplayName("store should response with status 422 when payload has restriction conflicts")
+    void store_ShouldResponse422_WhenPayloadHasRestrictionConflicts() throws Exception {
+        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.valid();
 
         mvc.perform(
             post(BASE_ENDPOINT)
@@ -152,8 +149,7 @@ class TownhouseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-        .andExpect(status().isUnprocessableEntity())
-        .andDo(print());
+        .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
