@@ -18,27 +18,27 @@ import br.com.icorrespondencia.api.util.TownhouseCreator;
 class TownhouseRepositoryTest {
 
     @Autowired
-    TownhouseRepository repository;
+    TownhouseRepository townhouseRepository;
 
     @BeforeEach
     void setup() {
-        repository.deleteAll();
+        townhouseRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("inject should verify if all dependencies are satisfied")
-    void inject_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
-        assertThat(repository).isNotNull();
+    @DisplayName("context loads should verify satisfied dependencies when successful")
+    void contextLoads_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
+        assertThat(townhouseRepository).isNotNull();
     }
 
     @Test
     @DisplayName("findAllByExcludedAtIsNull should returns townhouses list when successful")
     void findAllByExcludedAtIsNull_ShouldReturnsListOfTownhouse_WhenSuccessful() {
-        Townhouse townhouseExpected = repository.save(TownhouseCreator.townhouseToBeStored());
+        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.toBeStored());
 
-        List<Townhouse> townhousesObtained = repository.findAllByExcludedAtIsNull();
+        List<Townhouse> townhousesResult = townhouseRepository.findAllByExcludedAtIsNull();
 
-        assertThat(townhousesObtained)
+        assertThat(townhousesResult)
             .isInstanceOf(List.class)
             .isNotEmpty()
             .element(0)
@@ -50,9 +50,9 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("findAllByExcludedAtIsNull should returns empty list when successful")
     void findAllByExcludedAtIsNull_ShouldReturnsEmptyList_WhenSuccessful() {
-        List<Townhouse> townhousesObtained = repository.findAllByExcludedAtIsNull();
+        List<Townhouse> townhousesResult = townhouseRepository.findAllByExcludedAtIsNull();
 
-        assertThat(townhousesObtained)
+        assertThat(townhousesResult)
             .isInstanceOf(List.class)
             .isEmpty();
     }
@@ -60,11 +60,11 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("getOneByIdAndExcludedAtIsNull should returns townhouse when successful")
     void getOneByIdAndExcludedAtIsNull_ShouldReturnsTownhouse_WhenSuccessful() {
-        Townhouse townhouseExpected = repository.save(TownhouseCreator.townhouseToBeStored());
+        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.toBeStored());
 
-        Townhouse townhouseObtained = repository.getOneByIdAndExcludedAtIsNull(townhouseExpected.getId()).get();
+        Townhouse townhouseResult = townhouseRepository.getOneByIdAndExcludedAtIsNull(townhouseExpected.getId()).get();
 
-        assertThat(townhouseObtained)
+        assertThat(townhouseResult)
             .isNotNull()
             .isInstanceOf(Townhouse.class)
             .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getNin)
@@ -74,13 +74,13 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("excludeAndDeactivateById should assign excludeAt date and deactivate townhouse when successful")
     void excludeAndDeactivateById_ShouldAssignExcludeAtDateAndDeactivateTownhouse_WhenSuccessful() {
-        Townhouse townhouseExpected = repository.save(TownhouseCreator.townhouseToBeStored());
+        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.toBeStored());
 
-        repository.excludeAndDeactivateById(townhouseExpected.getId());
+        townhouseRepository.excludeAndDeactivateById(townhouseExpected.getId());
 
-        Townhouse townhouseObtained = repository.findById(townhouseExpected.getId()).get();
+        Townhouse townhouseResult = townhouseRepository.findById(townhouseExpected.getId()).get();
 
-        assertThat(townhouseObtained)
+        assertThat(townhouseResult)
             .isNotNull()
             .isInstanceOf(Townhouse.class)
             .hasFieldOrProperty("excludedAt")

@@ -57,6 +57,16 @@ class TownhouseServiceTest {
     }
 
     @Test
+    @DisplayName("context loads should verify satisfied dependencies when successful")
+    void contextLoads_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
+        assertThat(townhouseService).isNotNull();
+
+        assertThat(townhouseRepositoryMock).isNotNull();
+
+        assertThat(mapper).isNotNull();
+    }
+
+    @Test
     @DisplayName("destroy should not throw any exception when successful")
     void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
         doNothing()
