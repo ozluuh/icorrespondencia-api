@@ -2,10 +2,9 @@ package br.com.icorrespondencia.api.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
+import br.com.icorrespondencia.api.exception.ValidationGroups;
 import br.com.icorrespondencia.api.service.TownhouseService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,12 +47,15 @@ public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
     }
 
     @PostMapping
-    public ResponseEntity<TownhouseDTO> store(@RequestBody @Valid TownhouseDTO entity) {
+    public ResponseEntity<TownhouseDTO> store(
+            @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity) {
+
         return new ResponseEntity<>(service.store(entity), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody @Valid TownhouseDTO entity) {
+    public ResponseEntity<Void> update(@RequestBody @Validated(ValidationGroups.Put.class) TownhouseDTO entity) {
+
         service.update(entity);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

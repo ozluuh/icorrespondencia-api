@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,11 +52,12 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("store should response with status 201 when successful")
     void store_ShouldResponse201_WhenSuccessful() throws Exception {
-        TownhouseDTO townhouseObtained = TownhouseDTOCreator.valid();
+        TownhouseDTO townhouseResult = TownhouseDTOCreator.valid();
 
         TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.toBeStored();
 
-        when(townhouseServiceMock.store(townhouseToBeStored)).thenReturn(townhouseObtained);
+        when(townhouseServiceMock.store(townhouseToBeStored))
+            .thenReturn(townhouseResult);
 
         mvc.perform(
             post(BASE_ENDPOINT)
@@ -76,7 +76,8 @@ class TownhouseControllerTest {
     void update_ShouldResponse204_WhenSuccessful() throws Exception {
         TownhouseDTO townhouseToBeUpdated = TownhouseDTOCreator.updated();
 
-        doNothing().when(townhouseServiceMock).update(townhouseToBeUpdated);
+        doNothing()
+            .when(townhouseServiceMock).update(townhouseToBeUpdated);
 
         mvc.perform(
             put(BASE_ENDPOINT)
@@ -91,7 +92,8 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("destroy should response with status 204 when successful")
     void destroy_ShouldResponse204_WhenSuccessful() throws Exception {
-        doNothing().when(townhouseServiceMock).destroy(1L);
+        doNothing()
+            .when(townhouseServiceMock).destroy(1L);
 
         mvc.perform(
             delete(BASE_ENDPOINT + "/{id}", 1L)
@@ -105,9 +107,9 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("index should response with status 200 when successful")
     void index_ShouldResponse200_WhenSuccessful() throws Exception {
-        TownhouseDTO townhouseObtained = TownhouseDTOCreator.valid();
+        TownhouseDTO townhouseResult = TownhouseDTOCreator.valid();
 
-        when(townhouseServiceMock.index()).thenReturn(List.of(townhouseObtained));
+        when(townhouseServiceMock.index()).thenReturn(List.of(townhouseResult));
 
         mvc.perform(
             get(BASE_ENDPOINT)
@@ -116,7 +118,7 @@ class TownhouseControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.[0].cnpj").value(townhouseObtained.getCnpj()));
+        .andExpect(jsonPath("$.[0].cnpj").value(townhouseResult.getCnpj()));
     }
 
     @Test
@@ -153,8 +155,8 @@ class TownhouseControllerTest {
     }
 
     @Test
-    @DisplayName("show should response with status 400 when entity not found")
-    void show_ShouldResponse400_WhenEntityNotFound() throws Exception {
+    @DisplayName("show should response with status 400 when resource not found")
+    void show_ShouldResponse400_WhenResourceNotFound() throws Exception {
         when(townhouseServiceMock.show(1L)).thenThrow(ResourceNotFoundException.class);
 
         mvc.perform(
@@ -163,7 +165,6 @@ class TownhouseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-        .andExpect(status().isBadRequest())
-        .andDo(print());
+        .andExpect(status().isBadRequest());
     }
 }
