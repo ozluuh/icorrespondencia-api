@@ -54,9 +54,9 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("store should response with status 201 when successful")
     void store_ShouldResponse201_WhenSuccessful() throws Exception {
-        TownhouseDTO townhouseObtained = TownhouseDTOCreator.townhouseDTOValid();
+        TownhouseDTO townhouseObtained = TownhouseDTOCreator.valid();
 
-        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.townhouseDTOToBeStored();
+        TownhouseDTO townhouseToBeStored = TownhouseDTOCreator.toBeStored();
 
         when(townhouseServiceMock.store(townhouseToBeStored)).thenReturn(townhouseObtained);
 
@@ -75,7 +75,7 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("update should response with status 204 when successful")
     void update_ShouldResponse204_WhenSuccessful() throws Exception {
-        TownhouseDTO townhouseToBeUpdated = TownhouseDTOCreator.townhouseDTOUpdated();
+        TownhouseDTO townhouseToBeUpdated = TownhouseDTOCreator.updated();
 
         doNothing().when(townhouseServiceMock).update(townhouseToBeUpdated);
 
@@ -106,7 +106,7 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("index should response with status 200 when successful")
     void index_ShouldResponse200_WhenSuccessful() throws Exception {
-        TownhouseDTO townhouseObtained = TownhouseDTOCreator.townhouseDTOValid();
+        TownhouseDTO townhouseObtained = TownhouseDTOCreator.valid();
 
         when(townhouseServiceMock.index()).thenReturn(List.of(townhouseObtained));
 
@@ -123,7 +123,7 @@ class TownhouseControllerTest {
     @Test
     @DisplayName("show should response with status 200 when successful")
     void show_ShouldResponse200_WhenSuccessful() throws Exception {
-        TownhouseDTO townhouseResult = TownhouseDTOCreator.townhouseDTOValid();
+        TownhouseDTO townhouseResult = TownhouseDTOCreator.valid();
 
         when(townhouseServiceMock.show(1L)).thenReturn(townhouseResult);
 

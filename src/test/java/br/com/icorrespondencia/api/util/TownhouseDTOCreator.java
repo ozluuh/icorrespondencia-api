@@ -6,19 +6,29 @@ import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 
 public class TownhouseDTOCreator {
 
-    private static final TownhouseDTO townhouseMapper(Townhouse townhouse) {
+    private static final TownhouseDTO townhouseMapper(final Townhouse townhouse) {
         return TownhouseMapper.INSTANCE.toDTO(townhouse);
     }
 
-    public static final TownhouseDTO townhouseDTOValid() {
-        return townhouseMapper(TownhouseCreator.townhouseValid());
+    public static final TownhouseDTO valid() {
+        return townhouseMapper(TownhouseCreator.valid());
     }
 
-    public static final TownhouseDTO townhouseDTOToBeStored() {
-        return townhouseMapper(TownhouseCreator.townhouseToBeStored());
+    public static final TownhouseDTO toBeStored() {
+        Townhouse townhouseToBeStored = TownhouseCreator.toBeStored();
+
+        TownhouseDTO townhouseToBeReturned = TownhouseDTO
+            .builder()
+                .name(townhouseToBeStored.getName())
+                .email(townhouseToBeStored.getEmail())
+                .cnpj(townhouseToBeStored.getNin())
+                .site(townhouseToBeStored.getSite())
+            .build();
+
+        return townhouseToBeReturned;
     }
 
-    public static final TownhouseDTO townhouseDTOUpdated() {
-        return townhouseMapper(TownhouseCreator.townhouseUpdated());
+    public static final TownhouseDTO updated() {
+        return townhouseMapper(TownhouseCreator.updated());
     }
 }
