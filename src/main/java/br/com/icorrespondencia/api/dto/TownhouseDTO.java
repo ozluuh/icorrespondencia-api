@@ -12,6 +12,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Townhouse Transfer Object between layers
+ *
+ * @author Luís Paulino
+ * @since 0.1
+ * @version 0.1
+ */
 @Builder
 @Getter
 @Setter

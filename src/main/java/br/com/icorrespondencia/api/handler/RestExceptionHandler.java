@@ -22,14 +22,42 @@ import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import br.com.icorrespondencia.api.util.DateUtil;
 import br.com.icorrespondencia.api.util.DetailsExceptionUtil;
 
+/**
+ * Handler that intercepts {@literal exceptions} and performs treatment before
+ * returns client response
+ *
+ * @author Luís Paulino
+ * @since 0.1
+ * @version 0.1
+ */
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Customize the response for ResourceNotFoundException
+     * <p>
+     * This method delegates to {@link #handleExceptionInternal}.
+     *
+     * @param ex      the exception
+     * @param request the current request
+     * @return a {@code ResponseEntity} instance
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    /**
+     * Customize the response for MethodArgumentNotValidException
+     * <p>
+     * This method delegates to {@link #handleValidationExceptionInternal}.
+     *
+     * @param ex      the exception
+     * @param headers the headers to be written to the response
+     * @param status  the selected response status
+     * @param request the current request
+     * @return a {@code ResponseEntity} instance
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -48,6 +76,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleValidationExceptionInternal(ex, messages, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    /**
+     * Bridge method to customize the response body of all exception types
+     *
+     * @param ex      the exception
+     * @param body    the body for the response
+     * @param headers the headers for the response
+     * @param status  the response status
+     * @param request the current request
+     */
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
         Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -65,6 +102,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(details, headers, status);
     }
 
+    /**
+     * Bridge method to customize the response body of validation exception types
+     *
+     * @param ex       the exception
+     * @param messages the messages for the response
+     * @param headers  the headers for the response
+     * @param status   the response status
+     * @param request  the current request
+     */
     protected ResponseEntity<Object> handleValidationExceptionInternal(
         Exception ex, List<FieldValidationDetails> messages, HttpHeaders headers, HttpStatus status) {
 

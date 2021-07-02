@@ -9,6 +9,14 @@ import org.mapstruct.factory.Mappers;
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 
+/**
+ * Interface to stipulate mapper between domain and DTO layer of Townhouse
+ * entity
+ *
+ * @author Luís Paulino
+ * @since 0.1
+ * @version 0.1
+ */
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface TownhouseMapper {
 

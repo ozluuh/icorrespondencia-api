@@ -13,6 +13,13 @@ import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Townhouse service that implements {@link Business} contract
+ *
+ * @author Luís Paulino
+ * @since 0.1
+ * @version 0.1
+ */
 @RequiredArgsConstructor
 @Service
 public class TownhouseService implements Business<TownhouseDTO, Long> {
@@ -38,18 +45,34 @@ public class TownhouseService implements Business<TownhouseDTO, Long> {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
+    /**
+     * Business rules to destroy entity
+     *
+     * @param id to destroy
+     */
     public void destroy(final Long id) {
         show(id);
 
         repository.excludeAndDeactivateById(id);
     }
 
+    /**
+     * Business rules to store entity data
+     *
+     * @param entity to be stored
+     * @return stored entity with id
+     */
     public TownhouseDTO store(final TownhouseDTO entity) {
         final Townhouse storedTownhouse = repository.save(mapper.toDomain(entity));
 
         return mapper.toDTO(storedTownhouse);
     }
 
+    /**
+     * Business rules to update entity data
+     *
+     * @param entity to be updated
+     */
     public void update(final TownhouseDTO entity) {
         show(entity.getId());
 

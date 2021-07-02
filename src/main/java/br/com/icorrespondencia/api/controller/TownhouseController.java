@@ -20,6 +20,13 @@ import br.com.icorrespondencia.api.service.TownhouseService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Townhouse controller that implements {@link Endpoint} contract for HTTP verbs
+ *
+ * @author Luís Paulino
+ * @since 0.1
+ * @version 0.1
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/townhouses")
@@ -39,6 +46,15 @@ public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
         return ResponseEntity.ok(service.show(id));
     }
 
+    /**
+     * Endpoint that remove given id
+     *
+     * @param id to be removed
+     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
+     *         when successful or
+     *         {@link org.springframework.http.HttpStatus#BAD_REQUEST 400 Bad
+     *         Request} if not present
+     */
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         service.destroy(id);
@@ -46,6 +62,15 @@ public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Endpoint that store given entity
+     *
+     * @param entity to be stored
+     * @return {@link org.springframework.http.HttpStatus#CREATED 201 Created} when
+     *         entity successfully stored or
+     *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
+     *         Unprocessable Entity} if has validation constraints
+     */
     @PostMapping
     public ResponseEntity<TownhouseDTO> store(
             @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity) {
@@ -53,6 +78,15 @@ public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
         return new ResponseEntity<>(service.store(entity), HttpStatus.CREATED);
     }
 
+    /**
+     * Endpoint that update given entity
+     *
+     * @param entity to be stored
+     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
+     *         when entity successfully stored or
+     *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
+     *         Unprocessable Entity} if has validation constraints
+     */
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Validated(ValidationGroups.Put.class) TownhouseDTO entity) {
 

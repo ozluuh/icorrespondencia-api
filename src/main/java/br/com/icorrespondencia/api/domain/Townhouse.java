@@ -16,6 +16,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Townhouse model to persists data
+ *
+ * @author Luís Paulino
+ * @since 0.1
+ * @version 0.1
+ */
 @Builder
 @Data
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
