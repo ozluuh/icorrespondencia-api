@@ -1,6 +1,6 @@
 package br.com.icorrespondencia.api.controller;
 
-import static br.com.icorrespondencia.api.util.IntegrationUtil.asJsonString;
+import static br.com.icorrespondencia.api.utils.IntegrationUtil.asJsonString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.service.TownhouseService;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
-import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
+import br.com.icorrespondencia.api.utils.TownhouseDTOCreator;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TownhouseController.class)

@@ -1,4 +1,4 @@
-package br.com.icorrespondencia.api.util;
+package br.com.icorrespondencia.api.utils;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.dto.TownhouseDTO;

@@ -1,4 +1,4 @@
-package br.com.icorrespondencia.api.util;
+package br.com.icorrespondencia.api.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

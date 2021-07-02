@@ -23,8 +23,8 @@ import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
-import br.com.icorrespondencia.api.util.TownhouseCreator;
-import br.com.icorrespondencia.api.util.TownhouseDTOCreator;
+import br.com.icorrespondencia.api.utils.TownhouseCreator;
+import br.com.icorrespondencia.api.utils.TownhouseDTOCreator;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("Service: Townhouse tests")

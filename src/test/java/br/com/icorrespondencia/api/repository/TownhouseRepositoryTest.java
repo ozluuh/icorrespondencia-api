@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
-import br.com.icorrespondencia.api.util.TownhouseCreator;
+import br.com.icorrespondencia.api.utils.TownhouseCreator;
 
 @DataJpaTest
 @DisplayName("Repository: Townhouse tests")
