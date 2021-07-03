@@ -1,0 +1,23 @@
+server:
+  servlet:
+    context-path: /api
+  error:
+    include-stacktrace: on-trace-param
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${env.DATABASE_HOST:localhost}:${env.DATABASE_PORT:5432}/${env.DATABASE_NAME:icorrespondenciadev}
+    username: ${env.DATABASE_USER:postgres}
+    password: ${env.DATABASE_PASS}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        # type: trace
