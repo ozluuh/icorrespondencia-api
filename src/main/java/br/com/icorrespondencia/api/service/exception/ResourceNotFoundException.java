@@ -3,6 +3,8 @@ package br.com.icorrespondencia.api.service.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import lombok.Generated;
+
 /**
  * When resource not found, throws this exception
  *
@@ -17,6 +19,7 @@ public class ResourceNotFoundException extends RuntimeException {
         super("Resource not found");
     }
 
+    @Generated
     public ResourceNotFoundException(String message) {
         super(message);
     }
