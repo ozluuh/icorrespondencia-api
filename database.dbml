@@ -1,0 +1,129 @@
+Project iCorrespondencia {
+    database_type: 'PostgreSQL'
+
+    Note: '''
+    iCorrespondência database model
+    '''
+}
+
+Table person {
+    id int [pk, increment, not null]
+    name varchar(255) [not null]
+    nin varchar(18) [unique, not null]
+    email varchar(255) [unique]
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+    active bool [default: true, not null]
+}
+
+Table user {
+    id int [increment, not null]
+    public_id uuid [not null]
+    person_id int [not null, ref: > person.id]
+    username varchar(20) [unique, not null]
+    password varchar(128) [not null]
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+    active bool [default: true, not null]
+
+    Indexes {
+        id [pk]
+        public_id [unique]
+    }
+}
+
+Table townhouse {
+    id int [increment, not null]
+    public_id uuid [not null]
+    site varchar(255)
+    person_id int [not null, ref: > person.id]
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+    active bool [default: true, not null]
+
+    Indexes {
+        id [pk]
+        public_id [unique]
+    }
+}
+
+Table phone {
+    id int [pk, increment, not null]
+    townhouse_id int [not null, ref: > townhouse.id]
+    phone varchar(11) [not null]
+    phone_type phone_type [default: 'LANDLINE', not null]
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+}
+
+Enum phone_type {
+    CELLPHONE
+    LANDLINE
+}
+
+Table city {
+    id int [pk, increment, not null]
+    name varchar(70) [not null]
+    state char(2) [not null]
+}
+
+Table district {
+    id int [pk, increment, not null]
+    city_id int [not null, ref: > city.id]
+    name varchar(70) [not null]
+}
+
+Table street {
+    id int [pk, increment, not null]
+    district_id int [not null, ref: > district.id]
+    zipcode char(8) [unique, not null]
+    name varchar(255) [not null]
+}
+
+Table address {
+    id int [pk, increment, not null]
+    townhouse_id int [not null, ref: - townhouse.id]
+    street_id int [not null, ref: - street.id]
+    street_number varchar(5)
+    complement varchar(50)
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+}
+
+Table block {
+    id int [pk, increment, not null]
+    townhouse_id int [not null, ref: > townhouse.id]
+    name varchar(25) [not null]
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+}
+
+Table room {
+    id int [pk, increment, not null]
+    block_id int [not null, ref: - block.id]
+    number smallint [not null]
+    floor varchar(3) [not null]
+    created_at timestamp [default: `now()`, not null]
+    excluded_at timestamp
+}
+
+Table delivery {
+    id int [pk, increment, not null]
+    room_id int [not null, ref: > room.id]
+    delivery_date timestamp [not null]
+    read bool [default: false, not null]
+    read_at timestamp
+}
+
+Table user_role {
+    id int [pk, increment, not null]
+    user_id int [not null, ref: > user.id]
+    type role_type [default: 'ROLE_USER', not null]
+    townhouse_id int [not null, ref: > townhouse.id]
+    room_id int [ref: - room.id]
+}
+
+Enum role_type {
+    ROLE_USER
+    ROLE_ADMIN
+}
