@@ -4,6 +4,7 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
@@ -22,12 +23,11 @@ public interface TownhouseMapper {
 
     TownhouseMapper INSTANCE = Mappers.getMapper(TownhouseMapper.class);
 
-    @Mapping(target = "createdAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL( townhouse.getCreatedAt() ) )")
-    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL( townhouse.getExcludedAt() ) )")
     TownhouseDTO toDTO(Townhouse townhouse);
 
     @InheritInverseConfiguration
     @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatSQLDateStringToLocalDateTime( townhouseDTO.getExcludedAt() ) )")
+    @Mapping(target = "active", constant = "true")
+    @Mapping(target = "publicId", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
     Townhouse toDomain(TownhouseDTO townhouseDTO);
 }

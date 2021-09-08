@@ -49,7 +49,6 @@ public class Person {
 
     protected LocalDateTime excludedAt;
 
-    @Builder.Default
     @Column(nullable = false)
-    protected boolean active = true;
+    protected boolean active;
 }

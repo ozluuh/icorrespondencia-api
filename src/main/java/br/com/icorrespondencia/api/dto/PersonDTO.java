@@ -1,5 +1,6 @@
 package br.com.icorrespondencia.api.dto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.validation.constraints.Email;
@@ -38,14 +39,14 @@ public class PersonDTO {
     @NotNull(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Put.class)
     protected UUID publicId;
 
-    @Email(message = ENTER_A_VALID_MAIL_VALIDATION_MESSAGE, regexp = "^[A-z0-9]+@[A-z0-9]+\\.[A-z]{2,}\\.?[A-z]+$")
+    @Email(message = ENTER_A_VALID_MAIL_VALIDATION_MESSAGE, regexp = "^[A-z0-9\\.]+@[A-z0-9]+\\.[A-z]{1,}\\.?[A-z]+$")
     protected String email;
 
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
-    protected String createdAt;
+    protected LocalDateTime createdAt;
 
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
-    protected String excludedAt;
+    protected LocalDateTime excludedAt;
 
     protected boolean active;
 }
