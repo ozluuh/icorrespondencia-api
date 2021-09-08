@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,7 +40,7 @@ class TownhouseControllerTest {
     @Autowired
     MockMvc mvc;
 
-    final String BASE_ENDPOINT = "/townhouses";
+    static final String BASE_ENDPOINT = "/townhouses";
 
     @Test
     @DisplayName("context loads should verify satisfied dependencies when successful")
@@ -151,6 +152,7 @@ class TownhouseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
+        .andDo(print())
         .andExpect(status().isUnprocessableEntity());
     }
 

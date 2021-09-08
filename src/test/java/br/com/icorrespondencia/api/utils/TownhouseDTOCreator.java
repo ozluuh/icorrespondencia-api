@@ -21,7 +21,7 @@ public class TownhouseDTOCreator {
             .builder()
                 .name(townhouseToBeStored.getName())
                 .email(townhouseToBeStored.getEmail())
-                .cnpj(townhouseToBeStored.getNin())
+                .cnpj(townhouseToBeStored.getCnpj())
                 .site(townhouseToBeStored.getSite())
             .build();
 
