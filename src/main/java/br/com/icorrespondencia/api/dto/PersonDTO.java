@@ -8,6 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import br.com.icorrespondencia.api.exception.ValidationGroups;
 
 import lombok.AccessLevel;
@@ -42,9 +45,11 @@ public class PersonDTO {
     @Email(message = ENTER_A_VALID_MAIL_VALIDATION_MESSAGE, regexp = "^[A-z0-9\\.]+@[A-z0-9]+\\.[A-z]{1,}\\.?[A-z]+$")
     protected String email;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     protected LocalDateTime createdAt;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     protected LocalDateTime excludedAt;
 
