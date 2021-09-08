@@ -1,48 +1,55 @@
 package br.com.icorrespondencia.api.domain;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Data
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "person_type")
 public class Person {
 
     @Id
-    @Column(name = "id_person")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(updatable = false)
+    protected Long id;
 
-    @Column(name = "ds_name", nullable = false)
-    private String name;
-
-    @Column(name = "nb_nin", length = 18, unique = true, nullable = false)
-    private String nin;
-
-    @Column(name = "ds_email", unique = true)
-    private String email;
+    @Column(nullable = false)
+    protected String name;
 
     @Builder.Default
-    @Column(name = "dt_created_at", nullable = false, updatable = false)
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    @Column(unique = true, nullable = false, updatable = false)
+    protected final UUID publicId = UUID.randomUUID();
 
-    @Column(name = "dt_excluded_at")
-    private LocalDateTime excludedAt;
+    @Column(unique = true)
+    protected String email;
 
     @Builder.Default
-    @Column(name = "st_active", nullable = false)
-    private boolean active = true;
+    @Column(nullable = false, updatable = false)
+    protected final LocalDateTime createdAt = LocalDateTime.now();
+
+    protected LocalDateTime excludedAt;
+
+    @Builder.Default
+    @Column(nullable = false)
+    protected boolean active = true;
 }

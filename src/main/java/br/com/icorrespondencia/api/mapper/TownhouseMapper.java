@@ -22,13 +22,12 @@ public interface TownhouseMapper {
 
     TownhouseMapper INSTANCE = Mappers.getMapper(TownhouseMapper.class);
 
-    @Mapping(target = "createdAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL( obj.getCreatedAt() ) )")
-    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL( obj.getExcludedAt() ) )")
-    @Mapping(target = "cnpj", source = "nin")
-    TownhouseDTO toDTO(Townhouse obj);
+    @Mapping(target = "createdAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL( townhouse.getCreatedAt() ) )")
+    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatDateTimeToSQL( townhouse.getExcludedAt() ) )")
+    TownhouseDTO toDTO(Townhouse townhouse);
 
     @InheritInverseConfiguration
     @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatSQLDateStringToLocalDateTime( obj.getExcludedAt() ) )")
-    Townhouse toDomain(TownhouseDTO obj);
+    @Mapping(target = "excludedAt", expression = "java( br.com.icorrespondencia.api.util.DateUtil.formatSQLDateStringToLocalDateTime( townhouseDTO.getExcludedAt() ) )")
+    Townhouse toDomain(TownhouseDTO townhouseDTO);
 }
