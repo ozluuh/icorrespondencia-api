@@ -21,6 +21,7 @@
         -   [Preparando o ambiente](#preparando-o-ambiente)
         -   [Executando a aplicação](#executando-a-aplicação)
 -   [Como contribuir](#como-contribuir)
+-   [Autores](#autores)
 -   [Licença](#licença)
 
 ## Sobre
@@ -83,6 +84,15 @@ Após instalar e configurar as ferramentas de sua preferência, ao executar a ap
 1. Faça o **fork** do projeto;
 2. Realize as alterações e envie um **pull request**.
 
+## Autores
+
+| Nome| RM | Função | Social |
+| - | - | - | - |
+| Daiane Estenio  | 84198 | Project manager     |
+| Denis Mantovani | 86225 |                     | [![LinkedIn badge](https://img.shields.io/badge/-denismantovani-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/denis-mantovani)](https://linkedin.com/in/denis-mantovani)                                                                                                                                                                                                    |
+| Lucas Oliveira  | 85142 | Software architect  | [![Github badge](https://img.shields.io/badge/-Lukinhas08-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/Lukinhas08)](https://github.com/Lukinhas08) [![LinkedIn badge](https://img.shields.io/badge/-lucasoliveira-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/lucas-oliveira-bba345198)](https://linkedin.com/in/lucas-oliveira-bba345198) |
+| Luís Paulino    | 85398 | Fullstack Developer | [![Github badge](https://img.shields.io/badge/-ozluuh-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/ozluuh)](https://github.com/ozluuh) [![LinkedIn badge](https://img.shields.io/badge/-ozluuh-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/ozluuh)](https://linkedin.com/in/ozluuh)                                                        |
+
 ## Licença
 
-[MIT](./LICENSE) &copy; [21 Things](https://github.com/ozluuh)
+[MIT](./LICENSE) &copy; 21 Things
