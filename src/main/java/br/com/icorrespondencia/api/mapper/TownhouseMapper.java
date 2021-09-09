@@ -1,6 +1,5 @@
 package br.com.icorrespondencia.api.mapper;
 
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
