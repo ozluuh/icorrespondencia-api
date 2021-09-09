@@ -38,7 +38,7 @@ public class UserService implements Business<UserDTO, Long> {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public UserDTO store(final UserDTO userDTO){
+    public UserDTO store(final UserDTO userDTO) {
         final User savedInstance = repo.save(mapper.toDomain(userDTO));
 
         return mapper.toDTO(savedInstance);
