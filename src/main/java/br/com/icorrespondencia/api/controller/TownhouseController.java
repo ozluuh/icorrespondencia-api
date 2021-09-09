@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/townhouses")
-public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
+public class TownhouseController implements CrudController<TownhouseDTO, Long> {
 
     private final TownhouseService service;
 
@@ -46,48 +46,24 @@ public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
         return ResponseEntity.ok(service.show(id));
     }
 
-    /**
-     * Endpoint that remove given id
-     *
-     * @param id to be removed
-     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
-     *         when successful or
-     *         {@link org.springframework.http.HttpStatus#BAD_REQUEST 400 Bad
-     *         Request} if not present
-     */
     @DeleteMapping(path = "/{id}")
+    @Override
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         service.destroy(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /**
-     * Endpoint that store given entity
-     *
-     * @param entity to be stored
-     * @return {@link org.springframework.http.HttpStatus#CREATED 201 Created} when
-     *         entity successfully stored or
-     *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
-     *         Unprocessable Entity} if has validation constraints
-     */
     @PostMapping
+    @Override
     public ResponseEntity<TownhouseDTO> store(
             @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity) {
 
         return new ResponseEntity<>(service.store(entity), HttpStatus.CREATED);
     }
 
-    /**
-     * Endpoint that update given entity
-     *
-     * @param entity to be stored
-     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
-     *         when entity successfully stored or
-     *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
-     *         Unprocessable Entity} if has validation constraints
-     */
     @PutMapping
+    @Override
     public ResponseEntity<Void> update(@RequestBody @Validated(ValidationGroups.Put.class) TownhouseDTO entity) {
 
         service.update(entity);
