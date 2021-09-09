@@ -6,44 +6,40 @@ Project iCorrespondencia {
     '''
 }
 
+Enum person_type {
+    F
+    J
+}
+
 Table person {
     id int [pk, increment, not null]
     name varchar(255) [not null]
-    nin varchar(18) [unique, not null]
-    email varchar(255) [unique]
+    public_id uuid [not null]
     created_at timestamp [default: `now()`, not null]
     excluded_at timestamp
     active bool [default: true, not null]
+    person_type person_type [not null]
 }
 
 Table user {
-    id int [increment, not null]
-    public_id uuid [not null]
-    person_id int [not null, ref: > person.id]
+    id int [not null, ref: - person.id]
+    email varchar(255) [unique]
     username varchar(20) [unique, not null]
     password varchar(128) [not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
-    active bool [default: true, not null]
 
     Indexes {
         id [pk]
-        public_id [unique]
     }
 }
 
 Table townhouse {
-    id int [increment, not null]
-    public_id uuid [not null]
+    id int [not null, ref: - person.id]
+    email varchar(255) [unique]
+    cnpj varchar(18) [unique, not null]
     site varchar(255)
-    person_id int [not null, ref: > person.id]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
-    active bool [default: true, not null]
 
     Indexes {
         id [pk]
-        public_id [unique]
     }
 }
 
