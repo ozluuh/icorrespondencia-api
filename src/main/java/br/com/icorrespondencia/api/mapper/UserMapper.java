@@ -6,26 +6,18 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
 
-import br.com.icorrespondencia.api.domain.Townhouse;
-import br.com.icorrespondencia.api.dto.TownhouseDTO;
+import br.com.icorrespondencia.api.domain.User;
+import br.com.icorrespondencia.api.dto.UserDTO;
 
-/**
- * Interface to stipulate mapper between domain and DTO layer of Townhouse
- * entity
- *
- * @author Luís Paulino
- * @since 0.1
- * @version 0.1
- */
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface TownhouseMapper {
+public interface UserMapper {
 
-    TownhouseMapper INSTANCE = Mappers.getMapper(TownhouseMapper.class);
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    TownhouseDTO toDTO(Townhouse townhouse);
+    UserDTO toDTO(User user);
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "active", constant = "true")
     @Mapping(target = "publicId", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-    Townhouse toDomain(TownhouseDTO townhouseDTO);
+    User toDomain(UserDTO userDTO);
 }

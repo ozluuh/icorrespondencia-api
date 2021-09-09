@@ -43,8 +43,8 @@ class TownhouseRepositoryTest {
             .isNotEmpty()
             .element(0)
                 .isInstanceOf(Townhouse.class)
-                .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getNin)
-                    .containsExactly(null, townhouseExpected.getId(), townhouseExpected.getNin());
+                .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getCnpj)
+                    .containsExactly(null, townhouseExpected.getId(), townhouseExpected.getCnpj());
     }
 
     @Test
@@ -67,8 +67,8 @@ class TownhouseRepositoryTest {
         assertThat(townhouseResult)
             .isNotNull()
             .isInstanceOf(Townhouse.class)
-            .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getNin)
-                .containsExactly(null, townhouseExpected.getId(), townhouseExpected.getNin());
+            .extracting(Townhouse::getExcludedAt, Townhouse::getId, Townhouse::getCnpj)
+                .containsExactly(null, townhouseExpected.getId(), townhouseExpected.getCnpj());
     }
 
     @Test
@@ -85,7 +85,7 @@ class TownhouseRepositoryTest {
             .isInstanceOf(Townhouse.class)
             .hasFieldOrProperty("excludedAt")
                 .isNotNull()
-            .extracting(Townhouse::getId, Townhouse::getNin)
-                .containsExactly(townhouseExpected.getId(), townhouseExpected.getNin());
+            .extracting(Townhouse::getId, Townhouse::getCnpj)
+                .containsExactly(townhouseExpected.getId(), townhouseExpected.getCnpj());
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class IntegrationUtil {
 
-    public static String asJsonString(final Object entity) {
+    public static final String asJsonString(final Object entity) {
         try {
             return new ObjectMapper().writeValueAsString(entity);
         } catch (Exception e) {

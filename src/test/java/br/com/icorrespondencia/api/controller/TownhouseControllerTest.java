@@ -39,7 +39,7 @@ class TownhouseControllerTest {
     @Autowired
     MockMvc mvc;
 
-    final String BASE_ENDPOINT = "/townhouses";
+    static final String BASE_ENDPOINT = "/townhouses";
 
     @Test
     @DisplayName("context loads should verify satisfied dependencies when successful")

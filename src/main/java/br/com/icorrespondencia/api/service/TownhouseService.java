@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Service
-public class TownhouseService implements Business<TownhouseDTO, Long> {
+public class TownhouseService implements CrudService<TownhouseDTO, Long> {
 
     private final TownhouseRepository repository;
 
@@ -45,34 +45,21 @@ public class TownhouseService implements Business<TownhouseDTO, Long> {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    /**
-     * Business rules to destroy entity
-     *
-     * @param id to destroy
-     */
+    @Override
     public void destroy(final Long id) {
         show(id);
 
         repository.excludeAndDeactivateById(id);
     }
 
-    /**
-     * Business rules to store entity data
-     *
-     * @param entity to be stored
-     * @return stored entity with id
-     */
+    @Override
     public TownhouseDTO store(final TownhouseDTO entity) {
         final Townhouse storedTownhouse = repository.save(mapper.toDomain(entity));
 
         return mapper.toDTO(storedTownhouse);
     }
 
-    /**
-     * Business rules to update entity data
-     *
-     * @param entity to be updated
-     */
+    @Override
     public void update(final TownhouseDTO entity) {
         show(entity.getId());
 

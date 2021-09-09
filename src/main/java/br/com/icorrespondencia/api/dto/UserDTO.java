@@ -2,6 +2,8 @@ package br.com.icorrespondencia.api.dto;
 
 import javax.validation.constraints.NotEmpty;
 
+import br.com.icorrespondencia.api.exception.ValidationGroups;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +23,13 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-public class TownhouseDTO extends PersonDTO {
+public class UserDTO extends PersonDTO {
 
-    @NotEmpty(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE)
-    private String cnpj;
+    @NotEmpty(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE,
+            groups = { ValidationGroups.Post.class, ValidationGroups.Put.class })
+    private String username;
 
-    private String site;
+    @NotEmpty(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE,
+            groups = { ValidationGroups.Post.class, ValidationGroups.Put.class })
+    private String password;
 }

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 public interface Endpoint<E, K> {
 

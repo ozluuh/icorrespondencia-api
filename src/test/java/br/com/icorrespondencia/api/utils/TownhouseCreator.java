@@ -8,9 +8,9 @@ public class TownhouseCreator {
         return Townhouse
                     .builder()
                     .name("Gandalf Town")
-                    .nin("27.419.373/0001-58")
-                    .site("www.towngandalf.com")
+                    .cnpj("27.419.373/0001-58")
                     .email("gandalf@fakemail.com")
+                    .site("www.towngandalf.com")
                 .build();
     }
 

@@ -3,6 +3,7 @@ package br.com.icorrespondencia.api.domain;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,24 +12,19 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-/**
- * Townhouse model to persists data
- *
- * @author Luís Paulino
- * @since 0.1
- * @version 0.1
- */
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
-@DiscriminatorValue("J")
-public class Townhouse extends Person {
+@Table(name = "users")
+@DiscriminatorValue("F")
+public class User extends Person {
 
-    private String site;
+    @Column(nullable = false, length = 20, unique = true)
+    private String username;
 
-    @Column(length = 18, nullable = false)
-    private String cnpj;
+    @Column(nullable = false, length = 64)
+    private String password;
 }

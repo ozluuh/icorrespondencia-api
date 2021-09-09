@@ -1,8 +1,8 @@
 package br.com.icorrespondencia.api.controller;
 
+import java.net.URI;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.exception.ValidationGroups;
@@ -25,12 +26,12 @@ import lombok.RequiredArgsConstructor;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/townhouses")
-public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
+public class TownhouseController implements CrudController<TownhouseDTO, Long> {
 
     private final TownhouseService service;
 
@@ -46,52 +47,32 @@ public class TownhouseController implements Endpoint<TownhouseDTO, Long> {
         return ResponseEntity.ok(service.show(id));
     }
 
-    /**
-     * Endpoint that remove given id
-     *
-     * @param id to be removed
-     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
-     *         when successful or
-     *         {@link org.springframework.http.HttpStatus#BAD_REQUEST 400 Bad
-     *         Request} if not present
-     */
     @DeleteMapping(path = "/{id}")
+    @Override
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         service.destroy(id);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
-    /**
-     * Endpoint that store given entity
-     *
-     * @param entity to be stored
-     * @return {@link org.springframework.http.HttpStatus#CREATED 201 Created} when
-     *         entity successfully stored or
-     *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
-     *         Unprocessable Entity} if has validation constraints
-     */
     @PostMapping
+    @Override
     public ResponseEntity<TownhouseDTO> store(
-            @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity) {
+            @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity, UriComponentsBuilder uriBuilder) {
 
-        return new ResponseEntity<>(service.store(entity), HttpStatus.CREATED);
+        TownhouseDTO body = service.store(entity);
+
+        URI uri = uriBuilder.path("/townhouses/{id}").buildAndExpand(entity.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(body);
     }
 
-    /**
-     * Endpoint that update given entity
-     *
-     * @param entity to be stored
-     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
-     *         when entity successfully stored or
-     *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
-     *         Unprocessable Entity} if has validation constraints
-     */
     @PutMapping
+    @Override
     public ResponseEntity<Void> update(@RequestBody @Validated(ValidationGroups.Put.class) TownhouseDTO entity) {
 
         service.update(entity);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 public interface Business<E, K> {
 
