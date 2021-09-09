@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements Business<UserDTO, Long> {
+public class UserService implements CrudService<UserDTO, Long> {
 
     private final UserRepository repo;
 
@@ -38,14 +38,23 @@ public class UserService implements Business<UserDTO, Long> {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Override
     public UserDTO store(final UserDTO userDTO) {
         final User savedInstance = repo.save(mapper.toDomain(userDTO));
 
         return mapper.toDTO(savedInstance);
     }
 
-    public void update(final UserDTO userDTO){
+    @Override
+    public void update(final UserDTO userDTO) {
+        show(userDTO.getId());
+
         store(userDTO);
+    }
+
+    @Override
+    public void destroy(Long id) {
+        show(id);
     }
 
 }
