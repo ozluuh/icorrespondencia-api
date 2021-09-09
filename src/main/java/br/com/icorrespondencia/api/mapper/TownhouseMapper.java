@@ -25,7 +25,6 @@ public interface TownhouseMapper {
 
     TownhouseDTO toDTO(Townhouse townhouse);
 
-    @InheritInverseConfiguration
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "active", constant = "true")
     @Mapping(target = "publicId", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)

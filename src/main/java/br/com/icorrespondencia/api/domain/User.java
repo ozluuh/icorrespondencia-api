@@ -22,12 +22,9 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("F")
 public class User extends Person {
 
-    @Column(length = 14)
-    private String nin;
-
     @Column(nullable = false, length = 20, unique = true)
     private String username;
 
-    @Column(nullable = false, length = 128)
+    @Column(nullable = false, length = 64)
     private String password;
 }
