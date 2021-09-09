@@ -1,17 +1,16 @@
 package br.com.icorrespondencia.api.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.icorrespondencia.api.domain.User;
 
+/**
+ * User repository
+ *
+ * @author Luís Paulino
+ * @since 0.2
+ * @version 1.0
+ */
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-
-    Optional<User> getOneByIdAndExcludedAtIsNull(Long id);
-
-    List<User> findAllByExcludedAtIsNull();
+public interface UserRepository extends PersonRepository<User, Long> {
 }
