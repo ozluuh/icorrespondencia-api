@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
  */
 @Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class UserDTO extends PersonDTO {
