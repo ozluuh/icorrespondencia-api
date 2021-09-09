@@ -55,6 +55,8 @@ public class UserService implements CrudService<UserDTO, Long> {
     @Override
     public void destroy(Long id) {
         show(id);
+
+        repo.excludeAndDeactivateById(id);
     }
 
 }

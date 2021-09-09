@@ -1,6 +1,7 @@
 package br.com.icorrespondencia.api.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Endpoint layer that provide basic crud contract for HTTP verbs
@@ -25,13 +26,14 @@ public interface CrudController<E, K> extends Endpoint<E, K> {
     /**
      * Endpoint that store given entity
      *
-     * @param entity to be stored
+     * @param entity     to be stored
+     * @param uriBuilder injected by springboot to construct URI
      * @return {@link org.springframework.http.HttpStatus#CREATED 201 Created} when
      *         entity successfully stored or
      *         {@link org.springframework.http.HttpStatus#UNPROCESSABLE_ENTITY 422
      *         Unprocessable Entity} if has validation constraints
      */
-    ResponseEntity<E> store(E entity);
+    ResponseEntity<E> store(E entity, UriComponentsBuilder uriBuilder);
 
     /**
      * Endpoint that update given entity

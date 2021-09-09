@@ -1,8 +1,8 @@
 package br.com.icorrespondencia.api.controller;
 
+import java.net.URI;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
 import br.com.icorrespondencia.api.exception.ValidationGroups;
@@ -25,7 +26,7 @@ import lombok.RequiredArgsConstructor;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 @RequiredArgsConstructor
 @RestController
@@ -51,15 +52,19 @@ public class TownhouseController implements CrudController<TownhouseDTO, Long> {
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         service.destroy(id);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
     @Override
     public ResponseEntity<TownhouseDTO> store(
-            @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity) {
+            @RequestBody @Validated(ValidationGroups.Post.class) TownhouseDTO entity, UriComponentsBuilder uriBuilder) {
 
-        return new ResponseEntity<>(service.store(entity), HttpStatus.CREATED);
+        TownhouseDTO body = service.store(entity);
+
+        URI uri = uriBuilder.path("/townhouses/{id}").buildAndExpand(entity.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(body);
     }
 
     @PutMapping
@@ -68,6 +73,6 @@ public class TownhouseController implements CrudController<TownhouseDTO, Long> {
 
         service.update(entity);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
