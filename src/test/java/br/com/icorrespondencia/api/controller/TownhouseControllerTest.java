@@ -152,7 +152,7 @@ class TownhouseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-        .andDo(print())
+        // .andDo(print())
         .andExpect(status().isUnprocessableEntity());
     }
 

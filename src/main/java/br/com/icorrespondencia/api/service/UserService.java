@@ -33,7 +33,7 @@ public class UserService implements CrudService<UserDTO, Long> {
     @Override
     public UserDTO show(final Long id) {
         return repo
-                .findById(id)
+                .getOneByIdAndExcludedAtIsNull(id)
                 .map(mapper::toDTO)
                 .orElseThrow(ResourceNotFoundException::new);
     }
