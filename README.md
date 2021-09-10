@@ -65,11 +65,11 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 
 #### Preparando o ambiente
 
-Após instalar e configurar as ferramentas de sua preferência, ao executar a aplicação pela primeira vez, será criada a estrutura de tabelas necessárias.
+Após instalar e configurar as ferramentas de sua preferência, ao executar a aplicação pela primeira vez, será criada a estrutura de tabelas necessárias ou poderá criá-las manualmente. O script contendo a estrutura da base de dados pode ser encontrado em `src/main/resources/schema.sql`.
 
 :warning: É necessário que a base de dados tenha sido criada previamente.
 
-:warning: Para que a aplicação consiga acessar a base de dados, edite o arquivo `.env.template` ou exporte as variáveis de ambiente no seu sistema operacional.
+:warning: Para que a aplicação consiga acessar a base de dados, edite o arquivo `.env.template` ou exporte as variáveis de ambiente no seu sistema operacional conforme detalhes em arquivo.
 
 #### Executando a aplicação
 
