@@ -27,4 +27,7 @@ public class User extends Person {
 
     @Column(nullable = false, length = 64)
     private String password;
+
+    @Column
+    private String email;
 }

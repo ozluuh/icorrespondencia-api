@@ -31,4 +31,7 @@ public class Townhouse extends Person {
 
     @Column(length = 18, nullable = false)
     private String cnpj;
+
+    @Column
+    private String email;
 }

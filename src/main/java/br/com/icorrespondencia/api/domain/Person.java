@@ -40,9 +40,6 @@ public class Person {
     @Column(unique = true, nullable = false, updatable = false)
     protected final UUID publicId = UUID.randomUUID();
 
-    @Column(unique = true)
-    protected String email;
-
     @Builder.Default
     @Column(nullable = false, updatable = false)
     protected final LocalDateTime createdAt = LocalDateTime.now();

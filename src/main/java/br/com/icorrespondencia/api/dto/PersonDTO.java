@@ -3,7 +3,6 @@ package br.com.icorrespondencia.api.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -25,8 +24,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class PersonDTO {
 
-    protected static final String ENTER_A_VALID_MAIL_VALIDATION_MESSAGE = "Enter a valid email";
-
     protected static final String FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE = "Field should not be filled";
 
     protected static final String FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE = "Field must be filled";
@@ -41,9 +38,6 @@ public class PersonDTO {
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     @NotNull(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Put.class)
     protected UUID publicId;
-
-    @Email(message = ENTER_A_VALID_MAIL_VALIDATION_MESSAGE, regexp = "^[A-z0-9\\.]+@[A-z0-9]+\\.[A-z]{1,}\\.?[A-z]+$")
-    protected String email;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
