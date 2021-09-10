@@ -16,6 +16,7 @@
 
 -   [Sobre](#sobre)
 -   [Documentos do projeto](#documentos-do-projeto)
+-   [Funcionalidades](#funcionalidades)
 -   [Como executar](#como-executar)
     -   [Pré-requisitos](#pré-requisitos)
         -   [Preparando o ambiente](#preparando-o-ambiente)
@@ -35,6 +36,18 @@ Projeto desenvolvido para a **Challenge 2021** proposta pela instituição **FIA
 Os documentos do projeto: **Escopo**, **Modelagem de dados** dentre outros poderão ser encontrados [aqui](docs/README.md).
 
 :warning: Ao todo possuem quatro sprints para a realização desse projeto em **2021**. A documentação final será disponibilizada em formato de **PDF** no mesmo diretório.
+
+## Funcionalidades
+
+:warning: Ainda em desenvolvimento
+
+-   [ ] **Usuários:** endpoint principal de cadastro de usuários da aplicação, são divididos em:
+    -   [ ] **Admin**: visão de administrador do condomínio;
+    -   [x] **User**: visão de morador do condomínio;
+-   [ ] **Correspondências**: os moradores poderão ver informações de suas correspondências e acompanhar por um dashboard na aplicação mobile
+-   [ ] **Condomínios:** endpoint principal de cadastro de condomínios associados
+    -   [ ] possui um dashboard mobile com dados resumidos das correspondências (totalizador)
+    -   [ ] visualização de detalhes de blocos e apartamentos cadastrados;
 
 ## Como executar
 
