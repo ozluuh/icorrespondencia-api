@@ -99,12 +99,12 @@ Após instalar e configurar as ferramentas de sua preferência, ao executar a ap
 
 ## Autores
 
-| Nome| RM | Função | Social |
+| Nome | RM | Função | Social |
 | - | - | - | - |
-| Daiane Estenio  | 84198 | Project manager     |
-| Denis Mantovani | 86225 |                     | [![LinkedIn badge](https://img.shields.io/badge/-denismantovani-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/denis-mantovani)](https://linkedin.com/in/denis-mantovani)                                                                                                                                                                                                    |
+| Daiane Estenio  | 84198 | Project manager     | [![Github badge](https://img.shields.io/badge/-daianeestenio-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/daianeestenio)](https://github.com/daianeestenio) [![LinkedIn badge](https://img.shields.io/badge/-daianeestenio-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/daiane-estenio-85aba4182)](https://linkedin.com/in/daiane-estenio-85aba4182) |
+| Denis Mantovani | 86225 |                     | [![LinkedIn badge](https://img.shields.io/badge/-denismantovani-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/denis-mantovani)](https://linkedin.com/in/denis-mantovani) |
 | Lucas Oliveira  | 85142 | Software architect  | [![Github badge](https://img.shields.io/badge/-Lukinhas08-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/Lukinhas08)](https://github.com/Lukinhas08) [![LinkedIn badge](https://img.shields.io/badge/-lucasoliveira-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/lucas-oliveira-bba345198)](https://linkedin.com/in/lucas-oliveira-bba345198) |
-| Luís Paulino    | 85398 | Fullstack Developer | [![Github badge](https://img.shields.io/badge/-ozluuh-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/ozluuh)](https://github.com/ozluuh) [![LinkedIn badge](https://img.shields.io/badge/-ozluuh-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/ozluuh)](https://linkedin.com/in/ozluuh)                                                        |
+| Luís Paulino    | 85398 | Fullstack Developer | [![Github badge](https://img.shields.io/badge/-ozluuh-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/ozluuh)](https://github.com/ozluuh) [![LinkedIn badge](https://img.shields.io/badge/-ozluuh-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://linkedin.com/in/ozluuh)](https://linkedin.com/in/ozluuh) |
 
 ## Licença
 
