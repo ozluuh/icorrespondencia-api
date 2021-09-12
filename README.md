@@ -65,7 +65,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 
 #### Preparando o ambiente
 
-Após instalar e configurar as ferramentas de sua preferência, ao executar a aplicação pela primeira vez, será criada a estrutura de tabelas necessárias ou poderá criá-las manualmente. O script contendo a estrutura da base de dados pode ser encontrado em `src/main/resources/schema.sql`.
+Após instalar e configurar as ferramentas de sua preferência, ao executar a aplicação pela primeira vez, será criada a estrutura de tabelas necessárias.
 
 :warning: É necessário que a base de dados tenha sido criada previamente.
 
