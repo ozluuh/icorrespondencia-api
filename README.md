@@ -16,6 +16,7 @@
 
 -   [Sobre](#sobre)
 -   [Documentos do projeto](#documentos-do-projeto)
+-   [Protótipo IOT](#protótipo)
 -   [Funcionalidades](#funcionalidades)
 -   [Como executar](#como-executar)
     -   [Pré-requisitos](#pré-requisitos)
@@ -36,6 +37,10 @@ Projeto desenvolvido para a **Challenge 2021** proposta pela instituição **FIA
 Os documentos do projeto: **Escopo**, **Modelagem de dados** dentre outros poderão ser encontrados [aqui](docs/README.md).
 
 :warning: Ao todo possuem quatro sprints para a realização desse projeto em **2021**. A documentação final será disponibilizada em formato de **PDF** no mesmo diretório.
+
+# Protótipo
+
+O protótipo para a **terceira sprint** pode ser encontrado em: https://youtu.be/O7JwXDZwrSQ
 
 ## Funcionalidades
 
