@@ -1,13 +1,11 @@
 package br.com.icorrespondencia.api.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
-import br.com.icorrespondencia.api.dto.TownhouseDTO;
-import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 
@@ -22,26 +20,20 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Service
-public class TownhouseService implements CrudService<TownhouseDTO, Long> {
+public class TownhouseService implements CrudService<Townhouse, Long> {
 
     private final TownhouseRepository repository;
 
-    private final TownhouseMapper mapper;
-
     @Override
-    public List<TownhouseDTO> index() {
+    public List<Townhouse> index() {
         return repository
-                .findAllByExcludedAtIsNull()
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+                .findAllByExcludedAtIsNull();
     }
 
     @Override
-    public TownhouseDTO show(final Long id) {
+    public Townhouse show(final Long id) {
         return repository
                 .getOneByIdAndExcludedAtIsNull(id)
-                .map(mapper::toDTO)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
@@ -53,15 +45,15 @@ public class TownhouseService implements CrudService<TownhouseDTO, Long> {
     }
 
     @Override
-    public TownhouseDTO store(final TownhouseDTO entity) {
-        final Townhouse storedTownhouse = repository.save(mapper.toDomain(entity));
-
-        return mapper.toDTO(storedTownhouse);
+    public Townhouse store(final Townhouse entity) {
+        return repository.save(entity);
     }
 
     @Override
-    public void update(final TownhouseDTO entity) {
+    public void update(Townhouse entity) {
         show(entity.getId());
+
+        entity.setUpdatedAt(LocalDateTime.now());
 
         store(entity);
     }

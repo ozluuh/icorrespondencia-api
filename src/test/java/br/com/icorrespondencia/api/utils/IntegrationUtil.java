@@ -2,7 +2,7 @@ package br.com.icorrespondencia.api.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class IntegrationUtil {
+public final class IntegrationUtil {
 
     public static final String asJsonString(final Object entity) {
         try {
