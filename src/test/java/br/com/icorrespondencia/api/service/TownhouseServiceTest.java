@@ -19,122 +19,107 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
-import br.com.icorrespondencia.api.dto.TownhouseDTO;
-import br.com.icorrespondencia.api.mapper.TownhouseMapper;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 import br.com.icorrespondencia.api.utils.TownhouseCreator;
-import br.com.icorrespondencia.api.utils.TownhouseDTOCreator;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("Service: Townhouse tests")
 class TownhouseServiceTest {
 
     @InjectMocks
-    TownhouseService townhouseService;
+    TownhouseService service;
 
     @Mock
-    TownhouseRepository townhouseRepositoryMock;
-
-    @Mock
-    TownhouseMapper mapper;
+    TownhouseRepository repo;
 
     @BeforeEach
-    void setup() {
-        Townhouse townhouseToBeReturned = TownhouseCreator.valid();
+    void setUp() {
+        Townhouse expectedReturn = TownhouseCreator.valid();
 
-        when(townhouseRepositoryMock.findAllByExcludedAtIsNull())
-            .thenReturn(List.of(townhouseToBeReturned));
+        when(repo.findAllByExcludedAtIsNull())
+            .thenReturn(List.of(expectedReturn));
 
-        when(townhouseRepositoryMock.getOneByIdAndExcludedAtIsNull(1L))
-            .thenReturn(Optional.of(townhouseToBeReturned));
+        when(repo.getOneByIdAndExcludedAtIsNull(1L))
+            .thenReturn(Optional.of(expectedReturn));
 
-        when(mapper.toDomain(any()))
-            .thenReturn(townhouseToBeReturned);
+        doNothing()
+            .when(repo).excludeAndDeactivateById(1L);
 
-        when(mapper.toDTO(any()))
-            .thenReturn(TownhouseDTOCreator.valid());
+        when(repo.save(any(Townhouse.class)))
+            .thenReturn(expectedReturn);
+
+        when(repo.getOneByIdAndExcludedAtIsNull(-1L))
+            .thenReturn(Optional.empty());
     }
 
     @Test
     @DisplayName("context loads should verify satisfied dependencies when successful")
     void contextLoads_ShouldVerifySatisfiedDependencies_WhenSuccessful() {
-        assertThat(townhouseService).isNotNull();
+        assertThat(service).isNotNull();
 
-        assertThat(townhouseRepositoryMock).isNotNull();
-
-        assertThat(mapper).isNotNull();
+        assertThat(repo).isNotNull();
     }
 
     @Test
     @DisplayName("destroy should not throw any exception when successful")
     void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
-        doNothing()
-            .when(townhouseRepositoryMock).excludeAndDeactivateById(1L);
-
-        assertThatCode(() -> townhouseService.destroy(1L))
+        assertThatCode(() -> service.destroy(1L))
             .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("index should returns TownhouseDTO list when successful")
-    void index_ShouldReturnsTownhouseDTOList_WhenSuccessful() {
-        TownhouseDTO townhouseExpected = TownhouseDTOCreator.valid();
+    @DisplayName("index should returns Townhouse list when successful")
+    void index_ShouldReturnsTownhouseList_WhenSuccessful() {
+        Townhouse expected = TownhouseCreator.valid();
 
-        List<TownhouseDTO> townhouseResult = townhouseService.index();
+        List<Townhouse> result = service.index();
 
-        assertThat(townhouseResult)
+        assertThat(result)
             .isNotNull()
             .element(0)
-                .isInstanceOf(TownhouseDTO.class)
-                .isEqualTo(townhouseExpected);
+                .isInstanceOf(Townhouse.class)
+                .isEqualTo(expected);
     }
 
     @Test
-    @DisplayName("store should returns TownhouseDTO when successful")
-    void store_ShouldReturnsTownhouseDTO_WhenSuccessful() {
-        TownhouseDTO toBeStored = TownhouseDTOCreator.toBeStored();
+    @DisplayName("store should returns Townhouse when successful")
+    void store_ShouldReturnsTownhouse_WhenSuccessful() {
+        Townhouse toBeStored = TownhouseCreator.store();
 
-        when(townhouseRepositoryMock.save(mapper.toDomain(TownhouseDTOCreator.toBeStored())))
-            .thenReturn(TownhouseCreator.valid());
+        Townhouse expected = TownhouseCreator.valid();
 
-        TownhouseDTO townhouseExpected = TownhouseDTOCreator.valid();
+        Townhouse result = service.store(toBeStored);
 
-        TownhouseDTO townhouseResult = townhouseService.store(toBeStored);
-
-        assertThat(townhouseResult)
-            .isInstanceOf(TownhouseDTO.class)
-            .isEqualTo(townhouseExpected);
+        assertThat(result)
+            .isInstanceOf(Townhouse.class)
+            .isEqualTo(expected);
     }
 
     @Test
-    @DisplayName("show should returns TownhouseDTO when successful")
-    void show_ShouldReturnsTownhouseDTO_WhenSuccessful() {
-        TownhouseDTO townhouseExpected = TownhouseDTOCreator.valid();
+    @DisplayName("show should returns Townhouse when successful")
+    void show_ShouldReturnsTownhouse_WhenSuccessful() {
+        Townhouse expected = TownhouseCreator.valid();
 
-        TownhouseDTO townhouseResult = townhouseService.show(1L);
+        Townhouse result = service.show(1L);
 
-        assertThat(townhouseResult)
+        assertThat(result)
             .isNotNull()
-            .isInstanceOf(TownhouseDTO.class)
-            .isEqualTo(townhouseExpected);
+            .isInstanceOf(Townhouse.class)
+            .isEqualTo(expected);
     }
 
     @Test
     @DisplayName("update should not throw any exception when successful")
     void update_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> townhouseService.update(TownhouseDTOCreator.updated()))
+        assertThatCode(() -> service.update(TownhouseCreator.valid()))
             .doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("show should throw ResourceNotFoundException when id not found")
     void show_ShouldThrowResourceNotFoundException_WhenIdNotFound() {
-        when(townhouseRepositoryMock.getOneByIdAndExcludedAtIsNull(2L))
-            .thenReturn(Optional.empty());
-
         assertThatExceptionOfType(ResourceNotFoundException.class)
-            .isThrownBy(() -> townhouseService.show(2L))
-            .withMessageContaining("Resource not found");
+            .isThrownBy(() -> service.show(-1L));
     }
 }

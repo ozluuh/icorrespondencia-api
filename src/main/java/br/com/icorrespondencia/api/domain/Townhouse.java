@@ -30,7 +30,7 @@ import lombok.ToString;
 @JsonView(View.Public.class)
 @Setter
 @Getter
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @Entity
 @DiscriminatorValue("J")
