@@ -19,6 +19,7 @@ Table person {
     excluded_at timestamp
     active boolean [default: true, not null]
     person_type person_type [not null]
+    updated_at timestamp
 }
 
 Table users {
