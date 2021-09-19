@@ -7,46 +7,51 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import br.com.icorrespondencia.api.dto.validation.View;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 /**
  * Townhouse model to persists data
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
+@JsonView(View.Public.class)
 @Setter
 @Getter
-@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 @DiscriminatorValue("J")
 public class Townhouse extends Person {
 
+    private static final String ENTER_A_VALID_MAIL_VALIDATION_MESSAGE = "Enter a valid email";
+
     private String site;
 
+    @NotEmpty(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE)
     @Column(length = 18, nullable = false)
     private String cnpj;
 
-    @Column
+    @Email(message = ENTER_A_VALID_MAIL_VALIDATION_MESSAGE, regexp = "^[A-z0-9\\.]+@[A-z0-9]+\\.[A-z]{1,}\\.?[A-z]+$")
     private String email;
 
     @Column(length = 11)
     private String phone;
 
-    @OneToMany(mappedBy = "townhouse", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonView(View.Internal.class)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "townhouse", cascade = CascadeType.ALL)
     private List<Block> blocks;
 }
