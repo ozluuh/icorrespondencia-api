@@ -4,31 +4,23 @@ import br.com.icorrespondencia.api.domain.Townhouse;
 
 public class TownhouseCreator {
 
-    public static final Townhouse toBeStored() {
-        return Townhouse
-                    .builder()
-                    .name("Gandalf Town")
-                    .cnpj("27.419.373/0001-58")
-                    .email("gandalf@fakemail.com")
-                    .site("www.towngandalf.com")
-                .build();
+    public static final Townhouse store() {
+        Townhouse townhouse = new Townhouse();
+
+        townhouse.setName("Gandalf Town");
+        townhouse.setCnpj("27.419.373/0001-58");
+        townhouse.setEmail("gandalf@fakemail.com");
+        townhouse.setSite("www.towngandalf.com");
+        townhouse.setPhone("11988887777");
+
+        return townhouse;
     }
 
     public static final Townhouse valid() {
-        Townhouse toBeReturned = toBeStored();
+        Townhouse townhouse = store();
 
-        toBeReturned.setId(1L);
+        townhouse.setId(1L);
 
-        return toBeReturned;
-    }
-
-    public static final Townhouse updated() {
-        Townhouse toBeReturned = valid();
-
-        toBeReturned.setName("Frodo Town");
-        toBeReturned.setSite("www.townfrodo.com");
-        toBeReturned.setEmail("frodo.town@fakemail.com");
-
-        return toBeReturned;
+        return townhouse;
     }
 }
