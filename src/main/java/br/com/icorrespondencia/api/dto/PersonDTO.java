@@ -7,10 +7,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import br.com.icorrespondencia.api.exception.ValidationGroups;
+import br.com.icorrespondencia.api.dto.validation.ValidationGroups;
+import br.com.icorrespondencia.api.dto.validation.View;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@JsonView(View.Public.class)
 public class PersonDTO {
 
     protected static final String FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE = "Field should not be filled";
@@ -43,6 +46,7 @@ public class PersonDTO {
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     protected LocalDateTime createdAt;
 
+    @JsonView(View.Internal.class)
     @JsonSerialize(using = ToStringSerializer.class)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     protected LocalDateTime excludedAt;

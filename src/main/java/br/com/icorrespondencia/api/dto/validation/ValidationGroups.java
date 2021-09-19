@@ -1,4 +1,4 @@
-package br.com.icorrespondencia.api.exception;
+package br.com.icorrespondencia.api.dto.validation;
 
 import javax.validation.groups.Default;
 

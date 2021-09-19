@@ -2,6 +2,7 @@ package br.com.icorrespondencia.api.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,7 +12,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -21,9 +25,11 @@ import lombok.experimental.SuperBuilder;
  * @since 0.1
  * @version 0.1
  */
-@Data
+@Setter
+@Getter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
+@ToString
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
@@ -41,6 +47,6 @@ public class Townhouse extends Person {
     @Column(length = 11)
     private String phone;
 
-    @OneToMany(mappedBy = "townhouse")
+    @OneToMany(mappedBy = "townhouse", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Block> blocks;
 }

@@ -9,9 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Data
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 @Entity
 public class Room {
 
@@ -22,6 +31,7 @@ public class Room {
     @Column(precision = 3, nullable = false)
     private Integer number;
 
+    @JsonIgnore
     @JoinColumn
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Block block;

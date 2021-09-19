@@ -3,6 +3,8 @@ package br.com.icorrespondencia.api.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.icorrespondencia.api.dto.TownhouseDTO;
-import br.com.icorrespondencia.api.exception.ValidationGroups;
+import br.com.icorrespondencia.api.dto.validation.ValidationGroups;
+import br.com.icorrespondencia.api.dto.validation.View;
 import br.com.icorrespondencia.api.service.TownhouseService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class TownhouseController implements CrudController<TownhouseDTO, Long> {
     private final TownhouseService service;
 
     @GetMapping
+    @JsonView(View.Public.class)
     @Override
     public ResponseEntity<List<TownhouseDTO>> index() {
         return ResponseEntity.ok(service.index());

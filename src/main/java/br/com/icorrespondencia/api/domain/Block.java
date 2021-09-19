@@ -12,9 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Data
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 @Entity
 public class Block {
 
@@ -25,10 +34,11 @@ public class Block {
     @Column(length = 25)
     private String name;
 
+    @JsonIgnore
     @JoinColumn
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     private Townhouse townhouse;
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
     private List<Room> rooms;
 }
