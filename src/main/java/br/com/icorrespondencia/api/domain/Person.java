@@ -56,12 +56,12 @@ public class Person {
     @Column(unique = true, nullable = false, updatable = false)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     @NotNull(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Put.class)
-    protected final UUID publicId = UUID.randomUUID();
+    protected UUID publicId = UUID.randomUUID();
 
     @JsonSerialize(using = ToStringSerializer.class)
     @Column(nullable = false, updatable = false)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
-    protected final LocalDateTime createdAt = LocalDateTime.now();
+    protected LocalDateTime createdAt = LocalDateTime.now();
 
     @JsonView(View.Internal.class)
     @JsonSerialize(using = ToStringSerializer.class)
