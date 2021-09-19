@@ -1,8 +1,11 @@
 package br.com.icorrespondencia.api.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -37,4 +40,7 @@ public class Townhouse extends Person {
 
     @Column(length = 11)
     private String phone;
+
+    @OneToMany(mappedBy = "townhouse")
+    private List<Block> blocks;
 }
