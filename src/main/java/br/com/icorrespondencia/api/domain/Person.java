@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -56,12 +58,12 @@ public class Person {
     @Column(unique = true, nullable = false, updatable = false)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
     @NotNull(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Put.class)
-    protected UUID publicId = UUID.randomUUID();
+    protected UUID publicId;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @Column(nullable = false, updatable = false)
     @Null(message = FIELD_SHOULD_NOT_BE_FILLED_VALIDATION_MESSAGE, groups = ValidationGroups.Post.class)
-    protected LocalDateTime createdAt = LocalDateTime.now();
+    protected LocalDateTime createdAt;
 
     @JsonView(View.Internal.class)
     @JsonSerialize(using = ToStringSerializer.class)
@@ -73,4 +75,15 @@ public class Person {
 
     @Column(nullable = false)
     protected boolean active = true;
+
+    @PrePersist
+    private void preSave() {
+        this.publicId = UUID.randomUUID();
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void preUpdate(){
+        this.updatedAt = LocalDateTime.now();
+    }
 }

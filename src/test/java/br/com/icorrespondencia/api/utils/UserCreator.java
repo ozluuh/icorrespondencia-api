@@ -15,9 +15,6 @@ public class UserCreator {
         user.setUsername("omiranha");
         user.setPassword("aguentaimj");
 
-        user.setCreatedAt(null);
-        user.setPublicId(null);
-
         return user;
     }
 

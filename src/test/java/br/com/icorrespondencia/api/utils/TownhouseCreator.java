@@ -16,9 +16,6 @@ public class TownhouseCreator {
         townhouse.setSite("www.towngandalf.com");
         townhouse.setPhone("11988887777");
 
-        townhouse.setCreatedAt(null);
-        townhouse.setPublicId(null);
-
         return townhouse;
     }
 
