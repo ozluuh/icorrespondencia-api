@@ -25,7 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.icorrespondencia.api.dto.UserDTO;
+import br.com.icorrespondencia.api.domain.User;
 import br.com.icorrespondencia.api.service.UserService;
 import br.com.icorrespondencia.api.utils.UserCreator;
 
@@ -43,8 +43,8 @@ public class UserControllerTest {
     static final String BASE_ENDPOINT = "/users";
 
     @BeforeEach
-    void setup() {
-        UserDTO expectedReturn = UserCreator.validDTO();
+    void setUp() {
+        User expectedReturn = UserCreator.valid();
 
         when(service.index())
             .thenReturn(List.of(expectedReturn));
@@ -52,7 +52,7 @@ public class UserControllerTest {
         when(service.show(1L))
             .thenReturn(expectedReturn);
 
-        when(service.store(any(UserDTO.class)))
+        when(service.store(any(User.class)))
             .thenReturn(expectedReturn);
 
         doNothing()
@@ -71,7 +71,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("index should response with status 200 when successful")
     void index_ShouldResponse200_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
             get(BASE_ENDPOINT)
@@ -81,14 +81,13 @@ public class UserControllerTest {
         )
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[0].publicId").exists())
-        .andExpect(jsonPath("$.[0].username").value(expected.getUsername()))
-        .andExpect(jsonPath("$.[0].password").value(expected.getPassword()));
+        .andExpect(jsonPath("$.[0].username").value(expected.getUsername()));
     }
 
     @Test
     @DisplayName("show should response with status 200 when successful")
     void show_ShouldResponse200_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
             get(BASE_ENDPOINT + "/{id}", 1L)
@@ -104,7 +103,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("store should response with status 201 when successful")
     void store_ShouldResponse201_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
             post(BASE_ENDPOINT)
@@ -133,7 +132,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("update should response with status 204 when successful")
     void update_ShouldResponse204_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
             put(BASE_ENDPOINT)

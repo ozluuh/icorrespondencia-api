@@ -1,5 +1,8 @@
 package br.com.icorrespondencia.api.utils;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import br.com.icorrespondencia.api.domain.User;
 
 public class UserCreator {
@@ -22,6 +25,8 @@ public class UserCreator {
         User user = store();
 
         user.setId(1L);
+        user.setPublicId(UUID.randomUUID());
+        user.setCreatedAt(LocalDateTime.now());
 
         return user;
     }
