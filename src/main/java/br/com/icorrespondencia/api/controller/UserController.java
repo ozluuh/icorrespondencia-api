@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.icorrespondencia.api.domain.User;
+import br.com.icorrespondencia.api.domain.validation.ValidationGroups;
 import br.com.icorrespondencia.api.domain.validation.View;
 import br.com.icorrespondencia.api.service.UserService;
 
@@ -46,7 +48,7 @@ public class UserController implements CrudController<User, Long> {
     @PostMapping
     @Override
     public ResponseEntity<User> store(
-            @RequestBody User user,
+            @RequestBody @Validated(ValidationGroups.Post.class) User user,
             UriComponentsBuilder uriBuilder
     ) {
         User body = service.store(user);
@@ -69,7 +71,7 @@ public class UserController implements CrudController<User, Long> {
 
     @PutMapping
     @Override
-    public ResponseEntity<Void> update(@RequestBody User entity) {
+    public ResponseEntity<Void> update(@RequestBody @Validated(ValidationGroups.Put.class) User entity) {
         service.update(entity);
 
         return ResponseEntity.noContent().build();

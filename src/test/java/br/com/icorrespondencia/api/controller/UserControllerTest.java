@@ -103,7 +103,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("store should response with status 201 when successful")
     void store_ShouldResponse201_WhenSuccessful() throws Exception {
-        User expected = UserCreator.valid();
+        User expected = UserCreator.store();
 
         mvc.perform(
             post(BASE_ENDPOINT)
