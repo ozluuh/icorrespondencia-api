@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import br.com.icorrespondencia.api.dto.validation.ValidationGroups;
-import br.com.icorrespondencia.api.dto.validation.View;
+import br.com.icorrespondencia.api.domain.validation.ValidationGroups;
+import br.com.icorrespondencia.api.domain.validation.View;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
