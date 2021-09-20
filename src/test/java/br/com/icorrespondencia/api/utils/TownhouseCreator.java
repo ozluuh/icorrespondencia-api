@@ -1,5 +1,8 @@
 package br.com.icorrespondencia.api.utils;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import br.com.icorrespondencia.api.domain.Townhouse;
 
 public class TownhouseCreator {
@@ -23,6 +26,8 @@ public class TownhouseCreator {
         Townhouse townhouse = store();
 
         townhouse.setId(1L);
+        townhouse.setCreatedAt(LocalDateTime.now());
+        townhouse.setPublicId(UUID.randomUUID());
 
         return townhouse;
     }
