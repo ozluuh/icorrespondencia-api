@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import br.com.icorrespondencia.api.dto.validation.View;
+import br.com.icorrespondencia.api.domain.validation.View;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

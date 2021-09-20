@@ -1,4 +1,4 @@
-package br.com.icorrespondencia.api.dto.validation;
+package br.com.icorrespondencia.api.domain.validation;
 
 public interface View {
 

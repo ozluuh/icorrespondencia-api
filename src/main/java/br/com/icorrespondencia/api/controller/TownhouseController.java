@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
-import br.com.icorrespondencia.api.dto.validation.ValidationGroups;
-import br.com.icorrespondencia.api.dto.validation.View;
+import br.com.icorrespondencia.api.domain.validation.ValidationGroups;
+import br.com.icorrespondencia.api.domain.validation.View;
 import br.com.icorrespondencia.api.service.TownhouseService;
 
 import lombok.RequiredArgsConstructor;

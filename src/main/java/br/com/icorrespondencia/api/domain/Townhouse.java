@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import br.com.icorrespondencia.api.dto.validation.View;
+import br.com.icorrespondencia.api.domain.validation.View;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
