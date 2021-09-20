@@ -5,18 +5,20 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import com.fasterxml.jackson.annotation.JsonView;
 
-@Data
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+import br.com.icorrespondencia.api.domain.validation.View;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@JsonView(View.Public.class)
+@Setter
+@Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 @Entity
 @Table(name = "users")
 @DiscriminatorValue("F")
@@ -25,9 +27,10 @@ public class User extends Person {
     @Column(nullable = false, length = 20, unique = true)
     private String username;
 
+    @JsonView(View.Internal.class)
     @Column(nullable = false, length = 64)
     private String password;
 
-    @Column
+    @JsonView(View.Internal.class)
     private String email;
 }
