@@ -53,8 +53,6 @@ public class TownhouseService implements CrudService<Townhouse, Long> {
     public void update(Townhouse entity) {
         show(entity.getId());
 
-        entity.setUpdatedAt(LocalDateTime.now());
-
         store(entity);
     }
 }

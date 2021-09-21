@@ -38,8 +38,6 @@ public class UserService implements CrudService<User, Long> {
     public void update(final User user) {
         show(user.getId());
 
-        user.setUpdatedAt(LocalDateTime.now());
-
         store(user);
     }
 

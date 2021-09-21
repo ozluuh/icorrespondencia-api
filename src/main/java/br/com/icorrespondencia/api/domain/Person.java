@@ -80,10 +80,11 @@ public class Person {
     private void preSave() {
         this.publicId = UUID.randomUUID();
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
-    private void preUpdate(){
+    private void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 }
