@@ -18,8 +18,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.icorrespondencia.api.domain.User;
-import br.com.icorrespondencia.api.dto.UserDTO;
-import br.com.icorrespondencia.api.mapper.UserMapper;
 import br.com.icorrespondencia.api.repository.UserRepository;
 import br.com.icorrespondencia.api.utils.UserCreator;
 
@@ -33,31 +31,21 @@ class UserServiceTest {
     @Mock
     UserRepository repo;
 
-    @Mock
-    UserMapper mapper;
-
     @BeforeEach
     void setup() {
-        User userMock = UserCreator.valid();
-
-        UserDTO userDTOMock = UserCreator.validDTO();
-
-        when(mapper.toDTO(any(User.class)))
-            .thenReturn(userDTOMock);
-
-        when(mapper.toDomain(any(UserDTO.class)))
-            .thenReturn(userMock);
+        User expectedReturn = UserCreator.valid();
 
         when(repo.findAllByExcludedAtIsNull())
-            .thenReturn(List.of(userMock));
+            .thenReturn(List.of(expectedReturn));
 
         when(repo.getOneByIdAndExcludedAtIsNull(1L))
-            .thenReturn(Optional.of(userMock));
+            .thenReturn(Optional.of(expectedReturn));
 
         when(repo.save(any(User.class)))
-            .thenReturn(userMock);
+            .thenReturn(expectedReturn);
 
-        doNothing().when(repo).excludeAndDeactivateById(1L);
+        doNothing()
+            .when(repo).excludeAndDeactivateById(1L);
     }
 
     @Test
@@ -66,58 +54,56 @@ class UserServiceTest {
         assertThat(service).isNotNull();
 
         assertThat(repo).isNotNull();
-
-        assertThat(mapper).isNotNull();
     }
 
     @Test
-    @DisplayName("index should return UserDTO list when successful")
-    void index_ShouldReturnUserDTOList_WhenSuccessful() {
-        UserDTO expected = UserCreator.validDTO();
+    @DisplayName("index should return User list when successful")
+    void index_ShouldReturnUserList_WhenSuccessful() {
+        User expected = UserCreator.valid();
 
-        List<UserDTO> result = service.index();
+        List<User> result = service.index();
 
         assertThat(result)
             .isNotNull()
             .element(0)
-                .isInstanceOf(UserDTO.class)
+                .isInstanceOf(User.class)
                 .isEqualTo(expected);
     }
 
     @Test
-    @DisplayName("show should return UserDTO when successful")
-    void show_ShouldReturnUserDTO_WhenSuccessful() {
-        UserDTO expected = UserCreator.validDTO();
+    @DisplayName("show should return User when successful")
+    void show_ShouldReturnUser_WhenSuccessful() {
+        User expected = UserCreator.valid();
 
-        UserDTO result = service.show(1L);
+        User result = service.show(1L);
 
         assertThat(result)
             .isNotNull()
-            .isInstanceOf(UserDTO.class)
+            .isInstanceOf(User.class)
             .isEqualTo(expected);
     }
 
     @Test
     @DisplayName("store should return a valid user when successful")
     void store_ShouldReturnValidUser_WhenSuccessful() {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
-        UserDTO toBeStored = UserCreator.storeDTO();
+        User toBeStored = UserCreator.store();
 
-        UserDTO result = service.store(toBeStored);
+        User result = service.store(toBeStored);
 
         assertThat(result)
             .isNotNull()
-            .isInstanceOf(UserDTO.class)
+            .isInstanceOf(User.class)
             .isEqualTo(expected);
     }
 
     @Test
     @DisplayName("update should not throw any exception when successful")
     void update_ShouldNotThrowAnyException_WhenSuccessful() {
-        UserDTO validDTO = UserCreator.validDTO();
+        User valid = UserCreator.valid();
 
-        assertThatCode(() -> service.update(validDTO))
+        assertThatCode(() -> service.update(valid))
             .doesNotThrowAnyException();
     }
 

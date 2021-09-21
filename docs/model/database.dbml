@@ -19,6 +19,7 @@ Table person {
     excluded_at timestamp
     active boolean [default: true, not null]
     person_type person_type [not null]
+    updated_at timestamp
 }
 
 Table users {
@@ -37,24 +38,11 @@ Table townhouse {
     email varchar(255) [unique]
     cnpj varchar(18) [unique, not null]
     site varchar(255)
+    phone varchar(11)
 
     Indexes {
         id [pk]
     }
-}
-
-Table phone {
-    id bigint [pk, increment, not null]
-    townhouse_id bigint [not null, ref: > townhouse.id]
-    phone varchar(11) [not null]
-    phone_type phone_type [default: 'LANDLINE', not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
-}
-
-Enum phone_type {
-    CELLPHONE
-    LANDLINE
 }
 
 Table city {
@@ -83,6 +71,7 @@ Table address {
     street_number varchar(5)
     complement varchar(50)
     created_at timestamp [default: `now()`, not null]
+    updated_at timestamp
     excluded_at timestamp
 }
 
@@ -90,17 +79,12 @@ Table block {
     id bigint [pk, increment, not null]
     townhouse_id bigint [not null, ref: > townhouse.id]
     name varchar(25) [not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
 }
 
 Table room {
     id bigint [pk, increment, not null]
-    block_id bigint [not null, ref: - block.id]
+    block_id bigint [not null, ref: > block.id]
     number smallint [not null]
-    floor varchar(3) [not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
 }
 
 Table delivery {

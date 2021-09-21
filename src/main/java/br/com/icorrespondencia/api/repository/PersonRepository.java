@@ -3,9 +3,9 @@ package br.com.icorrespondencia.api.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 1.0
  */
 @NoRepositoryBean
-public interface PersonRepository<E, K> extends CrudRepository<E, K> {
+public interface PersonRepository<E, K> extends JpaRepository<E, K> {
 
     /**
      * {@literal List} all instances not marked as excluded
