@@ -32,7 +32,7 @@ public class Role {
     @JoinColumn(nullable = false)
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(nullable = false)
     private Townhouse townhouse;
 
