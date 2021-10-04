@@ -1,7 +1,7 @@
 package br.com.icorrespondencia.api.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements CrudService<User, Long> {
+public class UserService implements CrudService<User, UUID> {
 
     private final UserRepository repo;
 
@@ -23,7 +23,7 @@ public class UserService implements CrudService<User, Long> {
     }
 
     @Override
-    public User show(final Long id) {
+    public User show(final UUID id) {
         return repo
                 .getOneByIdAndExcludedAtIsNull(id)
                 .orElseThrow(ResourceNotFoundException::new);
@@ -42,10 +42,43 @@ public class UserService implements CrudService<User, Long> {
     }
 
     @Override
-    public void destroy(final Long id) {
+    public void destroy(final UUID id) {
         show(id);
 
         repo.excludeAndDeactivateById(id);
     }
 
+    /**
+     * Deactivate user by id
+     *
+     * @param UUID id
+     * @return true if user deactivated with success; else false.
+     */
+    public boolean deactivate(final UUID id){
+        show(id);
+
+        int status = repo.deactivateById(id);
+
+        return status != 0;
+    }
+
+    /**
+     * Activate user by id
+     *
+     * @param UUID id
+     * @return true if user successfully activated; else false.
+     */
+    public boolean activate(final UUID id){
+        show(id);
+
+        int status = repo.activateById(id);
+
+        return status != 0;
+    }
+
+    public User userExists(String username, String password) {
+        return repo
+                .findByUsernameAndPassword(username, password)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
 }

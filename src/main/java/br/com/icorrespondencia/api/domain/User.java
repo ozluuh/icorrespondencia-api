@@ -1,10 +1,17 @@
 package br.com.icorrespondencia.api.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -17,7 +24,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @JsonView(View.Public.class)
 @Setter
 @Getter
@@ -34,15 +43,31 @@ public class User extends Person {
     @Column(nullable = false, length = 20, unique = true)
     private String username;
 
-    @JsonView(View.Internal.class)
+    @JsonView(View.Hidden.class)
     @NotEmpty(message = FIELD_MUST_BE_FILLED_VALIDATION_MESSAGE)
     @Column(nullable = false, length = 64)
     private String password;
 
-    @JsonView(View.Internal.class)
+    @JsonView(View.Private.class)
     @Email(message = ENTER_A_VALID_MAIL_VALIDATION_MESSAGE, regexp = "^[A-z0-9\\.]+@[A-z0-9]+\\.[A-z]{1,}\\.?[A-z]+$")
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Role role;
+    @JsonView(View.Private.class)
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "users_roles",
+        joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
+    )
+    private Collection<Role> roles;
+
+    @PrePersist
+    private void onPreSave() {
+        log.debug("PreSave called");
+
+        if (this.roles == null) {
+            this.roles = new ArrayList<>();
+            this.roles.add(new Role());
+        }
+    }
 }

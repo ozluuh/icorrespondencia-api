@@ -1,7 +1,7 @@
 package br.com.icorrespondencia.api.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ import lombok.RequiredArgsConstructor;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 @RequiredArgsConstructor
 @Service
-public class TownhouseService implements CrudService<Townhouse, Long> {
+public class TownhouseService implements CrudService<Townhouse, UUID> {
 
     private final TownhouseRepository repository;
 
@@ -31,14 +31,14 @@ public class TownhouseService implements CrudService<Townhouse, Long> {
     }
 
     @Override
-    public Townhouse show(final Long id) {
+    public Townhouse show(final UUID id) {
         return repository
                 .getOneByIdAndExcludedAtIsNull(id)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    public void destroy(final Long id) {
+    public void destroy(final UUID id) {
         show(id);
 
         repository.excludeAndDeactivateById(id);

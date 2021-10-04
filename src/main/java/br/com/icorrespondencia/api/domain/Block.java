@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@JsonView(View.Internal.class)
+@JsonView(View.Public.class)
 @Setter
 @Getter
 @EqualsAndHashCode

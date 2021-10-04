@@ -44,4 +44,26 @@ public interface PersonRepository<E, K> extends JpaRepository<E, K> {
     @Transactional
     @Query("update #{#entityName} t set t.excludedAt = CURRENT_TIMESTAMP, t.active = false where t.id = ?1")
     void excludeAndDeactivateById(K id);
+
+    /**
+     * Set entity inactive
+     *
+     * @param id to be deactivated
+     * @return number of affected records
+     */
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
+    @Query("update #{#entityName} t set t.active = false where t.id = ?1 and t.active = true")
+    int deactivateById(K id);
+
+     /**
+     * Set entity active
+     *
+     * @param id to be activated
+     * @return number of affected records
+     */
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("update #{#entityName} t set t.active = true where t.id = ?1 and t.active = false")
+    int activateById(K id);
 }

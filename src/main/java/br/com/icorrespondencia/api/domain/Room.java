@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import br.com.icorrespondencia.api.domain.validation.View;
@@ -19,7 +21,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@JsonView(View.Internal.class)
+@JsonInclude(Include.NON_NULL)
+@JsonView(View.Public.class)
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -27,6 +30,7 @@ import lombok.ToString;
 @Entity
 public class Room {
 
+    @JsonView(value = { View.Public.class, View.Specific.class })
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

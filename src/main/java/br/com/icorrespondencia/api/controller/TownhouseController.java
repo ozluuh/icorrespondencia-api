@@ -2,6 +2,7 @@ package br.com.icorrespondencia.api.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -34,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/townhouses")
-public class TownhouseController implements CrudController<Townhouse, Long> {
+public class TownhouseController implements CrudController<Townhouse, UUID> {
 
     private final TownhouseService service;
 
@@ -46,20 +47,21 @@ public class TownhouseController implements CrudController<Townhouse, Long> {
     }
 
     @GetMapping(path = "/{id}")
-    @JsonView(View.Internal.class)
+    @JsonView(View.Private.class)
     @Override
-    public ResponseEntity<Townhouse> show(@PathVariable Long id) {
+    public ResponseEntity<Townhouse> show(@PathVariable UUID id) {
         return ResponseEntity.ok(service.show(id));
     }
 
     @DeleteMapping(path = "/{id}")
     @Override
-    public ResponseEntity<Void> destroy(@PathVariable Long id) {
+    public ResponseEntity<Void> destroy(@PathVariable UUID id) {
         service.destroy(id);
 
         return ResponseEntity.noContent().build();
     }
 
+    @JsonView(View.Public.class)
     @PostMapping
     @Override
     public ResponseEntity<Townhouse> store(
@@ -71,7 +73,7 @@ public class TownhouseController implements CrudController<Townhouse, Long> {
 
         URI uri = uriBuilder
                         .path("/townhouses/{id}")
-                        .buildAndExpand(entity.getPublicId())
+                        .buildAndExpand(entity.getId())
                     .toUri();
 
         return ResponseEntity.created(uri).body(body);

@@ -1,5 +1,6 @@
 package br.com.icorrespondencia.api.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -7,9 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -27,6 +31,7 @@ import lombok.ToString;
  * @since 0.1
  * @version 1.0
  */
+@JsonInclude(Include.NON_NULL)
 @JsonView(View.Public.class)
 @Setter
 @Getter
@@ -50,7 +55,7 @@ public class Townhouse extends Person {
     @Column(length = 11)
     private String phone;
 
-    @JsonView(View.Internal.class)
+    @JsonView(View.Private.class)
     @JsonManagedReference
     @OneToMany(mappedBy = "townhouse", cascade = CascadeType.ALL)
     private List<Block> blocks;
