@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +32,8 @@ class UserServiceTest {
     @Mock
     UserRepository repo;
 
+    static final UUID VALID_ID = UUID.randomUUID();
+
     @BeforeEach
     void setup() {
         User expectedReturn = UserCreator.valid();
@@ -38,14 +41,14 @@ class UserServiceTest {
         when(repo.findAllByExcludedAtIsNull())
             .thenReturn(List.of(expectedReturn));
 
-        when(repo.getOneByIdAndExcludedAtIsNull(1L))
+        when(repo.getOneByIdAndExcludedAtIsNull(VALID_ID))
             .thenReturn(Optional.of(expectedReturn));
 
         when(repo.save(any(User.class)))
             .thenReturn(expectedReturn);
 
         doNothing()
-            .when(repo).excludeAndDeactivateById(1L);
+            .when(repo).excludeAndDeactivateById(VALID_ID);
     }
 
     @Test
@@ -75,7 +78,7 @@ class UserServiceTest {
     void show_ShouldReturnUser_WhenSuccessful() {
         User expected = UserCreator.valid();
 
-        User result = service.show(1L);
+        User result = service.show(VALID_ID);
 
         assertThat(result)
             .isNotNull()
@@ -103,6 +106,8 @@ class UserServiceTest {
     void update_ShouldNotThrowAnyException_WhenSuccessful() {
         User valid = UserCreator.valid();
 
+        valid.setId(VALID_ID);
+
         assertThatCode(() -> service.update(valid))
             .doesNotThrowAnyException();
     }
@@ -110,7 +115,7 @@ class UserServiceTest {
     @Test
     @DisplayName("destroy should not throw any exception when successful")
     void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> service.destroy(1L))
+        assertThatCode(() -> service.destroy(VALID_ID))
             .doesNotThrowAnyException();
     }
 }

@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,31 +37,37 @@ import br.com.icorrespondencia.api.utils.TownhouseCreator;
 @DisplayName("Controller: Townhouse tests")
 class TownhouseControllerTest {
 
+    private static final String BASE_ENDPOINT = "/townhouses";
+
+    private static final UUID VALID_ID = UUID.randomUUID();
+
+    private static final UUID INVALID_ID = UUID.fromString("123e4567-e89b-42d3-a456-556642440000");
+
     @MockBean
     TownhouseService service;
 
     @Autowired
     MockMvc mvc;
 
-    static final String BASE_ENDPOINT = "/townhouses";
-
     @BeforeEach
     void setUp() {
         Townhouse expectedReturn = TownhouseCreator.valid();
 
+        expectedReturn.setId(VALID_ID);
+
         when(service.index())
             .thenReturn(List.of(expectedReturn));
 
-        when(service.show(1L))
+        when(service.show(VALID_ID))
             .thenReturn(expectedReturn);
 
         when(service.store(any(Townhouse.class)))
             .thenReturn(expectedReturn);
 
         doNothing()
-            .when(service).destroy(1L);
+            .when(service).destroy(VALID_ID);
 
-        when(service.show(-1L))
+        when(service.show(INVALID_ID))
             .thenThrow(ResourceNotFoundException.class);
     }
 
@@ -86,7 +93,7 @@ class TownhouseControllerTest {
         )
         .andDo(print())
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.public_id").exists())
         .andExpect(jsonPath("$.cnpj").value(expected.getCnpj()));
     }
 
@@ -109,10 +116,10 @@ class TownhouseControllerTest {
     @DisplayName("destroy should response with status 204 when successful")
     void destroy_ShouldResponse204_WhenSuccessful() throws Exception {
         doNothing()
-            .when(service).destroy(1L);
+            .when(service).destroy(VALID_ID);
 
         mvc.perform(
-            delete(BASE_ENDPOINT + "/{id}", 1L)
+            delete(BASE_ENDPOINT + "/{id}", VALID_ID)
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -140,14 +147,16 @@ class TownhouseControllerTest {
     void show_ShouldResponse200_WhenSuccessful() throws Exception {
         Townhouse expected = TownhouseCreator.valid();
 
+        expected.setId(VALID_ID);
+
         mvc.perform(
-            get(BASE_ENDPOINT + "/{id}", 1L)
+            get(BASE_ENDPOINT + "/{id}", VALID_ID)
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(1L))
+        .andExpect(jsonPath("$.public_id").exists())
         .andExpect(jsonPath("$.cnpj").value(expected.getCnpj()));
     }
 
@@ -170,7 +179,7 @@ class TownhouseControllerTest {
     @DisplayName("show should response with status 400 when resource not found")
     void show_ShouldResponse400_WhenResourceNotFound() throws Exception {
         mvc.perform(
-            get(BASE_ENDPOINT + "/{id}", -1L)
+            get(BASE_ENDPOINT + "/{id}", INVALID_ID)
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)

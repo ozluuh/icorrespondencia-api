@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +28,10 @@ import br.com.icorrespondencia.api.utils.TownhouseCreator;
 @DisplayName("Service: Townhouse tests")
 class TownhouseServiceTest {
 
+    private static final UUID INVALID_ID = UUID.fromString("123e4567-e89b-42d3-a456-556642440000");
+
+    private static final UUID VALID_ID = UUID.randomUUID();
+
     @InjectMocks
     TownhouseService service;
 
@@ -40,16 +45,16 @@ class TownhouseServiceTest {
         when(repo.findAllByExcludedAtIsNull())
             .thenReturn(List.of(expectedReturn));
 
-        when(repo.getOneByIdAndExcludedAtIsNull(1L))
+        when(repo.getOneByIdAndExcludedAtIsNull(VALID_ID))
             .thenReturn(Optional.of(expectedReturn));
 
         doNothing()
-            .when(repo).excludeAndDeactivateById(1L);
+            .when(repo).excludeAndDeactivateById(VALID_ID);
 
         when(repo.save(any(Townhouse.class)))
             .thenReturn(expectedReturn);
 
-        when(repo.getOneByIdAndExcludedAtIsNull(-1L))
+        when(repo.getOneByIdAndExcludedAtIsNull(INVALID_ID))
             .thenReturn(Optional.empty());
     }
 
@@ -64,7 +69,7 @@ class TownhouseServiceTest {
     @Test
     @DisplayName("destroy should not throw any exception when successful")
     void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> service.destroy(1L))
+        assertThatCode(() -> service.destroy(VALID_ID))
             .doesNotThrowAnyException();
     }
 
@@ -101,7 +106,7 @@ class TownhouseServiceTest {
     void show_ShouldReturnsTownhouse_WhenSuccessful() {
         Townhouse expected = TownhouseCreator.valid();
 
-        Townhouse result = service.show(1L);
+        Townhouse result = service.show(VALID_ID);
 
         assertThat(result)
             .isNotNull()
@@ -112,7 +117,11 @@ class TownhouseServiceTest {
     @Test
     @DisplayName("update should not throw any exception when successful")
     void update_ShouldNotThrowAnyException_WhenSuccessful() {
-        assertThatCode(() -> service.update(TownhouseCreator.valid()))
+        Townhouse valid = TownhouseCreator.valid();
+
+        valid.setId(VALID_ID);
+
+        assertThatCode(() -> service.update(valid))
             .doesNotThrowAnyException();
     }
 
@@ -120,6 +129,6 @@ class TownhouseServiceTest {
     @DisplayName("show should throw ResourceNotFoundException when id not found")
     void show_ShouldThrowResourceNotFoundException_WhenIdNotFound() {
         assertThatExceptionOfType(ResourceNotFoundException.class)
-            .isThrownBy(() -> service.show(-1L));
+            .isThrownBy(() -> service.show(INVALID_ID));
     }
 }

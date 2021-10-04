@@ -21,8 +21,7 @@ public class UserCreator {
     public static final User valid() {
         User user = store();
 
-        user.setId(1L);
-        user.setPublicId(UUID.randomUUID());
+        user.setId(UUID.randomUUID());
         user.setCreatedAt(LocalDateTime.now());
 
         return user;

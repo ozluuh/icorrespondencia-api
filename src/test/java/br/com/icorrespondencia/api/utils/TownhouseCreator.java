@@ -22,9 +22,8 @@ public class TownhouseCreator {
     public static final Townhouse valid() {
         Townhouse townhouse = store();
 
-        townhouse.setId(1L);
+        townhouse.setId(UUID.randomUUID());
         townhouse.setCreatedAt(LocalDateTime.now());
-        townhouse.setPublicId(UUID.randomUUID());
 
         return townhouse;
     }
