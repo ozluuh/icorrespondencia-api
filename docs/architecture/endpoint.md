@@ -18,5 +18,5 @@
 | PUT    | /townhouses                | Atualizar condomínio       | Atualiza os dados do condomínio                | :white_check_mark: |
 | GET    | /townhouses/:id            | Visualizar condomínio      | Visualiza todos os dados do condomínio         | :white_check_mark: |
 | DELETE | /townhouses/:id            | Excluir condomínio         | Realiza a remoção do condomínio                | :white_check_mark: |
-| POST   | /townhouses/:id/deactivate | Inativar condomínio        | Desativa a atualização das informações         | :construction:     |
-| POST   | /townhouses/:id/activate   | Ativar condomínio          | Ativa a atualização das informações            | :construction:     |
+| POST   | /townhouses/:id/deactivate | Inativar condomínio        | Desativa a atualização das informações         | :white_check_mark: |
+| POST   | /townhouses/:id/activate   | Ativar condomínio          | Ativa a atualização das informações            | :white_check_mark: |

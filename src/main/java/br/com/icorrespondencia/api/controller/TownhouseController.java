@@ -87,4 +87,44 @@ public class TownhouseController implements CrudController<Townhouse, UUID> {
 
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Endpoint that deactivate given entity by id
+     *
+     * @param id to be deactivated
+     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
+     *         when entity successfully deactivated or
+     *         {@link org.springframework.http.HttpStatus#BAD_REQUEST 400 Bad
+     *         Request} if the townhouse has been previously disabled
+     */
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivate(@PathVariable UUID id) {
+        boolean isDeactivated = service.deactivate(id);
+
+        if (!isDeactivated) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+     /**
+     * Endpoint that activate given entity by id
+     *
+     * @param id to be activated
+     * @return {@link org.springframework.http.HttpStatus#NO_CONTENT 204 No Content}
+     *         when entity successfully activated or
+     *         {@link org.springframework.http.HttpStatus#BAD_REQUEST 400 Bad
+     *         Request} if the townhouse has been previously enabled
+     */
+    @PostMapping("/{id}/activate")
+    public ResponseEntity<Void> activate(@PathVariable UUID id) {
+        boolean isActivate = service.activate(id);
+
+        if (!isActivate) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -55,4 +55,16 @@ public class TownhouseService implements CrudService<Townhouse, UUID> {
 
         store(entity);
     }
+
+    public boolean deactivate(UUID id) {
+        show(id);
+
+        return repository.deactivateById(id) != 0;
+    }
+
+    public boolean activate(UUID id) {
+        show(id);
+
+        return repository.activateById(id) != 0;
+    }
 }
