@@ -45,36 +45,6 @@ Table townhouse {
     }
 }
 
-Table city {
-    id bigint [pk, increment, not null]
-    name varchar(70) [not null]
-    state char(2) [not null]
-}
-
-Table district {
-    id bigint [pk, increment, not null]
-    city_id bigint [not null, ref: > city.id]
-    name varchar(70) [not null]
-}
-
-Table street {
-    id bigint [pk, increment, not null]
-    district_id bigint [not null, ref: > district.id]
-    zipcode char(8) [unique, not null]
-    name varchar(255) [not null]
-}
-
-Table address {
-    id bigint [pk, increment, not null]
-    townhouse_id bigint [not null, ref: - townhouse.id]
-    street_id bigint [not null, ref: - street.id]
-    street_number varchar(5)
-    complement varchar(50)
-    created_at timestamp [default: `now()`, not null]
-    updated_at timestamp
-    excluded_at timestamp
-}
-
 Table block {
     id bigint [pk, increment, not null]
     townhouse_id bigint [not null, ref: > townhouse.id]
@@ -95,10 +65,14 @@ Table delivery {
     read_at timestamp
 }
 
-Table user_role {
+Table users_roles {
+    role_id bigint [not null, ref: > role.id]
+    user_id bigint [not null, ref: > users.id]
+}
+
+Table role {
     id bigint [pk, increment, not null]
-    user_id bigint [not null, ref: - users.id]
-    type role_type [default: 'ROLE_USER', not null]
+    name role_type [default: 'ROLE_USER', not null]
     townhouse_id bigint [not null, ref: - townhouse.id]
     room_id bigint [ref: - room.id]
 }
