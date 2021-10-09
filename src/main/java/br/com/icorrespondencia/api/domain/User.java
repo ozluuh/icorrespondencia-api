@@ -24,9 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 @JsonView(View.Public.class)
 @Setter
 @Getter
@@ -62,9 +60,7 @@ public class User extends Person {
     private Collection<Role> roles;
 
     @PrePersist
-    private void onPreSave() {
-        log.debug("PreSave called");
-
+    private void onSave() {
         if (this.roles == null) {
             this.roles = new ArrayList<>();
             this.roles.add(new Role());
