@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.icorrespondencia.api.controller.exception.KeysNotPresentException;
 import br.com.icorrespondencia.api.exception.ExceptionDetails;
 import br.com.icorrespondencia.api.exception.FieldValidationDetails;
 import br.com.icorrespondencia.api.exception.ValidationExceptionDetails;
@@ -42,7 +43,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @param request the current request
      * @return a {@code ResponseEntity} instance
      */
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(value = { ResourceNotFoundException.class, KeysNotPresentException.class })
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }

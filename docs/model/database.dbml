@@ -19,6 +19,7 @@ Table person {
     excluded_at timestamp
     active boolean [default: true, not null]
     person_type person_type [not null]
+    updated_at timestamp
 }
 
 Table users {
@@ -37,70 +38,23 @@ Table townhouse {
     email varchar(255) [unique]
     cnpj varchar(18) [unique, not null]
     site varchar(255)
+    phone varchar(11)
 
     Indexes {
         id [pk]
     }
 }
 
-Table phone {
-    id bigint [pk, increment, not null]
-    townhouse_id bigint [not null, ref: > townhouse.id]
-    phone varchar(11) [not null]
-    phone_type phone_type [default: 'LANDLINE', not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
-}
-
-Enum phone_type {
-    CELLPHONE
-    LANDLINE
-}
-
-Table city {
-    id bigint [pk, increment, not null]
-    name varchar(70) [not null]
-    state char(2) [not null]
-}
-
-Table district {
-    id bigint [pk, increment, not null]
-    city_id bigint [not null, ref: > city.id]
-    name varchar(70) [not null]
-}
-
-Table street {
-    id bigint [pk, increment, not null]
-    district_id bigint [not null, ref: > district.id]
-    zipcode char(8) [unique, not null]
-    name varchar(255) [not null]
-}
-
-Table address {
-    id bigint [pk, increment, not null]
-    townhouse_id bigint [not null, ref: - townhouse.id]
-    street_id bigint [not null, ref: - street.id]
-    street_number varchar(5)
-    complement varchar(50)
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
-}
-
 Table block {
     id bigint [pk, increment, not null]
     townhouse_id bigint [not null, ref: > townhouse.id]
     name varchar(25) [not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
 }
 
 Table room {
     id bigint [pk, increment, not null]
-    block_id bigint [not null, ref: - block.id]
+    block_id bigint [not null, ref: > block.id]
     number smallint [not null]
-    floor varchar(3) [not null]
-    created_at timestamp [default: `now()`, not null]
-    excluded_at timestamp
 }
 
 Table delivery {
@@ -111,11 +65,15 @@ Table delivery {
     read_at timestamp
 }
 
-Table user_role {
-    id bigint [pk, increment, not null]
+Table users_roles {
+    role_id bigint [not null, ref: > role.id]
     user_id bigint [not null, ref: > users.id]
-    type role_type [default: 'ROLE_USER', not null]
-    townhouse_id bigint [not null, ref: > townhouse.id]
+}
+
+Table role {
+    id bigint [pk, increment, not null]
+    name role_type [default: 'ROLE_USER', not null]
+    townhouse_id bigint [not null, ref: - townhouse.id]
     room_id bigint [ref: - room.id]
 }
 

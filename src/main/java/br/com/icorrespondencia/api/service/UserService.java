@@ -1,13 +1,13 @@
 package br.com.icorrespondencia.api.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.com.icorrespondencia.api.domain.Delivery;
 import br.com.icorrespondencia.api.domain.User;
-import br.com.icorrespondencia.api.dto.UserDTO;
-import br.com.icorrespondencia.api.mapper.UserMapper;
 import br.com.icorrespondencia.api.repository.UserRepository;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 
@@ -15,48 +15,88 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements CrudService<UserDTO, Long> {
+public class UserService implements CrudService<User, UUID> {
 
     private final UserRepository repo;
 
-    private final UserMapper mapper;
-
     @Override
-    public List<UserDTO> index() {
-        return repo
-                .findAllByExcludedAtIsNull()
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+    public List<User> index() {
+        return repo.findAllByExcludedAtIsNull();
     }
 
     @Override
-    public UserDTO show(final Long id) {
+    public User show(final UUID id) {
         return repo
                 .getOneByIdAndExcludedAtIsNull(id)
-                .map(mapper::toDTO)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    public UserDTO store(final UserDTO userDTO) {
-        final User savedInstance = repo.save(mapper.toDomain(userDTO));
-
-        return mapper.toDTO(savedInstance);
+    public User store(final User user) {
+        return repo.save(user);
     }
 
     @Override
-    public void update(final UserDTO userDTO) {
-        show(userDTO.getId());
+    public void update(final User user) {
+        show(user.getId());
 
-        store(userDTO);
+        store(user);
     }
 
     @Override
-    public void destroy(Long id) {
+    public void destroy(final UUID id) {
         show(id);
 
         repo.excludeAndDeactivateById(id);
     }
 
+    /**
+     * Deactivate user by id
+     *
+     * @param UUID id
+     * @return true if user deactivated with success; else false.
+     */
+    public boolean deactivate(final UUID id){
+        show(id);
+
+        int status = repo.deactivateById(id);
+
+        return status != 0;
+    }
+
+    /**
+     * Activate user by id
+     *
+     * @param UUID id
+     * @return true if user successfully activated; else false.
+     */
+    public boolean activate(final UUID id){
+        show(id);
+
+        int status = repo.activateById(id);
+
+        return status != 0;
+    }
+
+    public User userExists(String username, String password) {
+        return repo
+                .findByUsernameAndPassword(username, password)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public List<Delivery> mailings(UUID id) {
+        User user = show(id);
+
+        return repo.findAllDeliveriesByRoomId(user.getRole().getRoom().getId());
+    }
+
+    public Delivery mailing(UUID id, Long mailingId) {
+        List<Delivery> mailings = mailings(id);
+
+        return mailings
+                .stream()
+                .filter(delivery -> Objects.equals(delivery.getId(), mailingId))
+                .findFirst()
+                .orElseThrow(ResourceNotFoundException::new);
+    }
 }

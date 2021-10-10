@@ -1,4 +1,4 @@
-package br.com.icorrespondencia.api.exception;
+package br.com.icorrespondencia.api.domain.validation;
 
 import javax.validation.groups.Default;
 
@@ -7,7 +7,7 @@ import javax.validation.groups.Default;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 public interface ValidationGroups {
     /**

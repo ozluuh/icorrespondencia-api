@@ -34,7 +34,7 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("findAllByExcludedAtIsNull should returns townhouses list when successful")
     void findAllByExcludedAtIsNull_ShouldReturnsListOfTownhouse_WhenSuccessful() {
-        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.toBeStored());
+        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.store());
 
         List<Townhouse> townhousesResult = townhouseRepository.findAllByExcludedAtIsNull();
 
@@ -60,7 +60,7 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("getOneByIdAndExcludedAtIsNull should returns townhouse when successful")
     void getOneByIdAndExcludedAtIsNull_ShouldReturnsTownhouse_WhenSuccessful() {
-        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.toBeStored());
+        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.store());
 
         Townhouse townhouseResult = townhouseRepository.getOneByIdAndExcludedAtIsNull(townhouseExpected.getId()).get();
 
@@ -74,7 +74,7 @@ class TownhouseRepositoryTest {
     @Test
     @DisplayName("excludeAndDeactivateById should assign excludeAt date and deactivate townhouse when successful")
     void excludeAndDeactivateById_ShouldAssignExcludeAtDateAndDeactivateTownhouse_WhenSuccessful() {
-        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.toBeStored());
+        Townhouse townhouseExpected = townhouseRepository.save(TownhouseCreator.store());
 
         townhouseRepository.excludeAndDeactivateById(townhouseExpected.getId());
 

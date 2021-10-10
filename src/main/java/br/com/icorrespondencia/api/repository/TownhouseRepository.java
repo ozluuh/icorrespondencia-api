@@ -1,5 +1,7 @@
 package br.com.icorrespondencia.api.repository;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import br.com.icorrespondencia.api.domain.Townhouse;
@@ -12,5 +14,5 @@ import br.com.icorrespondencia.api.domain.Townhouse;
  * @version 1.0
  */
 @Repository
-public interface TownhouseRepository extends PersonRepository<Townhouse, Long> {
+public interface TownhouseRepository extends PersonRepository<Townhouse, UUID> {
 }

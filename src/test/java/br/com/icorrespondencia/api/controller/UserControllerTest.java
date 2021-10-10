@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.icorrespondencia.api.dto.UserDTO;
+import br.com.icorrespondencia.api.domain.User;
 import br.com.icorrespondencia.api.service.UserService;
 import br.com.icorrespondencia.api.utils.UserCreator;
 
@@ -34,29 +35,31 @@ import br.com.icorrespondencia.api.utils.UserCreator;
 @DisplayName("Controller: User tests")
 public class UserControllerTest {
 
+    private static final String BASE_ENDPOINT = "/users";
+
+    private static final UUID VALID_ID = UUID.randomUUID();
+
     @MockBean
     UserService service;
 
     @Autowired
     MockMvc mvc;
 
-    static final String BASE_ENDPOINT = "/users";
-
     @BeforeEach
-    void setup() {
-        UserDTO expectedReturn = UserCreator.validDTO();
+    void setUp() {
+        User expectedReturn = UserCreator.valid();
 
         when(service.index())
             .thenReturn(List.of(expectedReturn));
 
-        when(service.show(1L))
+        when(service.show(VALID_ID))
             .thenReturn(expectedReturn);
 
-        when(service.store(any(UserDTO.class)))
+        when(service.store(any(User.class)))
             .thenReturn(expectedReturn);
 
         doNothing()
-            .when(service).destroy(1L);
+            .when(service).destroy(VALID_ID);
     }
 
     @Test
@@ -71,7 +74,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("index should response with status 200 when successful")
     void index_ShouldResponse200_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
             get(BASE_ENDPOINT)
@@ -80,31 +83,29 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.[0].publicId").exists())
-        .andExpect(jsonPath("$.[0].username").value(expected.getUsername()))
-        .andExpect(jsonPath("$.[0].password").value(expected.getPassword()));
+        .andExpect(jsonPath("$.[0].public_id").exists())
+        .andExpect(jsonPath("$.[0].username").value(expected.getUsername()));
     }
 
     @Test
     @DisplayName("show should response with status 200 when successful")
     void show_ShouldResponse200_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
-            get(BASE_ENDPOINT + "/{id}", 1L)
+            get(BASE_ENDPOINT + "/{id}", VALID_ID)
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-        .andExpect(jsonPath("$.publicId").exists())
-        .andExpect(jsonPath("$.username").value(expected.getUsername()))
-        .andExpect(jsonPath("$.password").value(expected.getPassword()));
+        .andExpect(jsonPath("$.public_id").exists())
+        .andExpect(jsonPath("$.username").value(expected.getUsername()));
     }
 
     @Test
     @DisplayName("store should response with status 201 when successful")
     void store_ShouldResponse201_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.store();
 
         mvc.perform(
             post(BASE_ENDPOINT)
@@ -114,15 +115,14 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.publicId").exists())
-        .andExpect(jsonPath("$.id").exists());
+        .andExpect(jsonPath("$.public_id").exists());
     }
 
     @Test
     @DisplayName("destroy should response with status 204 when successful")
     void destroy_ShouldResponse204_WhenSuccessful() throws Exception {
         mvc.perform(
-            delete(BASE_ENDPOINT + "/{id}", 1L)
+            delete(BASE_ENDPOINT + "/{id}", VALID_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -133,7 +133,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("update should response with status 204 when successful")
     void update_ShouldResponse204_WhenSuccessful() throws Exception {
-        UserDTO expected = UserCreator.validDTO();
+        User expected = UserCreator.valid();
 
         mvc.perform(
             put(BASE_ENDPOINT)
