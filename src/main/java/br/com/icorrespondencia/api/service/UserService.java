@@ -1,10 +1,12 @@
 package br.com.icorrespondencia.api.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.com.icorrespondencia.api.domain.Delivery;
 import br.com.icorrespondencia.api.domain.User;
 import br.com.icorrespondencia.api.repository.UserRepository;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
@@ -79,6 +81,22 @@ public class UserService implements CrudService<User, UUID> {
     public User userExists(String username, String password) {
         return repo
                 .findByUsernameAndPassword(username, password)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public List<Delivery> mailings(UUID id) {
+        User user = show(id);
+
+        return repo.findAllDeliveriesByRoomId(user.getRole().getRoom().getId());
+    }
+
+    public Delivery mailing(UUID id, Long mailingId) {
+        List<Delivery> mailings = mailings(id);
+
+        return mailings
+                .stream()
+                .filter(delivery -> Objects.equals(delivery.getId(), mailingId))
+                .findFirst()
                 .orElseThrow(ResourceNotFoundException::new);
     }
 }

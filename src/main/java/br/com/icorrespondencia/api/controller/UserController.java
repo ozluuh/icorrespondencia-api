@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.icorrespondencia.api.controller.exception.KeysNotPresentException;
+import br.com.icorrespondencia.api.domain.Delivery;
 import br.com.icorrespondencia.api.domain.User;
 import br.com.icorrespondencia.api.domain.validation.ValidationGroups;
 import br.com.icorrespondencia.api.domain.validation.View;
@@ -133,5 +134,15 @@ public class UserController implements CrudController<User, UUID> {
         User user = service.userExists(username, password);
 
         return ResponseEntity.ok().body(user);
+    }
+
+    @GetMapping("/{id}/mailings")
+    public ResponseEntity<List<Delivery>> mailings(@PathVariable UUID id){
+        return ResponseEntity.ok(service.mailings(id));
+    }
+
+    @GetMapping("/{userId}/mailings/{id}")
+    public ResponseEntity<Delivery> mailing(@PathVariable("userId") UUID id, @PathVariable("id") Long mailingId){
+        return ResponseEntity.ok(service.mailing(id, mailingId));
     }
 }

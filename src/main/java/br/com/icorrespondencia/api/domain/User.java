@@ -1,17 +1,11 @@
 package br.com.icorrespondencia.api.domain;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -51,19 +45,7 @@ public class User extends Person {
     private String email;
 
     @JsonView(View.Private.class)
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
-    )
-    private Collection<Role> roles;
-
-    @PrePersist
-    private void onSave() {
-        if (this.roles == null) {
-            this.roles = new ArrayList<>();
-            this.roles.add(new Role());
-        }
-    }
+    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, optional = false)
+    @JoinColumn(nullable = false)
+    private Role role;
 }
