@@ -5,7 +5,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.com.icorrespondencia.api.domain.Delivery;
 import br.com.icorrespondencia.api.domain.Townhouse;
+import br.com.icorrespondencia.api.repository.DeliveryRepository;
 import br.com.icorrespondencia.api.repository.TownhouseRepository;
 import br.com.icorrespondencia.api.service.exception.ResourceNotFoundException;
 
@@ -23,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class TownhouseService implements CrudService<Townhouse, UUID> {
 
     private final TownhouseRepository repository;
+
+    private final DeliveryRepository deliveryRepo;
 
     @Override
     public List<Townhouse> index() {
@@ -50,21 +54,27 @@ public class TownhouseService implements CrudService<Townhouse, UUID> {
     }
 
     @Override
-    public void update(Townhouse entity) {
+    public void update(final Townhouse entity) {
         show(entity.getId());
 
         store(entity);
     }
 
-    public boolean deactivate(UUID id) {
+    public boolean deactivate(final UUID id) {
         show(id);
 
         return repository.deactivateById(id) != 0;
     }
 
-    public boolean activate(UUID id) {
+    public boolean activate(final UUID id) {
         show(id);
 
         return repository.activateById(id) != 0;
+    }
+
+    public Delivery mailings(final Delivery delivery, final UUID id) {
+        show(id);
+
+        return deliveryRepo.save(delivery);
     }
 }

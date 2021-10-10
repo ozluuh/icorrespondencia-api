@@ -10,7 +10,6 @@
 | POST   | /users/:id/deactivate      | Inativar usuário           | Desativa o usuário associado ao condomínio     | :white_check_mark: |
 | POST   | /users/:id/activate        | Ativar usuário             | Ativa o usuário associado ao condomínio        | :white_check_mark: |
 | GET    | /users/:id/mailings        | Correspondências Recebidas | Lista todas as correspondências                | :construction:     |
-| POST   | /users/:id/mailings        | Cadastrar correspondências | Cadastramento de correspondência recebida      | :construction:     |
 | GET    | /users/:id/mailings/:id    | Dados da correspondência   | Detalhes da correspondência                    | :construction:     |
 |        |                            |                            |                                                |                    |
 | GET    | /townhouses                | Listagem de condomínios    | Listagem dos condomínios cadastrados           | :white_check_mark: |
@@ -20,3 +19,4 @@
 | DELETE | /townhouses/:id            | Excluir condomínio         | Realiza a remoção do condomínio                | :white_check_mark: |
 | POST   | /townhouses/:id/deactivate | Inativar condomínio        | Desativa a atualização das informações         | :white_check_mark: |
 | POST   | /townhouses/:id/activate   | Ativar condomínio          | Ativa a atualização das informações            | :white_check_mark: |
+| POST   | /townhouses/:id/mailings   | Cadastrar correspondências | Cadastramento de correspondência recebida      | :white_check_mark: |

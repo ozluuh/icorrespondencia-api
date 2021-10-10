@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.icorrespondencia.api.domain.Delivery;
 import br.com.icorrespondencia.api.domain.Townhouse;
 import br.com.icorrespondencia.api.domain.validation.ValidationGroups;
 import br.com.icorrespondencia.api.domain.validation.View;
@@ -126,5 +128,12 @@ public class TownhouseController implements CrudController<Townhouse, UUID> {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/mailings")
+    public ResponseEntity<Void> mailings(@PathVariable UUID id, @RequestBody Delivery delivery) {
+        service.mailings(delivery, id);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
