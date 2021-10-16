@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +30,20 @@ import br.com.icorrespondencia.api.util.DetailsExceptionUtil;
  *
  * @author Luís Paulino
  * @since 0.1
- * @version 0.1
+ * @version 1.0
  */
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(value = { ConstraintViolationException.class })
+    protected ResponseEntity<Object> handleViolationKey(ConstraintViolationException ex, WebRequest request) {
+        String message = ex.getSQLException().getMessage();
+        String detailsMessage = message.substring(message.indexOf("Detail:"));
+        String filteredMessage = detailsMessage.replaceAll("(.*|\\=)\\s?\\((\\w+)\\)", "$2");
+        String finalMessage = filteredMessage.replaceAll("^(\\w+) already exists\\.$", "Usuário $1 já existe! Deseja recuperar a senha?");
+
+        return handleExceptionInternal(ex, finalMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
     /**
      * Customize the response for ResourceNotFoundException
