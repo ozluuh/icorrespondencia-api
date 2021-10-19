@@ -145,4 +145,15 @@ public class UserController implements CrudController<User, UUID> {
     public ResponseEntity<Delivery> mailing(@PathVariable("userId") UUID id, @PathVariable("id") Long mailingId){
         return ResponseEntity.ok(service.mailing(id, mailingId));
     }
+
+    @PostMapping("/{userId}/mailings/{id}")
+    public ResponseEntity<Void> mailingRead(@PathVariable("userId") UUID id, @PathVariable("id") Long mailingId) {
+        boolean status = service.mailingRead(id, mailingId);
+
+        if (!status) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -99,4 +99,10 @@ public class UserService implements CrudService<User, UUID> {
                 .findFirst()
                 .orElseThrow(ResourceNotFoundException::new);
     }
+
+    public boolean mailingRead(UUID id, Long mailingId) {
+        mailing(id, mailingId);
+
+        return repo.setDeliveryRead(mailingId) > 0;
+    }
 }
