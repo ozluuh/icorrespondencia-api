@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${env.DATABASE_HOST:localhost}:${env.DATABASE_PORT:5432}/${env.DATABASE_NAME:icorrespondenciadev}
+    url: jdbc:postgresql://${env.DATABASE_HOST:localhost}:${env.DATABASE_PORT:5432}/${env.DATABASE_NAME:icorrespondenciadev}?sslmode=${env.SSL_MODE:disable}
     username: ${env.DATABASE_USER:postgres}
     password: ${env.DATABASE_PASS}
   jpa:
