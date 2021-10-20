@@ -106,6 +106,35 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <configuration>
+                    <subscriptionId>46dacebe-14d8-4a11-9cf6-6ef8a8ef4e32</subscriptionId>
+                    <resourceGroup>rg-21things-challenge</resourceGroup>
+                    <appName>app-icorrespondencia</appName>
+                    <pricingTier>B1</pricingTier>
+                    <region>centralus</region>
+                    <runtime>
+                        <os>Linux</os>
+                        <webContainer>Java SE</webContainer>
+                        <javaVersion>Java 11</javaVersion>
+                    </runtime>
+                    <deployment>
+                        <resources>
+                            <resource>
+                                <type>jar</type>
+                                <directory>${project.basedir}/target</directory>
+                                <includes>
+                                    <include>*.jar</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </deployment>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
