@@ -2,6 +2,7 @@ package br.com.icorrespondencia.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -49,6 +50,9 @@ class UserServiceTest {
 
         doNothing()
             .when(repo).excludeAndDeactivateById(VALID_ID);
+
+        when(repo.findByUsernameAndPassword(expectedReturn.getUsername(), expectedReturn.getPassword()))
+            .thenReturn(Optional.of(expectedReturn));
     }
 
     @Test
@@ -117,5 +121,41 @@ class UserServiceTest {
     void destroy_ShouldNotThrowAnyException_WhenSuccessful() {
         assertThatCode(() -> service.destroy(VALID_ID))
             .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deactivate should return true when successful")
+    void deactivate_Should_WhenSuccessful() {
+        when(repo.deactivateById(VALID_ID))
+            .thenReturn(1);
+
+        boolean result = service.deactivate(VALID_ID);
+
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("activate should return true when successful")
+    void activate_Should_WhenSuccessful() {
+        when(repo.activateById(VALID_ID))
+            .thenReturn(1);
+
+        boolean result = service.activate(VALID_ID);
+
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("userExists should return a valid user by username and password when successful")
+    void userExists_ShouldReturnValidUserByUsernameAndPassword_WhenSuccessful() {
+
+        User expected = UserCreator.valid();
+
+        User result = service.userExists(expected.getUsername(), expected.getPassword());
+
+        assertThat(result)
+            .isNotNull()
+            .isInstanceOf(User.class)
+            .isEqualTo(expected);
     }
 }
