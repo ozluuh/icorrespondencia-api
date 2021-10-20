@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.icorrespondencia</groupId>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api</name>
     <description>API to iCorrespondencia app</description>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -92,35 +95,13 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>com.microsoft.azure</groupId>
                 <artifactId>azure-webapp-maven-plugin</artifactId>
                 <version>2.2.0</version>
-                <configuration>
-                    <subscriptionId>46dacebe-14d8-4a11-9cf6-6ef8a8ef4e32</subscriptionId>
-                    <resourceGroup>rg-21things-challenge</resourceGroup>
-                    <appName>app-icorrespondencia</appName>
-                    <pricingTier>B1</pricingTier>
-                    <region>eastus</region>
-                    <runtime>
-                        <os>Linux</os>
-                        <webContainer>Java SE</webContainer>
-                        <javaVersion>Java 11</javaVersion>
-                    </runtime>
-                    <deployment>
-                        <resources>
-                            <resource>
-                                <type>jar</type>
-                                <directory>${project.basedir}/target</directory>
-                                <includes>
-                                    <include>*.jar</include>
-                                </includes>
-                            </resource>
-                        </resources>
-                    </deployment>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
