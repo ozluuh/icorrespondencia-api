@@ -104,15 +104,35 @@
                 <configuration>
                     <schemaVersion>v2</schemaVersion>
                     <resourceGroup>rg-21things-challenge</resourceGroup>
-                    <appName>app-icorrespondencia</appName>
+                    <appName>icorrespondencia</appName>
                     <auth>
                         <type>service_principal</type>
-                        <serverId>azure-icorrespondencia-auth</serverId>
+                        <serverId>az-auth-icorrespondencia</serverId>
                     </auth>
                     <appSettings>
                         <property>
                             <name>JAVA_OPTS</name>
                             <value>-Dserver.port=80</value>
+                        </property>
+                        <property>
+                            <name>DATABASE_HOST</name>
+                            <value>${env.AZ_POSTGRES_DB_HOST}.postgres.database.azure.com</value>
+                        </property>
+                        <property>
+                            <name>DATABASE_NAME</name>
+                            <value>${env.AZ_POSTGRES_DB_NAME}</value>
+                        </property>
+                        <property>
+                            <name>DATABASE_PASS</name>
+                            <value>${env.AZ_POSTGRES_DB_PASS}</value>
+                        </property>
+                        <property>
+                            <name>DATABASE_USER</name>
+                            <value>${env.AZ_POSTGRES_DB_USER}@${env.AZ_POSTGRES_DB_HOST}</value>
+                        </property>
+                        <property>
+                            <name>SSL_MODE</name>
+                            <value>require</value>
                         </property>
                     </appSettings>
                     <deployment>
@@ -125,6 +145,12 @@
                             </resource>
                         </resources>
                     </deployment>
+                    <runtime>
+                        <os>Linux</os>
+                        <javaVersion>Java 11</javaVersion>
+                        <webContainer>Java SE</webContainer>
+                    </runtime>
+                    <region>brazilsouth</region>
                 </configuration>
             </plugin>
             <plugin>
