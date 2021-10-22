@@ -22,13 +22,13 @@ pipeline {
         stage('Deploy app to Azure') {
             steps {
                 catchError {
-                    sh 'sh ci/deploy.sh make_deploy'
+                    sh 'sh ci/scripts/deploy.sh make_deploy'
                 }
             }
             post {
                 success {
                     echo 'App deployed successfully'
-                    sh 'sh ci/deploy.sh get_deploy_url'
+                    sh 'sh ci/scripts/deploy.sh get_deploy_url'
                 }
                 failure {
                     echo 'App not deployed'
