@@ -21,11 +21,28 @@ pipeline {
         }
         stage('Deploy app to Azure') {
             steps {
-                sh 'sh ci/jenkins/deploy.sh make_deploy'
+                catchError {
+                    sh 'sh ci/deploy.sh make_deploy'
+                }
+            }
+            post {
+                success {
+                    echo 'App deployed successfully'
+                    sh 'sh ci/deploy.sh get_deploy_url'
+                }
+                failure {
+                    echo 'App not deployed'
+                    error('Failure to deploy app, please check logs')
+                }
             }
         }
     }
     post {
+        always {
+            echo "End: ${JOB_NAME} pipeline ended"
+            deleteDir()
+            echo 'Workspace cleaned'
+        }
         aborted {
             echo "Fail: ${JOB_NAME} pipeline aborted"
         }

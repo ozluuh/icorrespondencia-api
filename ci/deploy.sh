@@ -6,13 +6,10 @@ get_deploy_url() {
 }
 
 make_deploy() {
-    # mvn azure-webapp:deploy > temp/log.txt
+    mvn azure-webapp:deploy > temp/log.txt
     if [[ ! -e "temp/log.txt" ]]; then
-        echo 1
         return 1
     fi
-
-    echo 0
 }
 
 "$@"
