@@ -1,8 +1,12 @@
 #!/bin/sh
 
 get_deploy_url() {
-    # mvn azure-webapp:deploy | grep -oE "https?.*\.net"
-    echo "[INFO] Successfully deployed the artifact to https://app-icorrespondencia.azurewebsites.net" | grep -oE "https?.*\.net"
+    cat log.txt | grep -oE "https?.*\.net"
+    rm -f log.txt
 }
 
-get_deploy_url
+make_deploy() {
+    mvn azure-webapp:deploy > log.txt
+}
+
+"$@"
