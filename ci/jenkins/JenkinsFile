@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    tools {
+        maven 'apache-maven'
+    }
+    stages {
+        stage('Get code') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ozluuh/icorrespondencia-api.git']]])
+            }
+        }
+        stage('Clean target workspace') {
+            steps {
+                sh 'mvn clean'
+            }
+        }
+        stage('Build source') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Deploy app to Azure') {
+            steps {
+                sh 'sh ci/jenkins/deploy.sh make_deploy'
+            }
+        }
+    }
+    post {
+        aborted {
+            echo "Fail: ${JOB_NAME} pipeline aborted"
+        }
+        failure {
+            echo "Fail: ${JOB_NAME} pipeline failed"
+        }
+        success {
+            echo "Success: ${JOB_NAME} pipeline completed :)"
+        }
+    }
+}
