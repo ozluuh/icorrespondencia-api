@@ -105,6 +105,10 @@
                     <schemaVersion>v2</schemaVersion>
                     <resourceGroup>rg-21things-challenge</resourceGroup>
                     <appName>app-icorrespondencia</appName>
+                    <auth>
+                        <type>service_principal</type>
+                        <serverId>azure-icorrespondencia-auth</serverId>
+                    </auth>
                     <appSettings>
                         <property>
                             <name>JAVA_OPTS</name>
