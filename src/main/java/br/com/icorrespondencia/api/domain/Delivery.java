@@ -3,6 +3,8 @@ package br.com.icorrespondencia.api.domain;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,11 +53,38 @@ public class Delivery {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private DeliveryType type;
+
     @PrePersist
     private void onPreSave() {
         if (this.deliveryDate == null) {
             this.deliveryDate = LocalDateTime.now();
             this.read = false;
+        }
+
+        switch (description.substring(description.length() - 1).toLowerCase()) {
+            case "f":
+            case "1":
+            case "a":
+            case "7":
+                this.type = DeliveryType.CONTA_LUZ;
+                break;
+            case "0":
+            case "2":
+            case "b":
+            case "d":
+                this.type = DeliveryType.CONTA_AGUA;
+                break;
+            case "9":
+            case "3":
+            case "c":
+            case "5":
+                this.type = DeliveryType.ENCOMENDA;
+                break;
+            default:
+                this.type = DeliveryType.OUTROS;
+                break;
         }
     }
 }
