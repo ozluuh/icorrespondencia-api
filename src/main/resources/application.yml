@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /api
+    context-path: /
   error:
     include-stacktrace: on-trace-param
 
