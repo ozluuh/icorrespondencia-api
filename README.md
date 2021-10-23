@@ -41,7 +41,7 @@ Os documentos do projeto: **Escopo**, **Modelagem de dados** dentre outros poder
 
 ## DevOps
 
-A seção de DevOps pode ser encontrada [aqui](docs/devops/README.md#icorrespondencia).
+A seção de DevOps e o vídeo de demonstração podem ser encontrados [aqui](docs/devops/README.md#icorrespondencia).
 
 ## Protótipo
 

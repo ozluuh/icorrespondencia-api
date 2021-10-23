@@ -4,6 +4,7 @@ Benefícios do DevOps e sua esteira automatizada + Parametrização de deploy au
 
 ## Tabela de conteúdo
 
+-   [Demonstração](#demonstração)
 -   [Benefícios](#benefícios)
 -   [Requisitos](#requisitos)
 -   [Configuração necessária](#configuração-necessária)
@@ -17,6 +18,12 @@ Benefícios do DevOps e sua esteira automatizada + Parametrização de deploy au
     -   [Jenkins](#jenkins)
         -   [Ferramentas Globais](#ferramentas-globais)
     -   [Extra](#extra)
+
+## Demonstração
+
+O vídeo contendo a demonstração do deploy e outras explicações pode ser encontrado [aqui](https://youtu.be/epzrb5oIPKE).
+
+:warning: Lembrando que para realizar o deploy, é necessário que os passos abaixo tenham sido executados, sendo apenas o do PostgreSQL opcional.
 
 ## Benefícios
 
