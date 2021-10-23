@@ -27,6 +27,8 @@
         <!-- JaCoCo percentages -->
         <jacoco.percentage.line>0.00</jacoco.percentage.line>
         <jacoco.percentage.branch>0.00</jacoco.percentage.branch>
+        <!-- Use with profiles -->
+        <!-- <AZ_APP_NAME_DEPLOY>icorrespondencia</AZ_APP_NAME_DEPLOY> -->
     </properties>
 
     <dependencies>
@@ -104,7 +106,7 @@
                 <configuration>
                     <schemaVersion>v2</schemaVersion>
                     <resourceGroup>rg-21things-challenge</resourceGroup>
-                    <appName>icorrespondencia</appName>
+                    <appName>${env.AZ_APP_NAME_DEPLOY}</appName>
                     <auth>
                         <type>service_principal</type>
                         <serverId>az-auth-icorrespondencia</serverId>
