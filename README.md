@@ -4,7 +4,7 @@
 <h4>&#x1F6A7; Projeto em construção &#x1F6A7;</h4>
 
 <p>
-<img alt="iCorrespondencia version" src="https://img.shields.io/static/v1?label=version&message=0.9-alpha&color=blue&style=flat-square" />
+<img alt="iCorrespondencia version" src="https://img.shields.io/static/v1?label=version&message=1.0-beta&color=blue&style=flat-square" />
 
 <a href="https://github.com/ozluuh/icorrespondencia-api/blob/main/LICENSE">
     <img alt="GitHub license" src="https://img.shields.io/github/license/ozluuh/icorrespondencia-api?style=flat-square" />
@@ -16,6 +16,7 @@
 
 -   [Sobre](#sobre)
 -   [Documentos do projeto](#documentos-do-projeto)
+-   [DevOps](#devops)
 -   [Protótipo IOT](#protótipo)
 -   [Funcionalidades](#funcionalidades)
 -   [Como executar](#como-executar)
@@ -38,7 +39,11 @@ Os documentos do projeto: **Escopo**, **Modelagem de dados** dentre outros poder
 
 :warning: Ao todo possuem quatro sprints para a realização desse projeto em **2021**. A documentação final será disponibilizada em formato de **PDF** no mesmo diretório.
 
-# Protótipo
+## DevOps
+
+A seção de DevOps pode ser encontrada [aqui](docs/devops/README.md#icorrespondencia).
+
+## Protótipo
 
 O protótipo para a **terceira sprint** pode ser encontrado em: https://youtu.be/O7JwXDZwrSQ
 
@@ -46,12 +51,12 @@ O protótipo para a **terceira sprint** pode ser encontrado em: https://youtu.be
 
 :warning: Ainda em desenvolvimento
 
--   [ ] **Usuários:** endpoint principal de cadastro de usuários da aplicação, são divididos em:
-    -   [ ] **Admin**: visão de administrador do condomínio;
+-   [x] **Usuários:** endpoint principal de cadastro de usuários da aplicação, são divididos em:
+    -   [x] **Admin**: visão de administrador do condomínio;
     -   [x] **User**: visão de morador do condomínio;
--   [ ] **Correspondências**: os moradores poderão ver informações de suas correspondências e acompanhar por um dashboard na aplicação mobile
+-   [x] **Correspondências**: os moradores poderão ver informações de suas correspondências e acompanhar por um dashboard na aplicação mobile
 -   [ ] **Condomínios:** endpoint principal de cadastro de condomínios associados
-    -   [ ] possui um dashboard mobile com dados resumidos das correspondências (totalizador)
+    -   [x] possui um dashboard mobile com dados resumidos das correspondências (totalizador)
     -   [ ] visualização de detalhes de blocos e apartamentos cadastrados;
 
 ## Como executar
@@ -79,10 +84,13 @@ Após instalar e configurar as ferramentas de sua preferência, ao executar a ap
 #### Executando a aplicação
 
 -   Clone este repositório
-    ```bash
-    # HTTPS
+    -   HTTPS:
+    ```sh
     git clone https://github.com/ozluuh/icorrespondencia-api.git
-    # or with SSH
+    ```
+    ou
+    -   SSH:
+    ```sh
     git clone git@github.com:ozluuh/icorrespondencia-api.git
     ```
 -   Abra no editor de código de sua escolha;
@@ -95,7 +103,7 @@ Após instalar e configurar as ferramentas de sua preferência, ao executar a ap
     ```
 
 -   Abra o Insomnia e crie uma requisição do tipo `GET` apontando para o seguinte endereço `http://localhost:8080/api/test`;
--   Por fim, realize os testes &#x1F603;
+-   Por fim, realize os testes :smile:
 
 ## Como contribuir
 

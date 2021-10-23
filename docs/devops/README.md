@@ -209,6 +209,8 @@ Retorne à tela principal e crie o Pipeline conforme demonstrado em **vídeo**.
 
 :warning: Conforme explicado em vídeo, existe um bug na sintaxe **Declarative** do Jenkins, portanto, o primeiro job será utilizado apenas para atualizar as configurações, devendo ser cancelado assim que iniciar. Ao atualizar a página, as parametrizações já serão aplicadas.
 
+O status desses bugs podem ser acompanhados em [support declarative pipeline parameter definition](https://issues.jenkins.io/browse/JENKINS-50563) e [Snippet Generator: produce outdated code for 'properties: Set job properties'](https://issues.jenkins.io/browse/JENKINS-57069).
+
 ### Extra
 
 Após realizar todos os testes, é recomendado excluir todos os recursos criados, inclusive as configurações realizadas nessa documentação.
