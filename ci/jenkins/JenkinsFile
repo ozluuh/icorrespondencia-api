@@ -3,10 +3,18 @@ pipeline {
     tools {
         maven 'apache-maven'
     }
+    parameters {
+        string(name: 'APP_NAME', defaultValue: 'icorrespondencia', description: 'Enter app name to deploy', trim: true)
+        password(name: 'DB_PASS', defaultValue: '', description: 'Enter database password')
+        string(name: 'DB_USER', defaultValue: 'fiap', description: 'Enter database user', trim: true)
+        string(name: 'DB_HOST', defaultValue: 'icorrespondencia-server', description: 'Enter database server name', trim: true)
+        string(name: 'DB_NAME', defaultValue: 'icorrespondencia', description: 'Enter database name', trim: true)
+        string(name: 'REPO', defaultValue: 'https://github.com/ozluuh/icorrespondencia-api.git', description: 'Enter repository url', trim: true)
+    }
     stages {
         stage('Get code') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ozluuh/icorrespondencia-api.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: "${params.REPO}"]]])
             }
         }
         stage('Clean target workspace') {
@@ -21,15 +29,18 @@ pipeline {
         }
         stage('Deploy app to Azure') {
             steps {
+                script {
+                    env.AZ_APP_NAME_DEPLOY = "${params.APP_NAME}"
+                    env.AZ_POSTGRES_DB_HOST = "${params.DB_HOST}"
+                    env.AZ_POSTGRES_DB_NAME = "${params.DB_NAME}"
+                    env.AZ_POSTGRES_DB_PASS = "${params.DB_PASS}"
+                    env.AZ_POSTGRES_DB_USER = "${params.DB_USER}"
+                }
                 catchError {
-                    sh 'sh ci/scripts/deploy.sh make_deploy'
+                    sh "mvn azure-webapp:deploy"
                 }
             }
             post {
-                success {
-                    echo 'App deployed successfully'
-                    sh 'sh ci/scripts/deploy.sh get_deploy_url'
-                }
                 failure {
                     echo 'App not deployed'
                     error('Failure to deploy app, please check logs')
